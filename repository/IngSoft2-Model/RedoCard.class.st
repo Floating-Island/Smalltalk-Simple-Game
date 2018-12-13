@@ -17,6 +17,6 @@ RedoCard >> applyOn: aGame to: aPlayerOrCard [
 ]
 
 { #category : #validation }
-RedoCard >> verifyCardIsApplicableBy: aPlayer on: aGame [
-	^ aGame lastPlayedCard verifyCardIsApplicableBy: aPlayer on: aGame
+RedoCard >> assertCanBePlayedIn: aGame by: aPlayer [
+	^ aGame lastPlayedCard assertCanBePlayedIn: aGame by: aPlayer
 ]

@@ -15,6 +15,6 @@ BlankCard >> applyOn: aGame to: aPlayerOrCard [
 ]
 
 { #category : #validation }
-BlankCard >> verifyCardIsApplicableBy: aPlayer on: aGame [
+BlankCard >> assertCanBePlayedIn: aGame by: aPlayer [
 	^ true
 ]

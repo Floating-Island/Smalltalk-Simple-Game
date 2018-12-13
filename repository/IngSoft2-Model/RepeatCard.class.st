@@ -19,6 +19,6 @@ RepeatCard >> applyOn: aGame to: aPlayerOrCard [
 ]
 
 { #category : #validation }
-RepeatCard >> verifyCardIsApplicableBy: aPlayer on: aGame [
+RepeatCard >> assertCanBePlayedIn: aGame by: aPlayer [
 	^ true
 ]

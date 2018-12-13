@@ -18,12 +18,12 @@ OverloadCard >> applyOn: aGame to: aPlayer [
 ]
 
 { #category : #validation }
-OverloadCard >> validateParameterIsAPlayer: aPlayer [
-	^ (aPlayer isMemberOf: Player)
-		ifFalse: [ AssertionFailure new signal: 'Overload Card only applies to players' ]
+OverloadCard >> assertCanBePlayedIn: aGame by: aPlayer [ 
+	aGame turnOf: aPlayer
 ]
 
 { #category : #validation }
-OverloadCard >> verifyCardIsApplicableBy: aPlayer on: aGame [ 
-	aGame turnOf: aPlayer
+OverloadCard >> validateParameterIsAPlayer: aPlayer [
+	^ (aPlayer isMemberOf: Player)
+		ifFalse: [ AssertionFailure new signal: 'Overload Card only applies to players' ]
 ]

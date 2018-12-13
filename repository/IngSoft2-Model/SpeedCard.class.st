@@ -18,12 +18,12 @@ SpeedCard >> applyOn: aGame to: aPlayer [
 ]
 
 { #category : #validation }
-SpeedCard >> validateParameterIsAPlayer: aPlayer [
-	^ (aPlayer isMemberOf: Player)
-		ifFalse: [ AssertionFailure new signal: 'Speed Card only applies to players' ]
+SpeedCard >> assertCanBePlayedIn: aGame by: aPlayer [
+	aGame turnOf: aPlayer
 ]
 
 { #category : #validation }
-SpeedCard >> verifyCardIsApplicableBy: aPlayer on: aGame [
-	aGame turnOf: aPlayer
+SpeedCard >> validateParameterIsAPlayer: aPlayer [
+	^ (aPlayer isMemberOf: Player)
+		ifFalse: [ AssertionFailure new signal: 'Speed Card only applies to players' ]
 ]

@@ -16,6 +16,6 @@ AccelerationCard >> applyOn: aGame to: aPlayer [
 ]
 
 { #category : #validation }
-AccelerationCard >> verifyCardIsApplicableBy: aPlayer on: aGame [
+AccelerationCard >> assertCanBePlayedIn: aGame by: aPlayer [
 	aGame turnOf: aPlayer
 ]

@@ -67,8 +67,9 @@ Player >> throwDice: aDice [
 { #category : #interaction }
 Player >> uses: aCard on: aGame affecting: aPlayerOrCard [
 	(self hasCard: aCard)
-		ifTrue: [ aCard verifyCardIsApplicableBy: self on: aGame.
+		ifTrue: [ aCard assertCanBePlayedIn: aGame by: self.
 			aCard applyOn: aGame to: aPlayerOrCard.
 			self removeCard: aCard ]
-		ifFalse: [ AssertionFailure new signal: ('{1} doesn''t have that card in hand.' format: {self name}) ]
+		ifFalse: [ AssertionFailure new
+				signal: ('{1} doesn''t have that card in hand.' format: {self name}) ]
 ]

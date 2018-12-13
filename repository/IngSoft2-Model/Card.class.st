@@ -15,6 +15,6 @@ Card >> applyOn: aGame to: aCollection [
 ]
 
 { #category : #validation }
-Card >> verifyCardIsApplicableBy: aPlayer on: aGame [
+Card >> assertCanBePlayedIn: aGame by: aPlayer [
 	 ^ self subclassResponsibility 
 ]
