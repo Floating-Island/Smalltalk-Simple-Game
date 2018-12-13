@@ -133,12 +133,7 @@ Game >> laps [
 
 { #category : #interaction }
 Game >> lastEffectAppliedToAPlayer [
-	^ self lastEffectPlayer key 
-]
-
-{ #category : #accessing }
-Game >> lastEffectPlayer [
-	^lastEffectPlayer
+	^ lastEffectPlayer key 
 ]
 
 { #category : #accessing }
@@ -148,7 +143,7 @@ Game >> lastPlayedCard [
 
 { #category : #interaction }
 Game >> lastPlayerAffectedByAnEffect [
-	^ self lastEffectPlayer value
+	^ lastEffectPlayer value
 ]
 
 { #category : #updating }
