@@ -50,7 +50,7 @@ CardsTest >> gameForRepeatTestWithPlayer: playerNamedLeo and: playerNamedGlenn [
 ]
 
 { #category : #overload }
-CardsTest >> testAddCardToGame [
+CardsTest >> testAddCardToGameMakesGameToStoreIt [
 	| overloadCard game playerNamedLeo playerNamedGlenn |
 	playerNamedLeo := Player named: 'Leo'.
 	playerNamedGlenn := Player named: 'Glenn'.
