@@ -62,8 +62,8 @@ Game >> currentPlayerTurn [
 ]
 
 { #category : #interaction }
-Game >> deal: aNumberOf CardsToPlayersUsing: aDeck [
-	self turnOrder do: [ :each | aNumberOf timesRepeat: [ each drawCardFrom: aDeck ] ]
+Game >> deal: aNumberOfCards toAllPlayersUsing: aDeck [
+	self turnOrder do: [ :each | aNumberOfCards timesRepeat: [ each drawCardFrom: aDeck ] ]
 ]
 
 { #category : #accessing }
@@ -107,7 +107,7 @@ Game >> initializePlayedBy: aPlayerCollection throwing: aDice using: aDeck in: a
 	permanentCardsAssociations := Dictionary new.
 	lastEffectPlayer := NoEffect new -> self currentPlayerTurn.
 	lastPlayedCard := BlankCard new.
-	self deal: 2 CardsToPlayersUsing: aDeck.
+	self deal: 2 toAllPlayersUsing: aDeck.
 	state := RunningState new
 ]
 
