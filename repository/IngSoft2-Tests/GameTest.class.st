@@ -790,6 +790,38 @@ GameTest >> testReturnRanking [
 	self assert: (game positionFor: playerNamedGlenn) equals: 10
 ]
 
+{ #category : #'test return' }
+GameTest >> testReturnWinner [
+	| game playerNamedLeo playerNamedAlbert playerNamedGlenn |
+	playerNamedLeo := Player named: 'Leo'.
+	playerNamedAlbert := Player named: 'Albert'.
+	playerNamedGlenn := Player named: 'Glenn'.
+	game := self gameForResultsAnotherIteratorWithPlayer: playerNamedLeo and: playerNamedGlenn and: playerNamedAlbert.
+	"1st round start:"
+	playerNamedLeo takesATurnIn: game.
+	playerNamedAlbert takesATurnIn: game.
+	playerNamedGlenn takesATurnIn: game.
+	"1st round end."
+	self assert: (game positionFor: playerNamedLeo) equals: 4.
+	self assert: (game positionFor: playerNamedAlbert) equals: 7.
+	self assert: (game positionFor: playerNamedGlenn) equals: 10.
+	self
+		assert: game ranking
+		hasTheSameOrderThan:
+			{playerNamedGlenn.
+			playerNamedAlbert.
+			playerNamedLeo}.
+	"2nd round start:"
+	playerNamedLeo takesATurnIn: game.
+	"2nd round end."
+	"results:"
+	self assert: (game positionFor: playerNamedLeo) equals: 16.
+	self assert: (game positionFor: playerNamedAlbert) equals: 7.
+	self assert: (game positionFor: playerNamedGlenn) equals: 10.
+	"Winner:"
+	self assert: game winner equals: playerNamedLeo
+]
+
 { #category : #'turn tests' }
 GameTest >> testSimulateTurn [
 	| game playerNamedLeo playerNamedAlbert playerNamedGlenn |

@@ -78,7 +78,7 @@ Game >> effectInPositionOf: aPlayer [
 
 { #category : #updating }
 Game >> ends [
-	state := FinishedState new.
+	state := FinishedState winner: self ranking first
 ]
 
 { #category : #initialization }
@@ -233,4 +233,9 @@ Game >> updateLastPlayedCard: aCard [
 Game >> updatePositionOf: aPlayer by: aNumberOfCells [
 	playersPosition at: aPlayer put: (playersPosition at: aPlayer) + aNumberOfCells.
 	
+]
+
+{ #category : #interaction }
+Game >> winner [
+	^ state winner
 ]
