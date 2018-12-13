@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #interaction }
+RunningState >> hasFinished [
+	^ false
+]
+
+{ #category : #interaction }
 RunningState >> playNextTurnIn: aGame playedBy: aPlayer [ 
 	aGame playedBy: aPlayer.
 ]

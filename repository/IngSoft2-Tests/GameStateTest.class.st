@@ -25,6 +25,26 @@ GameStateTest >> gameForGameStateTestsWithPlayer: playerNamedLeo and: playerName
 ]
 
 { #category : #'finished state tests' }
+GameStateTest >> testHasFinishedWhenFinished [
+	| finishedState game playerNamedLeo playerNamedGlenn |
+	finishedState := FinishedState new.
+	playerNamedLeo := Player named: 'Leo'.
+	playerNamedGlenn := Player named: 'Glenn'.
+	game := self gameForGameStateTestsWithPlayer: playerNamedLeo and: playerNamedGlenn.
+	self assert: finishedState hasFinished equals: true
+]
+
+{ #category : #'finished state tests' }
+GameStateTest >> testHasFinishedWhenRunning [
+	| runningState game playerNamedLeo playerNamedGlenn |
+	runningState := RunningState new.
+	playerNamedLeo := Player named: 'Leo'.
+	playerNamedGlenn := Player named: 'Glenn'.
+	game := self gameForGameStateTestsWithPlayer: playerNamedLeo and: playerNamedGlenn.
+	self assert: runningState hasFinished equals: false
+]
+
+{ #category : #'finished state tests' }
 GameStateTest >> testPlayersPositionWhenFinished [
 	| finishedState game playerNamedLeo playerNamedGlenn |
 	finishedState := FinishedState new.

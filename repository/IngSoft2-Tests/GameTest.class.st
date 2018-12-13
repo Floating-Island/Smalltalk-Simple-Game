@@ -394,33 +394,6 @@ GameTest >> gameWithPlayer: aPlayer and: anotherPlayer usingEffect: effect [
 	^ game
 ]
 
-{ #category : #'cards tests' }
-GameTest >> testAbleToUseCancellationCardInOtherPlayersTurn [
-	| overloadCard cancellationCard game playerNamedLeo playerNamedGlenn |
-	playerNamedLeo := Player named: 'Leo'.
-	playerNamedGlenn := Player named: 'Glenn'.
-	game := self gameUsingCardsWithFirstPlayer: playerNamedLeo andSecondPlayer: playerNamedGlenn.
-	cancellationCard := CancellationCard new.
-	overloadCard := OverloadCard new.
-	playerNamedLeo addCard: overloadCard.
-	playerNamedLeo uses: overloadCard in: game against: playerNamedGlenn.
-	playerNamedGlenn addCard: cancellationCard.
-	playerNamedGlenn uses: cancellationCard in: game against: overloadCard.
-	self assert: (playerNamedGlenn hasCard: cancellationCard) equals: false
-]
-
-{ #category : #'cards tests' }
-GameTest >> testAbleToUseRepeatCardInOtherPlayersTurn [
-	| repeatCard game playerNamedLeo playerNamedGlenn |
-	playerNamedLeo := Player named: 'Leo'.
-	playerNamedGlenn := Player named: 'Glenn'.
-	game := self gameUsingCardsWithFirstPlayer: playerNamedLeo andSecondPlayer: playerNamedGlenn.
-	repeatCard := RepeatCard new.
-	playerNamedGlenn addCard: repeatCard.
-	playerNamedGlenn uses: repeatCard in: game against: playerNamedGlenn.
-	self assert: (playerNamedGlenn hasCard: repeatCard) equals: false
-]
-
 { #category : #'create tests' }
 GameTest >> testCreateGame [
 	| game playerNamedLeo playerNamedGlenn die board collection deck |
@@ -656,6 +629,18 @@ GameTest >> testGiveResultUsingCircularIterator [
 	self assert: (game positionFor: playerNamedGlenn) equals: 50
 ]
 
+{ #category : #'cards tests' }
+GameTest >> testGivesTwoCardsAtStartToEachPlayer [
+	| playerNamedLeo playerNamedGlenn game |
+	playerNamedLeo := Player named: 'Leo'.
+	playerNamedGlenn := Player named: 'Glenn'.
+	game := self
+		gameUsingRandomCardsWithFirstPlayer: playerNamedLeo
+		andSecondPlayer: playerNamedGlenn.
+	self assert: playerNamedLeo quantityOfCardsInHand equals: 2.
+	self assert: playerNamedGlenn quantityOfCardsInHand equals: 2
+]
+
 { #category : #'test laps' }
 GameTest >> testLapForPlayer [
 	| game playerNamedLeo playerNamedAlbert playerNamedGlenn |
@@ -678,6 +663,33 @@ GameTest >> testLapForPlayer [
 	playerNamedAlbert takesATurnIn: game.
 	self assert: (game positionFor: playerNamedAlbert) equals: 3.
 	self assert: (game lapFor: playerNamedAlbert) equals: 2
+]
+
+{ #category : #'cards tests' }
+GameTest >> testPlayerAbleToUseCancellationCardInOtherPlayersTurn [
+	| overloadCard cancellationCard game playerNamedLeo playerNamedGlenn |
+	playerNamedLeo := Player named: 'Leo'.
+	playerNamedGlenn := Player named: 'Glenn'.
+	game := self gameUsingCardsWithFirstPlayer: playerNamedLeo andSecondPlayer: playerNamedGlenn.
+	cancellationCard := CancellationCard new.
+	overloadCard := OverloadCard new.
+	playerNamedLeo addCard: overloadCard.
+	playerNamedLeo uses: overloadCard in: game against: playerNamedGlenn.
+	playerNamedGlenn addCard: cancellationCard.
+	playerNamedGlenn uses: cancellationCard in: game against: overloadCard.
+	self assert: (playerNamedGlenn hasCard: cancellationCard) equals: false
+]
+
+{ #category : #'cards tests' }
+GameTest >> testPlayerAbleToUseRepeatCardInOtherPlayersTurn [
+	| repeatCard game playerNamedLeo playerNamedGlenn |
+	playerNamedLeo := Player named: 'Leo'.
+	playerNamedGlenn := Player named: 'Glenn'.
+	game := self gameUsingCardsWithFirstPlayer: playerNamedLeo andSecondPlayer: playerNamedGlenn.
+	repeatCard := RepeatCard new.
+	playerNamedGlenn addCard: repeatCard.
+	playerNamedGlenn uses: repeatCard in: game against: playerNamedGlenn.
+	self assert: (playerNamedGlenn hasCard: repeatCard) equals: false
 ]
 
 { #category : #'test laps' }
@@ -906,18 +918,6 @@ GameTest >> testUsingAccelerationCardRaisesExceptionWhenNotInPlayerTurn [
 		should: [ playerNamedGlenn uses: accelerationCard in: game against: playerNamedGlenn ]
 		raise: AssertionFailure
 		withExceptionDo: [ :signal | self assert: signal messageText equals: 'This isn''t the turn of Glenn' ]
-]
-
-{ #category : #'cards tests' }
-GameTest >> testUsingCardsGivesTwoCardsAtStartToEachPlayer [
-	| playerNamedLeo playerNamedGlenn game |
-	playerNamedLeo := Player named: 'Leo'.
-	playerNamedGlenn := Player named: 'Glenn'.
-	game := self
-		gameUsingRandomCardsWithFirstPlayer: playerNamedLeo
-		andSecondPlayer: playerNamedGlenn.
-	self assert: playerNamedLeo quantityOfCardsInHand equals: 2.
-	self assert: playerNamedGlenn quantityOfCardsInHand equals: 2
 ]
 
 { #category : #'cards tests' }
