@@ -165,6 +165,8 @@ Game >> playedBy: aPlayer [
 	self updateLastEffectPlayer: aPlayer.
 	self activatePermanentCards.
 	self applyPositionEffectTo: aPlayer.
+	(self hasWon: aPlayer)
+		ifTrue: [ self ends ].
 	self nextPlayerTurn
 ]
 
@@ -225,6 +227,5 @@ Game >> updateLastPlayedCard: aCard [
 { #category : #updating }
 Game >> updatePositionOf: aPlayer by: aNumberOfCells [
 	playersPosition at: aPlayer put: (playersPosition at: aPlayer) + aNumberOfCells.
-	(self hasWon: aPlayer)
-		ifTrue: [ self ends ]
+	
 ]
