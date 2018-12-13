@@ -894,16 +894,16 @@ GameTest >> testWithCardAndGiveRanking [
 	"First round"
 	self assert: (game positionFor: playerNamedLeo) equals: 1.
 	self assert: (game positionFor: playerNamedGlenn) equals: 1.
-	playerNamedLeo uses: overload on: game affecting: playerNamedGlenn.
+	playerNamedLeo uses: overload in: game against: playerNamedGlenn.
 	playerNamedLeo takesATurnIn: game.
 	self assert: (game positionFor: playerNamedLeo) equals: 2.
-	playerNamedGlenn uses: acceleration on: game affecting: playerNamedLeo.
+	playerNamedGlenn uses: acceleration in: game against: playerNamedLeo.
 	playerNamedGlenn takesATurnIn: game.
 	"Second round"
 	self assert: (game positionFor: playerNamedLeo) equals: 2.
 	self assert: (game positionFor: playerNamedGlenn) equals: 2.
-	playerNamedLeo uses: speed on: game affecting: playerNamedLeo.
-	playerNamedGlenn uses: cancellation on: game affecting: overload.
+	playerNamedLeo uses: speed in: game against: playerNamedLeo.
+	playerNamedGlenn uses: cancellation in: game against: overload.
 	playerNamedLeo takesATurnIn: game.
 	self assert: (game positionFor: playerNamedLeo) equals: 7.
 	playerNamedGlenn takesATurnIn: game.
