@@ -187,9 +187,7 @@ Game >> positionOfPlayers [
 
 { #category : #interaction }
 Game >> ranking [
-	^(playersPosition associations asSortedCollection: [ :first :second | first value > second value ])
-		collect: [ :assoc | assoc key ]
-		
+	^ self playersPlaying asSortedCollection: [ :player | playersPosition at: player ] descending
 ]
 
 { #category : #updating }
