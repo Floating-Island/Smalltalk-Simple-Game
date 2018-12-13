@@ -83,7 +83,7 @@ Game >> ends [
 
 { #category : #updating }
 Game >> endsIfBoardLengthHasBeenReachedBy: aPlayer [
-	(playersPosition at: aPlayer) >=( self boardLength * laps)
+	(self lapFor: aPlayer) >=( laps)
 		ifTrue: [ self ends ]
 ]
 

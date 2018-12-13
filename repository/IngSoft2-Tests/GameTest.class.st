@@ -328,7 +328,7 @@ GameTest >> gameUsingRandomCardsWithFirstPlayer: aPlayer andSecondPlayer: anothe
 ]
 
 { #category : #'test laps' }
-GameTest >> gameWith5NoEffectBoardWithPlayer: aPlayer [
+GameTest >> gameWith5NoEffectBoard3LapsAndWithPlayer: aPlayer [
 	| die game board deck |
 	board := self collectionOf5NoEffect.
 	deck := CircularIterator over: {OverloadCard new}.
@@ -542,7 +542,7 @@ GameTest >> testCreateGameWithTurnOrder [
 GameTest >> testGameWithLapsHasEnded [
 	| game playerNamedLeo |
 	playerNamedLeo := Player named: 'Leo'.
-	game := self gameWith5NoEffectBoardWithPlayer: playerNamedLeo.
+	game := self gameWith5NoEffectBoard3LapsAndWithPlayer: playerNamedLeo.
 	self assert: (game lapFor: playerNamedLeo) equals: 0.
 	self assert: (game positionFor: playerNamedLeo) equals: 1.
 	playerNamedLeo takesATurnIn: game.
