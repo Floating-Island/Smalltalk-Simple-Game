@@ -675,6 +675,23 @@ GameTest >> testGivesTwoCardsAtStartToEachPlayer [
 	self assert: playerNamedGlenn quantityOfCardsInHand equals: 2
 ]
 
+{ #category : #'turn tests' }
+GameTest >> testIquiryForWinnerRaisesExceptionWhenGameHasntFinished [
+	| game playerNamedLeo playerNamedAlbert playerNamedGlenn |
+	playerNamedLeo := Player named: 'Leo'.
+	playerNamedAlbert := Player named: 'Albert'.
+	playerNamedGlenn := Player named: 'Glenn'.
+	game := self gameWithPlayer: playerNamedGlenn and: playerNamedLeo and: playerNamedAlbert.
+	playerNamedLeo takesATurnIn: game.
+	playerNamedAlbert takesATurnIn: game.
+	playerNamedGlenn takesATurnIn: game.
+	self assert: (game positionFor: playerNamedLeo) equals: 4.
+	self assert: (game positionFor: playerNamedAlbert) equals: 7.
+	self assert: (game positionFor: playerNamedGlenn) equals: 10.
+	self assert: game hasFinished equals: false.
+	self should: [ game winner ] raise: AssertionFailure withExceptionDo: [ :signal | self assert: signal messageText equals: 'There hasn''t been a winner yet...' ]
+]
+
 { #category : #'test laps' }
 GameTest >> testLapForPlayer [
 	| game playerNamedLeo playerNamedAlbert playerNamedGlenn |
