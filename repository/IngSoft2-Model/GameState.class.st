@@ -13,3 +13,8 @@ GameState >> hasFinished [
 GameState >> playNextTurnIn: aGame playedBy: aPlayer [
 	self subclassResponsibility
 ]
+
+{ #category : #interaction }
+GameState >> winner [
+	self subclassResponsibility
+]
