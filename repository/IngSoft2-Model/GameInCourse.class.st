@@ -1,20 +1,20 @@
 Class {
-	#name : #RunningState,
+	#name : #GameInCourse,
 	#superclass : #GameState,
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #interaction }
-RunningState >> hasFinished [
+GameInCourse >> hasFinished [
 	^ false
 ]
 
 { #category : #interaction }
-RunningState >> playNextTurnIn: aGame playedBy: aPlayer [ 
+GameInCourse >> playNextTurnIn: aGame playedBy: aPlayer [ 
 	aGame playedBy: aPlayer.
 ]
 
 { #category : #interaction }
-RunningState >> winner [
+GameInCourse >> winner [
 	^ AssertionFailure new signal: 'There hasn''t been a winner yet...'
 ]

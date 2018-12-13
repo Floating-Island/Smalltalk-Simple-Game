@@ -27,14 +27,14 @@ GameStateTest >> gameForGameStateTestsWithPlayer: playerNamedLeo and: playerName
 { #category : #'finished state tests' }
 GameStateTest >> testHasFinishedWhenFinished [
 	| finishedState |
-	finishedState := FinishedState winner: (Player named: 'Albert').
+	finishedState := GameOver winner: (Player named: 'Albert').
 	self assert: finishedState hasFinished equals: true
 ]
 
 { #category : #'finished state tests' }
 GameStateTest >> testHasFinishedWhenRunning [
 	| runningState |
-	runningState := RunningState new.
+	runningState := GameInCourse new.
 	self assert: runningState hasFinished equals: false
 ]
 
@@ -43,7 +43,7 @@ GameStateTest >> testPlayersPositionWhenFinished [
 	| finishedState game playerNamedLeo playerNamedGlenn |
 	playerNamedLeo := Player named: 'Leo'.
 	playerNamedGlenn := Player named: 'Glenn'.
-	finishedState := FinishedState winner: playerNamedLeo.
+	finishedState := GameOver winner: playerNamedLeo.
 	game := self gameForGameStateTestsWithPlayer: playerNamedLeo and: playerNamedGlenn.
 	self
 		should: [ finishedState playNextTurnIn: game playedBy: playerNamedLeo ]
@@ -54,7 +54,7 @@ GameStateTest >> testPlayersPositionWhenFinished [
 { #category : #'running state tests' }
 GameStateTest >> testPlayersPositionWhenRunning [
 	| runningState game playerNamedLeo playerNamedGlenn |
-	runningState := RunningState new.
+	runningState := GameInCourse new.
 	playerNamedLeo := Player named: 'Leo'.
 	playerNamedGlenn := Player named: 'Glenn'.
 	game := self gameForGameStateTestsWithPlayer: playerNamedLeo and: playerNamedGlenn.
@@ -67,7 +67,7 @@ GameStateTest >> testPlayersPositionWhenRunning [
 { #category : #'finished state tests' }
 GameStateTest >> testRunningStateRaisesExceptionWhenWinnerIsInquired [
 	| runningState |
-	runningState := RunningState new.
+	runningState := GameInCourse new.
 	self
 		should: [ runningState winner ]
 		raise: AssertionFailure
@@ -78,6 +78,6 @@ GameStateTest >> testRunningStateRaisesExceptionWhenWinnerIsInquired [
 GameStateTest >> testfinishedStateGivesWinnerWhenWinnerIsInquired [
 	| finishedState playerNamedAlbert |
 	playerNamedAlbert := Player named: 'Albert'.
-	finishedState := FinishedState winner: playerNamedAlbert.
+	finishedState := GameOver winner: playerNamedAlbert.
 	self assert: finishedState winner equals: playerNamedAlbert
 ]

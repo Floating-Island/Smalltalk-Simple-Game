@@ -1,5 +1,5 @@
 Class {
-	#name : #FinishedState,
+	#name : #GameOver,
 	#superclass : #GameState,
 	#instVars : [
 		'winner'
@@ -8,26 +8,26 @@ Class {
 }
 
 { #category : #'instance creation' }
-FinishedState class >> winner: aPlayer [
+GameOver class >> winner: aPlayer [
 	^ self new initializeWithWinner: aPlayer
 ]
 
 { #category : #interaction }
-FinishedState >> hasFinished [
+GameOver >> hasFinished [
 	^ true
 ]
 
 { #category : #initialization }
-FinishedState >> initializeWithWinner: aPlayer [
+GameOver >> initializeWithWinner: aPlayer [
 	winner := aPlayer
 ]
 
 { #category : #interaction }
-FinishedState >> playNextTurnIn: aGame playedBy: aPlayer [
+GameOver >> playNextTurnIn: aGame playedBy: aPlayer [
 	^ AssertionFailure new signal: 'The game is over...'
 ]
 
 { #category : #accessing }
-FinishedState >> winner [
+GameOver >> winner [
 	^ winner
 ]

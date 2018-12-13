@@ -78,7 +78,7 @@ Game >> effectInPositionOf: aPlayer [
 
 { #category : #updating }
 Game >> ends [
-	state := FinishedState winner: self ranking first
+	state := GameOver winner: self ranking first
 ]
 
 { #category : #initialization }
@@ -118,7 +118,7 @@ Game >> initializePlayedBy: aPlayerCollection throwing: aDice using: aDeck in: a
 	lastEffectPlayer := NoEffect new -> self currentPlayerTurn.
 	lastPlayedCard := BlankCard new.
 	self deal: 2 toAllPlayersUsing: aDeck.
-	state := RunningState new
+	state := GameInCourse new
 ]
 
 { #category : #accessing }
