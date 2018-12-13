@@ -27,7 +27,8 @@ Game class >> playedBy: aPlayerCollection throwing: aDice using: aDeck in: aBoar
 
 { #category : #interaction }
 Game >> activatePermanentCards [
-	permanentCardsAssociations associationsDo: [ :each | each key activateOn: self to: each value ]
+	permanentCardsAssociations
+		associationsDo: [ :each | each key affect: each value in: self ]
 ]
 
 { #category : #updating }
@@ -52,7 +53,7 @@ Game >> boardLength [
 
 { #category : #accessing }
 Game >> cards [
-	^ permanentCardsAssociations
+	^ permanentCardsAssociations keys asOrderedCollection
 ]
 
 { #category : #accessing }
@@ -61,8 +62,8 @@ Game >> currentPlayerTurn [
 ]
 
 { #category : #interaction }
-Game >> deal: aNumberOf CardsToPlayersUsing: aDeck [
-	self turnOrder do: [ :each | aNumberOf timesRepeat: [ each drawCardFrom: aDeck ] ]
+Game >> deal: aNumberOfCards toAllPlayersUsing: aDeck [
+	self turnOrder do: [ :each | aNumberOfCards timesRepeat: [ each drawCardFrom: aDeck ] ]
 ]
 
 { #category : #accessing }
@@ -77,13 +78,7 @@ Game >> effectInPositionOf: aPlayer [
 
 { #category : #updating }
 Game >> ends [
-	state := FinishedState new.
-]
-
-{ #category : #updating }
-Game >> endsIfBoardLengthHasBeenReachedBy: aPlayer [
-	(playersPosition at: aPlayer) >=( self boardLength * laps)
-		ifTrue: [ self ends ]
+	state := GameOver winner: self ranking first
 ]
 
 { #category : #initialization }
@@ -97,9 +92,19 @@ Game >> hasCard: aCard [
 	^ permanentCardsAssociations includesKey: aCard
 ]
 
+{ #category : #interaction }
+Game >> hasFinished [
+	^ state hasFinished
+]
+
 { #category : #assertion }
 Game >> hasPermanentCards [
 	^(permanentCardsAssociations isNotEmpty)
+]
+
+{ #category : #updating }
+Game >> hasWon: aPlayer [
+	^ (self lapFor: aPlayer) >= laps
 ]
 
 { #category : #initialization }
@@ -112,8 +117,8 @@ Game >> initializePlayedBy: aPlayerCollection throwing: aDice using: aDeck in: a
 	permanentCardsAssociations := Dictionary new.
 	lastEffectPlayer := NoEffect new -> self currentPlayerTurn.
 	lastPlayedCard := BlankCard new.
-	self deal: 2 CardsToPlayersUsing: aDeck.
-	state := RunningState new
+	self deal: 2 toAllPlayersUsing: aDeck.
+	state := GameInCourse new
 ]
 
 { #category : #accessing }
@@ -128,12 +133,7 @@ Game >> laps [
 
 { #category : #interaction }
 Game >> lastEffectAppliedToAPlayer [
-	^ self lastEffectPlayer key 
-]
-
-{ #category : #accessing }
-Game >> lastEffectPlayer [
-	^lastEffectPlayer
+	^ lastEffectPlayer key 
 ]
 
 { #category : #accessing }
@@ -143,7 +143,7 @@ Game >> lastPlayedCard [
 
 { #category : #interaction }
 Game >> lastPlayerAffectedByAnEffect [
-	^ self lastEffectPlayer value
+	^ lastEffectPlayer value
 ]
 
 { #category : #updating }
@@ -161,11 +161,18 @@ Game >> playedBy: aPlayer [
 	| aNumberOfCells |
 	self turnOf: aPlayer.
 	aNumberOfCells := aPlayer throwDice: self dice.
-	self updatePositionBy: aNumberOfCells ofThePlayer: aPlayer.
+	self updatePositionOf: aPlayer by: aNumberOfCells.
 	self updateLastEffectPlayer: aPlayer.
 	self activatePermanentCards.
 	self applyPositionEffectTo: aPlayer.
+	(self hasWon: aPlayer)
+		ifTrue: [ self ends ].
 	self nextPlayerTurn
+]
+
+{ #category : #accessing }
+Game >> playersAffectedByCards [
+	^ permanentCardsAssociations values asOrderedCollection
 ]
 
 { #category : #interaction }
@@ -187,9 +194,7 @@ Game >> positionOfPlayers [
 
 { #category : #interaction }
 Game >> ranking [
-	^(playersPosition associations asSortedCollection: [ :first :second | first value > second value ])
-		collect: [ :assoc | assoc key ]
-		
+	^ self playersPlaying asSortedCollection: [ :player | playersPosition at: player ] descending
 ]
 
 { #category : #updating }
@@ -220,7 +225,12 @@ Game >> updateLastPlayedCard: aCard [
 ]
 
 { #category : #updating }
-Game >> updatePositionBy: aNumberOfCells ofThePlayer: aPlayer [
+Game >> updatePositionOf: aPlayer by: aNumberOfCells [
 	playersPosition at: aPlayer put: (playersPosition at: aPlayer) + aNumberOfCells.
-	self endsIfBoardLengthHasBeenReachedBy: aPlayer
+	
+]
+
+{ #category : #interaction }
+Game >> winner [
+	^ state winner
 ]

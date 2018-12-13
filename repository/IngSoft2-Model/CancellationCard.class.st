@@ -5,16 +5,22 @@ Class {
 }
 
 { #category : #interaction }
-CancellationCard >> activateOn: aGame to: aCard [
+CancellationCard >> affect: aCard in: aGame [
 	aGame removeCard: aCard
 ]
 
+{ #category : #validation }
+CancellationCard >> assertCanBePlayedIn: aGame by: aPlayer [
+	aGame hasFinished
+		ifTrue: [ AssertionFailure new signal: 'Can''t use card when game has finished' ]
+]
+
 { #category : #interaction }
-CancellationCard >> applyOn: aGame to: aCard [
-	self validateParameterIsACard: aCard.
+CancellationCard >> playIn: aGame against: aCard [
+	self validateIsCard: aCard.
 	self validateGameHasCards: aGame.
 	aGame updateLastPlayedCard: self.
-	self activateOn: aGame to: aCard
+	self affect: aCard in: aGame
 ]
 
 { #category : #interaction }
@@ -24,12 +30,7 @@ CancellationCard >> validateGameHasCards: aGame [
 ]
 
 { #category : #validation }
-CancellationCard >> validateParameterIsACard: aCard [
+CancellationCard >> validateIsCard: aCard [
 	^ (aCard isKindOf: Card)
 		ifFalse: [ AssertionFailure new signal: 'Cancellation Card only applies to other cards' ]
-]
-
-{ #category : #validation }
-CancellationCard >> verifyCardIsApplicableBy: aPlayer on: aGame [
-	^ true
 ]

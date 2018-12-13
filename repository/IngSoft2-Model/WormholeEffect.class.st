@@ -8,5 +8,5 @@ Class {
 WormholeEffect >> triggerOn: aGame afterMovementOf: aPlayer [
 	| steps |
 	steps := 4 negated.
-	aGame updatePositionBy: steps ofThePlayer: aPlayer
+	aGame updatePositionOf: aPlayer by: steps
 ]

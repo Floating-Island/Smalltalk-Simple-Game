@@ -5,16 +5,17 @@ Class {
 }
 
 { #category : #interaction }
-BlankCard >> activateOn: aGame to: aPlayerOrCard [
+BlankCard >> affect: aPlayerOrCard in: aGame [
 	
 ]
 
-{ #category : #interaction }
-BlankCard >> applyOn: aGame to: aPlayerOrCard [
-	self activateOn: aGame to: aPlayerOrCard
+{ #category : #validation }
+BlankCard >> assertCanBePlayedIn: aGame by: aPlayer [
+	aGame hasFinished
+		ifTrue: [ AssertionFailure new signal: 'Can''t use card when game has finished' ]
 ]
 
-{ #category : #validation }
-BlankCard >> verifyCardIsApplicableBy: aPlayer on: aGame [
-	^ true
+{ #category : #interaction }
+BlankCard >> playIn: aGame against: aPlayerOrCard [
+	self affect: aPlayerOrCard in: aGame
 ]

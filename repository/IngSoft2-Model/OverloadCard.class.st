@@ -5,25 +5,27 @@ Class {
 }
 
 { #category : #interaction }
-OverloadCard >> activateOn: aGame to: aPlayer [
+OverloadCard >> affect: aPlayer in: aGame [
 	aPlayer = aGame currentPlayerTurn
-		ifTrue: [ aGame updatePositionBy: 2 negated ofThePlayer: aPlayer ]
+		ifTrue: [ aGame updatePositionOf: aPlayer by: 2 negated ]
+]
+
+{ #category : #validation }
+OverloadCard >> assertCanBePlayedIn: aGame by: aPlayer [
+	aGame hasFinished
+		ifTrue: [ AssertionFailure new signal: 'Can''t use card when game has finished' ].
+	aGame turnOf: aPlayer
 ]
 
 { #category : #interaction }
-OverloadCard >> applyOn: aGame to: aPlayer [
-	self validateParameterIsAPlayer: aPlayer.
+OverloadCard >> playIn: aGame against: aPlayer [
+	self validateIsPlayer: aPlayer.
 	aGame updateLastPlayedCard: self.
 	aGame addCard: self asociatedWith: aPlayer
 ]
 
 { #category : #validation }
-OverloadCard >> validateParameterIsAPlayer: aPlayer [
+OverloadCard >> validateIsPlayer: aPlayer [
 	^ (aPlayer isMemberOf: Player)
 		ifFalse: [ AssertionFailure new signal: 'Overload Card only applies to players' ]
-]
-
-{ #category : #validation }
-OverloadCard >> verifyCardIsApplicableBy: aPlayer on: aGame [ 
-	aGame turnOf: aPlayer
 ]

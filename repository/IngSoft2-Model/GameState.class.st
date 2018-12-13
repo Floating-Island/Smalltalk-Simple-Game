@@ -5,6 +5,16 @@ Class {
 }
 
 { #category : #interaction }
+GameState >> hasFinished [
+	self subclassResponsibility
+]
+
+{ #category : #interaction }
 GameState >> playNextTurnIn: aGame playedBy: aPlayer [
+	self subclassResponsibility
+]
+
+{ #category : #interaction }
+GameState >> winner [
 	self subclassResponsibility
 ]

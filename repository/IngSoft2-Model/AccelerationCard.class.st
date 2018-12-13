@@ -5,17 +5,19 @@ Class {
 }
 
 { #category : #interaction }
-AccelerationCard >> activateOn: aGame to: aPlayerCollection [
-	aGame updatePositionBy: 1 ofThePlayer: aGame currentPlayerTurn
-]
-
-{ #category : #interaction }
-AccelerationCard >> applyOn: aGame to: aPlayer [
-	aGame updateLastPlayedCard: self.
-	aGame addCard: self asociatedWith: aGame playersPlaying
+AccelerationCard >> affect: aPlayerCollection in: aGame [
+	aGame updatePositionOf: aGame currentPlayerTurn by: 1
 ]
 
 { #category : #validation }
-AccelerationCard >> verifyCardIsApplicableBy: aPlayer on: aGame [
+AccelerationCard >> assertCanBePlayedIn: aGame by: aPlayer [
+	aGame hasFinished
+		ifTrue: [ AssertionFailure new signal: 'Can''t use card when game has finished' ].
 	aGame turnOf: aPlayer
+]
+
+{ #category : #interaction }
+AccelerationCard >> playIn: aGame against: aPlayer [
+	aGame updateLastPlayedCard: self.
+	aGame addCard: self asociatedWith: aGame playersPlaying
 ]

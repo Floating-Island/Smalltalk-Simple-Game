@@ -2,7 +2,7 @@ Class {
 	#name : #FixedDistributor,
 	#superclass : #Object,
 	#instVars : [
-		'board'
+		'fixedCollection'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -17,7 +17,7 @@ FixedDistributor class >> withProbabilityOfSpeedUp: aSpeedUpProbability wormhole
 FixedDistributor >> boardOfLength: aSize [
 	| collection |
 	collection := OrderedCollection new.
-	aSize timesRepeat: [ collection add: self randomElementFromBoard ].
+	aSize timesRepeat: [ collection add: self randomElementFromFixedCollection ].
 	^ collection
 ]
 
@@ -35,12 +35,12 @@ FixedDistributor >> initializeWithProbabilityOfSpeedUp: aSpeedUpProbability worm
 			aAtomicProbability.
 			aNoEffectProbability.
 			aMoonWalkProbability}.
-	board := OrderedCollection new.
-	board addAll: (self collectionOf: aSpeedUpProbability containingAll: SpeedUpEffect new).
-	board addAll: (self collectionOf: aWormholeProbability containingAll: WormholeEffect new).
-	board addAll: (self collectionOf: aAtomicProbability containingAll: AtomicEffect new).
-	board addAll: (self collectionOf: aNoEffectProbability containingAll: NoEffect new).
-	board addAll: (self moonWalkcollectionOf: aMoonWalkProbability andMaximumSteps: aMaximumMoonwalkSteps)
+	fixedCollection := OrderedCollection new.
+	fixedCollection addAll: (self collectionOf: aSpeedUpProbability containingAll: SpeedUpEffect new).
+	fixedCollection addAll: (self collectionOf: aWormholeProbability containingAll: WormholeEffect new).
+	fixedCollection addAll: (self collectionOf: aAtomicProbability containingAll: AtomicEffect new).
+	fixedCollection addAll: (self collectionOf: aNoEffectProbability containingAll: NoEffect new).
+	fixedCollection addAll: (self moonWalkcollectionOf: aMoonWalkProbability andMaximumSteps: aMaximumMoonwalkSteps)
 ]
 
 { #category : #interaction }
@@ -52,10 +52,8 @@ FixedDistributor >> moonWalkcollectionOf: aSize andMaximumSteps: steps [
 ]
 
 { #category : #interaction }
-FixedDistributor >> randomElementFromBoard [
-	| index |
-	index := board size atRandom.
-	^ board at: index
+FixedDistributor >> randomElementFromFixedCollection [
+	^ fixedCollection atRandom
 ]
 
 { #category : #validation }

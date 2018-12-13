@@ -5,18 +5,20 @@ Class {
 }
 
 { #category : #interaction }
-RedoCard >> activateOn: aGame to: aPlayerOrCard [
+RedoCard >> affect: aPlayerOrCard in: aGame [
 	| card |
 	card := aGame lastPlayedCard deepCopy.
-	card applyOn: aGame to: aPlayerOrCard
-]
-
-{ #category : #interaction }
-RedoCard >> applyOn: aGame to: aPlayerOrCard [
-	self activateOn: aGame to: aPlayerOrCard
+	card playIn: aGame against: aPlayerOrCard
 ]
 
 { #category : #validation }
-RedoCard >> verifyCardIsApplicableBy: aPlayer on: aGame [
-	^ aGame lastPlayedCard verifyCardIsApplicableBy: aPlayer on: aGame
+RedoCard >> assertCanBePlayedIn: aGame by: aPlayer [
+	aGame hasFinished
+		ifTrue: [ AssertionFailure new signal: 'Can''t use card when game has finished' ].
+	aGame lastPlayedCard assertCanBePlayedIn: aGame by: aPlayer
+]
+
+{ #category : #interaction }
+RedoCard >> playIn: aGame against: aPlayerOrCard [
+	self affect: aPlayerOrCard in: aGame
 ]

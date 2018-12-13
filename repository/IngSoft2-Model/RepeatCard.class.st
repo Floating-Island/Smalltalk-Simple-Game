@@ -5,20 +5,21 @@ Class {
 }
 
 { #category : #interaction }
-RepeatCard >> activateOn: aGame to: aPlayerOrCard [
+RepeatCard >> affect: aPlayerOrCard in: aGame [
 	| player effect |
 	effect := aGame lastEffectAppliedToAPlayer.
 	player := aGame lastPlayerAffectedByAnEffect.
 	effect triggerOn: aGame afterMovementOf: player
 ]
 
-{ #category : #interaction }
-RepeatCard >> applyOn: aGame to: aPlayerOrCard [
-	aGame updateLastPlayedCard: self.
-	self activateOn: aGame to: aPlayerOrCard
+{ #category : #validation }
+RepeatCard >> assertCanBePlayedIn: aGame by: aPlayer [
+	aGame hasFinished
+		ifTrue: [ AssertionFailure new signal: 'Can''t use card when game has finished' ]
 ]
 
-{ #category : #validation }
-RepeatCard >> verifyCardIsApplicableBy: aPlayer on: aGame [
-	^ true
+{ #category : #interaction }
+RepeatCard >> playIn: aGame against: aPlayerOrCard [
+	aGame updateLastPlayedCard: self.
+	self affect: aPlayerOrCard in: aGame
 ]
