@@ -5,21 +5,21 @@ Class {
 }
 
 { #category : #interaction }
-CancellationCard >> activateOn: aGame to: aCard [
+CancellationCard >> affect: aCard in: aGame [
 	aGame removeCard: aCard
-]
-
-{ #category : #interaction }
-CancellationCard >> applyOn: aGame to: aCard [
-	self validateParameterIsACard: aCard.
-	self validateGameHasCards: aGame.
-	aGame updateLastPlayedCard: self.
-	self activateOn: aGame to: aCard
 ]
 
 { #category : #validation }
 CancellationCard >> assertCanBePlayedIn: aGame by: aPlayer [
 	^ true
+]
+
+{ #category : #interaction }
+CancellationCard >> playIn: aGame against: aCard [
+	self validateParameterIsACard: aCard.
+	self validateGameHasCards: aGame.
+	aGame updateLastPlayedCard: self.
+	self affect: aCard in: aGame
 ]
 
 { #category : #interaction }

@@ -5,16 +5,16 @@ Class {
 }
 
 { #category : #interaction }
-Card >> activateOn: aGame to: aPlayerCollection [ 
+Card >> affect: aPlayerOrCard in: aGame [ 
  ^self subclassResponsibility 
-]
-
-{ #category : #interaction }
-Card >> applyOn: aGame to: aCollection [ 
-	 ^ self subclassResponsibility 
 ]
 
 { #category : #validation }
 Card >> assertCanBePlayedIn: aGame by: aPlayer [
+	 ^ self subclassResponsibility 
+]
+
+{ #category : #interaction }
+Card >> playIn: aGame against: aPlayerOrCard [ 
 	 ^ self subclassResponsibility 
 ]

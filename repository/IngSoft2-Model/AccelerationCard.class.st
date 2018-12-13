@@ -5,17 +5,17 @@ Class {
 }
 
 { #category : #interaction }
-AccelerationCard >> activateOn: aGame to: aPlayerCollection [
+AccelerationCard >> affect: aPlayerCollection in: aGame [
 	aGame updatePositionBy: 1 ofThePlayer: aGame currentPlayerTurn
-]
-
-{ #category : #interaction }
-AccelerationCard >> applyOn: aGame to: aPlayer [
-	aGame updateLastPlayedCard: self.
-	aGame addCard: self asociatedWith: aGame playersPlaying
 ]
 
 { #category : #validation }
 AccelerationCard >> assertCanBePlayedIn: aGame by: aPlayer [
 	aGame turnOf: aPlayer
+]
+
+{ #category : #interaction }
+AccelerationCard >> playIn: aGame against: aPlayer [
+	aGame updateLastPlayedCard: self.
+	aGame addCard: self asociatedWith: aGame playersPlaying
 ]

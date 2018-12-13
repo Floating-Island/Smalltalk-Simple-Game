@@ -5,16 +5,16 @@ Class {
 }
 
 { #category : #interaction }
-BlankCard >> activateOn: aGame to: aPlayerOrCard [
+BlankCard >> affect: aPlayerOrCard in: aGame [
 	
-]
-
-{ #category : #interaction }
-BlankCard >> applyOn: aGame to: aPlayerOrCard [
-	self activateOn: aGame to: aPlayerOrCard
 ]
 
 { #category : #validation }
 BlankCard >> assertCanBePlayedIn: aGame by: aPlayer [
 	^ true
+]
+
+{ #category : #interaction }
+BlankCard >> playIn: aGame against: aPlayerOrCard [
+	self affect: aPlayerOrCard in: aGame
 ]

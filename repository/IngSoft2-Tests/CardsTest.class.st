@@ -57,7 +57,7 @@ CardsTest >> testAddCardToGame [
 	game := self gameForCardTestsWithPlayer: playerNamedLeo and: playerNamedGlenn.
 	overloadCard := OverloadCard new.
 	self assert: (game hasCard: overloadCard) equals: false.
-	overloadCard applyOn: game to: playerNamedLeo.
+	overloadCard playIn: game against: playerNamedLeo.
 	self assert: (game hasCard: overloadCard) equals: true.
 	self assert: game cards values first equals: playerNamedLeo.
 	self assert: game cards keys first equals: overloadCard
@@ -71,7 +71,7 @@ CardsTest >> testApplyAccelerationAddsOneToEveryRoll [
 	game := self gameForCardTestsWithPlayer: playerNamedLeo and: playerNamedGlenn.
 	accelerationCard := AccelerationCard new.
 	self assert: (game hasCard: accelerationCard) equals: false.
-	accelerationCard applyOn: game to: playerNamedLeo.
+	accelerationCard playIn: game against: playerNamedLeo.
 	self assert: (game hasCard: accelerationCard) equals: true.
 	self assert: (game positionFor: playerNamedLeo) equals: 1.
 	playerNamedLeo takesATurnIn: game.
@@ -89,10 +89,10 @@ CardsTest >> testApplyCancellationRemoveChosenCard [
 	game := self gameForCardTestsWithPlayer: playerNamedLeo and: playerNamedGlenn.
 	overloadCard := OverloadCard new.
 	self assert: (game hasCard: overloadCard) equals: false.
-	overloadCard applyOn: game to: playerNamedLeo.
+	overloadCard playIn: game against: playerNamedLeo.
 	self assert: (game hasCard: overloadCard) equals: true.
 	cancellationCard := CancellationCard new.
-	cancellationCard applyOn: game to: overloadCard.
+	cancellationCard playIn: game against: overloadCard.
 	self assert: (game hasCard: overloadCard) equals: false
 ]
 
@@ -104,7 +104,7 @@ CardsTest >> testApplyOverloadCardWithCardRaisesException [
 	game := self gameForCardTestsWithPlayer: playerNamedLeo and: playerNamedGlenn.
 	overloadCard := OverloadCard new.
 	self
-		should: [ overloadCard applyOn: game to: overloadCard ]
+		should: [ overloadCard playIn: game against: overloadCard ]
 		raise: AssertionFailure
 		withExceptionDo: [ :signal | self assert: signal messageText equals: 'Overload Card only applies to players' ]
 ]
@@ -117,10 +117,10 @@ CardsTest >> testApplyOverloadSubstractsTwoToManyPlayersRoll [
 	game := self gameForCardTestsWithPlayer: playerNamedLeo and: playerNamedGlenn.
 	overloadCard := OverloadCard new.
 	self assert: (game hasCard: overloadCard) equals: false.
-	overloadCard applyOn: game to: playerNamedLeo.
+	overloadCard playIn: game against: playerNamedLeo.
 	overloadCardCopy := overloadCard deepCopy.
 	self assert: (game hasCard: overloadCardCopy) equals: false.
-	overloadCardCopy applyOn: game to: playerNamedGlenn.
+	overloadCardCopy playIn: game against: playerNamedGlenn.
 	self assert: (game hasCard: overloadCard) equals: true.
 	self assert: (game positionFor: playerNamedLeo) equals: 1.
 	playerNamedLeo takesATurnIn: game.
@@ -138,7 +138,7 @@ CardsTest >> testApplyOverloadSubstractsTwoToPlayerRoll [
 	game := self gameForCardTestsWithPlayer: playerNamedLeo and: playerNamedGlenn.
 	overloadCard := OverloadCard new.
 	self assert: (game hasCard: overloadCard) equals: false.
-	overloadCard applyOn: game to: playerNamedLeo.
+	overloadCard playIn: game against: playerNamedLeo.
 	self assert: (game hasCard: overloadCard) equals: true.
 	playerNamedLeo takesATurnIn: game.
 	self assert: (game positionFor: playerNamedLeo) equals: 3
@@ -151,9 +151,9 @@ CardsTest >> testApplyRedoReapplyOverloadCard [
 	playerNamedGlenn := Player named: 'Glenn'.
 	game := self gameForCardTestsWithPlayer: playerNamedLeo and: playerNamedGlenn.
 	overloadCard := OverloadCard new.
-	overloadCard applyOn: game to: playerNamedLeo.
+	overloadCard playIn: game against: playerNamedLeo.
 	redoCard := RedoCard new.
-	redoCard applyOn: game to: playerNamedLeo.
+	redoCard playIn: game against: playerNamedLeo.
 	self assert: (game positionFor: playerNamedLeo) equals: 1.
 	playerNamedLeo takesATurnIn: game.
 	self assert: (game positionFor: playerNamedLeo) equals: 1
@@ -169,7 +169,7 @@ CardsTest >> testApplyRepeatRepeatsSpeedUpEffect [
 	self assert: (game positionFor: playerNamedLeo) equals: 1.
 	playerNamedLeo takesATurnIn: game.
 	self assert: (game positionFor: playerNamedLeo) equals: 9.
-	repeatCard applyOn: game to: playerNamedLeo.
+	repeatCard playIn: game against: playerNamedLeo.
 	self assert: (game positionFor: playerNamedLeo) equals: 3
 ]
 
@@ -180,7 +180,7 @@ CardsTest >> testApplySpeedAddsOneToPlayerRoll [
 	playerNamedGlenn := Player named: 'Glenn'.
 	game := self gameForCardTestsWithPlayer: playerNamedLeo and: playerNamedGlenn.
 	speedCard := SpeedCard new.
-	speedCard applyOn: game to: playerNamedLeo.
+	speedCard playIn: game against: playerNamedLeo.
 	self assert: (game hasCard: speedCard) equals: true.
 	self assert: (game positionFor: playerNamedLeo) equals: 1.
 	playerNamedLeo takesATurnIn: game.
@@ -195,7 +195,7 @@ CardsTest >> testApplySpeedCardWithCardRaisesException [
 	game := self gameForCardTestsWithPlayer: playerNamedLeo and: playerNamedGlenn.
 	speedCard := SpeedCard new.
 	self
-		should: [ speedCard applyOn: game to: speedCard ]
+		should: [ speedCard playIn: game against: speedCard ]
 		raise: AssertionFailure
 		withExceptionDo: [ :signal | self assert: signal messageText equals: 'Speed Card only applies to players' ]
 ]
@@ -208,7 +208,7 @@ CardsTest >> testApplyWithPlayerRaisesException [
 	game := self gameForCardTestsWithPlayer: playerNamedLeo and: playerNamedGlenn.
 	cancellationCard := CancellationCard new.
 	self
-		should: [ cancellationCard applyOn: game to: playerNamedLeo ]
+		should: [ cancellationCard playIn: game against: playerNamedLeo ]
 		raise: AssertionFailure
 		withExceptionDo: [ :signal | self assert: signal messageText equals: 'Cancellation Card only applies to other cards' ]
 ]
@@ -221,7 +221,7 @@ CardsTest >> testRaiseExceptionIfGameHasNoCards [
 	game := self gameForCardTestsWithPlayer: playerNamedLeo and: playerNamedGlenn.
 	cancellationCard := CancellationCard new.
 	self
-		should: [ cancellationCard applyOn: game to: cancellationCard ]
+		should: [ cancellationCard playIn: game against: cancellationCard ]
 		raise: AssertionFailure
 		withExceptionDo: [ :signal | self assert: signal messageText equals: 'There are no permanent cards in the game' ]
 ]

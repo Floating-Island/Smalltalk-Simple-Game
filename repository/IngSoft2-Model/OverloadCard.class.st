@@ -5,21 +5,21 @@ Class {
 }
 
 { #category : #interaction }
-OverloadCard >> activateOn: aGame to: aPlayer [
+OverloadCard >> affect: aPlayer in: aGame [
 	aPlayer = aGame currentPlayerTurn
 		ifTrue: [ aGame updatePositionBy: 2 negated ofThePlayer: aPlayer ]
-]
-
-{ #category : #interaction }
-OverloadCard >> applyOn: aGame to: aPlayer [
-	self validateParameterIsAPlayer: aPlayer.
-	aGame updateLastPlayedCard: self.
-	aGame addCard: self asociatedWith: aPlayer
 ]
 
 { #category : #validation }
 OverloadCard >> assertCanBePlayedIn: aGame by: aPlayer [ 
 	aGame turnOf: aPlayer
+]
+
+{ #category : #interaction }
+OverloadCard >> playIn: aGame against: aPlayer [
+	self validateParameterIsAPlayer: aPlayer.
+	aGame updateLastPlayedCard: self.
+	aGame addCard: self asociatedWith: aPlayer
 ]
 
 { #category : #validation }

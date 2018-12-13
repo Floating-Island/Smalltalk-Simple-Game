@@ -27,7 +27,8 @@ Game class >> playedBy: aPlayerCollection throwing: aDice using: aDeck in: aBoar
 
 { #category : #interaction }
 Game >> activatePermanentCards [
-	permanentCardsAssociations associationsDo: [ :each | each key activateOn: self to: each value ]
+	permanentCardsAssociations
+		associationsDo: [ :each | each key affect: each value in: self ]
 ]
 
 { #category : #updating }
