@@ -16,7 +16,7 @@ CancellationCard >> assertCanBePlayedIn: aGame by: aPlayer [
 
 { #category : #interaction }
 CancellationCard >> playIn: aGame against: aCard [
-	self validateParameterIsACard: aCard.
+	self validateIsCard: aCard.
 	self validateGameHasCards: aGame.
 	aGame updateLastPlayedCard: self.
 	self affect: aCard in: aGame
@@ -29,7 +29,7 @@ CancellationCard >> validateGameHasCards: aGame [
 ]
 
 { #category : #validation }
-CancellationCard >> validateParameterIsACard: aCard [
+CancellationCard >> validateIsCard: aCard [
 	^ (aCard isKindOf: Card)
 		ifFalse: [ AssertionFailure new signal: 'Cancellation Card only applies to other cards' ]
 ]

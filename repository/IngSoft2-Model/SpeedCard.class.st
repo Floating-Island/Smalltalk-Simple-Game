@@ -17,13 +17,13 @@ SpeedCard >> assertCanBePlayedIn: aGame by: aPlayer [
 
 { #category : #interaction }
 SpeedCard >> playIn: aGame against: aPlayer [
-	self validateParameterIsAPlayer: aPlayer.
+	self validateIsPlayer: aPlayer.
 	aGame updateLastPlayedCard: self.
 	aGame addCard: self asociatedWith: aPlayer
 ]
 
 { #category : #validation }
-SpeedCard >> validateParameterIsAPlayer: aPlayer [
+SpeedCard >> validateIsPlayer: aPlayer [
 	^ (aPlayer isMemberOf: Player)
 		ifFalse: [ AssertionFailure new signal: 'Speed Card only applies to players' ]
 ]

@@ -17,13 +17,13 @@ OverloadCard >> assertCanBePlayedIn: aGame by: aPlayer [
 
 { #category : #interaction }
 OverloadCard >> playIn: aGame against: aPlayer [
-	self validateParameterIsAPlayer: aPlayer.
+	self validateIsPlayer: aPlayer.
 	aGame updateLastPlayedCard: self.
 	aGame addCard: self asociatedWith: aPlayer
 ]
 
 { #category : #validation }
-OverloadCard >> validateParameterIsAPlayer: aPlayer [
+OverloadCard >> validateIsPlayer: aPlayer [
 	^ (aPlayer isMemberOf: Player)
 		ifFalse: [ AssertionFailure new signal: 'Overload Card only applies to players' ]
 ]
