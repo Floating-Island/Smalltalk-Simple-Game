@@ -53,7 +53,7 @@ Game >> boardLength [
 
 { #category : #accessing }
 Game >> cards [
-	^ permanentCardsAssociations
+	^ permanentCardsAssociations keys asOrderedCollection
 ]
 
 { #category : #accessing }
@@ -167,6 +167,11 @@ Game >> playedBy: aPlayer [
 	self activatePermanentCards.
 	self applyPositionEffectTo: aPlayer.
 	self nextPlayerTurn
+]
+
+{ #category : #accessing }
+Game >> playersAffectedByCards [
+	^ permanentCardsAssociations values asOrderedCollection
 ]
 
 { #category : #interaction }

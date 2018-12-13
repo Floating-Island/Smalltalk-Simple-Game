@@ -59,8 +59,8 @@ CardsTest >> testAddCardToGame [
 	self assert: (game hasCard: overloadCard) equals: false.
 	overloadCard playIn: game against: playerNamedLeo.
 	self assert: (game hasCard: overloadCard) equals: true.
-	self assert: game cards values first equals: playerNamedLeo.
-	self assert: game cards keys first equals: overloadCard
+	self assert: game playersAffectedByCards first equals: playerNamedLeo.
+	self assert: game cards first equals: overloadCard
 ]
 
 { #category : #acceleration }
