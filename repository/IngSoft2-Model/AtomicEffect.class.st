@@ -6,6 +6,7 @@ Class {
 
 { #category : #accessing }
 AtomicEffect >> triggerOn: aGame afterMovementOf: aPlayer [
-	aGame playersPlaying do:
-			[ :each | aGame updatePositionBy: ((aGame positionFor: each) negated + 1) ofThePlayer: each]
+	aGame playersPlaying
+		do:
+			[ :each | aGame updatePositionOf: each by: (aGame positionFor: each) negated + 1 ]
 ]

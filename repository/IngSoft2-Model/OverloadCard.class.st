@@ -7,7 +7,7 @@ Class {
 { #category : #interaction }
 OverloadCard >> affect: aPlayer in: aGame [
 	aPlayer = aGame currentPlayerTurn
-		ifTrue: [ aGame updatePositionBy: 2 negated ofThePlayer: aPlayer ]
+		ifTrue: [ aGame updatePositionOf: aPlayer by: 2 negated ]
 ]
 
 { #category : #validation }

@@ -6,7 +6,7 @@ Class {
 
 { #category : #interaction }
 AccelerationCard >> affect: aPlayerCollection in: aGame [
-	aGame updatePositionBy: 1 ofThePlayer: aGame currentPlayerTurn
+	aGame updatePositionOf: aGame currentPlayerTurn by: 1
 ]
 
 { #category : #validation }

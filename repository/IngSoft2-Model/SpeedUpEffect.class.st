@@ -8,5 +8,5 @@ Class {
 SpeedUpEffect >> triggerOn: aGame afterMovementOf: aPlayer [
 	| steps |
 	steps := 4.
-	aGame updatePositionBy: steps ofThePlayer: aPlayer
+	aGame updatePositionOf: aPlayer by: steps
 ]

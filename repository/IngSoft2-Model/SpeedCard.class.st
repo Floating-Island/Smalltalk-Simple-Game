@@ -7,7 +7,7 @@ Class {
 { #category : #interaction }
 SpeedCard >> affect: aPlayer in: aGame [
 	aPlayer = aGame currentPlayerTurn
-		ifTrue: [ aGame updatePositionBy: 1 ofThePlayer: aPlayer ]
+		ifTrue: [ aGame updatePositionOf: aPlayer by: 1 ]
 ]
 
 { #category : #validation }

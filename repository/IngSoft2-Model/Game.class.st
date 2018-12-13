@@ -156,7 +156,7 @@ Game >> playedBy: aPlayer [
 	| aNumberOfCells |
 	self turnOf: aPlayer.
 	aNumberOfCells := aPlayer throwDice: self dice.
-	self updatePositionBy: aNumberOfCells ofThePlayer: aPlayer.
+	self updatePositionOf: aPlayer by: aNumberOfCells.
 	self updateLastEffectPlayer: aPlayer.
 	self activatePermanentCards.
 	self applyPositionEffectTo: aPlayer.
@@ -218,7 +218,7 @@ Game >> updateLastPlayedCard: aCard [
 ]
 
 { #category : #updating }
-Game >> updatePositionBy: aNumberOfCells ofThePlayer: aPlayer [
+Game >> updatePositionOf: aPlayer by: aNumberOfCells [
 	playersPosition at: aPlayer put: (playersPosition at: aPlayer) + aNumberOfCells.
 	self validateFinalLapHasBeenReachedBy: aPlayer
 ]
