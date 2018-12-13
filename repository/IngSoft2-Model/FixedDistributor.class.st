@@ -17,7 +17,7 @@ FixedDistributor class >> withProbabilityOfSpeedUp: aSpeedUpProbability wormhole
 FixedDistributor >> boardOfLength: aSize [
 	| collection |
 	collection := OrderedCollection new.
-	aSize timesRepeat: [ collection add: self randomElementFromBoard ].
+	aSize timesRepeat: [ collection add: self randomElementFromFixedCollection ].
 	^ collection
 ]
 
@@ -52,7 +52,7 @@ FixedDistributor >> moonWalkcollectionOf: aSize andMaximumSteps: steps [
 ]
 
 { #category : #interaction }
-FixedDistributor >> randomElementFromBoard [
+FixedDistributor >> randomElementFromFixedCollection [
 	| index |
 	index := fixedCollection size atRandom.
 	^ fixedCollection at: index
