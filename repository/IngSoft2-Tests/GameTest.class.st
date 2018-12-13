@@ -394,6 +394,40 @@ GameTest >> gameWithPlayer: aPlayer and: anotherPlayer usingEffect: effect [
 	^ game
 ]
 
+{ #category : #'test return' }
+GameTest >> testCheckGameHasFinishedWhenRunningAndFinished [
+	| game playerNamedLeo playerNamedAlbert playerNamedGlenn |
+	playerNamedLeo := Player named: 'Leo'.
+	playerNamedAlbert := Player named: 'Albert'.
+	playerNamedGlenn := Player named: 'Glenn'.
+	game := self gameForResultsAnotherIteratorWithPlayer: playerNamedLeo and: playerNamedGlenn and: playerNamedAlbert.
+	self assert: game hasFinished equals: false.
+	"1st round start:"
+	playerNamedLeo takesATurnIn: game.
+	playerNamedAlbert takesATurnIn: game.
+	playerNamedGlenn takesATurnIn: game.
+	"1st round end."
+	self assert: game hasFinished equals: false.
+	self assert: (game positionFor: playerNamedLeo) equals: 4.
+	self assert: (game positionFor: playerNamedAlbert) equals: 7.
+	self assert: (game positionFor: playerNamedGlenn) equals: 10.
+	self
+		assert: game ranking
+		hasTheSameOrderThan:
+			{playerNamedGlenn.
+			playerNamedAlbert.
+			playerNamedLeo}.
+	"2nd round start:"
+	self assert: game hasFinished equals: false.
+	playerNamedLeo takesATurnIn: game.
+	self assert: game hasFinished equals: true.
+	"2nd round end."
+	"results:"
+	self assert: (game positionFor: playerNamedLeo) equals: 16.
+	self assert: (game positionFor: playerNamedAlbert) equals: 7.
+	self assert: (game positionFor: playerNamedGlenn) equals: 10
+]
+
 { #category : #'create tests' }
 GameTest >> testCreateGame [
 	| game playerNamedLeo playerNamedGlenn die board collection deck |

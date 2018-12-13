@@ -92,6 +92,11 @@ Game >> hasCard: aCard [
 	^ permanentCardsAssociations includesKey: aCard
 ]
 
+{ #category : #interaction }
+Game >> hasFinished [
+	^ state hasFinished
+]
+
 { #category : #assertion }
 Game >> hasPermanentCards [
 	^(permanentCardsAssociations isNotEmpty)
