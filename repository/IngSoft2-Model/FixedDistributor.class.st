@@ -53,9 +53,7 @@ FixedDistributor >> moonWalkcollectionOf: aSize andMaximumSteps: steps [
 
 { #category : #interaction }
 FixedDistributor >> randomElementFromFixedCollection [
-	| index |
-	index := fixedCollection size atRandom.
-	^ fixedCollection at: index
+	^ fixedCollection atRandom
 ]
 
 { #category : #validation }
