@@ -1,13 +1,6 @@
 Class {
 	#name : #GameTest,
 	#superclass : #TestCase,
-	#instVars : [
-		'noEffect',
-		'speedUpEffect',
-		'wormHoleEffect',
-		'moonWalkEffect',
-		'atomicEffect'
-	],
 	#category : #'IngSoft2-Tests'
 }
 
@@ -277,25 +270,38 @@ GameTest >> gameUsingAnotherAtomicEffectWithPlayer: aPlayer and: anotherPlayer [
 ]
 
 { #category : #'cards tests' }
-GameTest >> gameUsingCardsWithFirstPlayer: aPlayer andSecondPlayer: anotherPlayer WithDeck: aDeck [
-	| collection board die game |
-	collection := {1 . 2 . 3 . 4 . 5 . 20}.
-	die := Die
-		withSides: 4
-		andGenerator: (CircularIterator over: collection).
+GameTest >> gameUsingCardsWithFirstPlayer: aPlayer andSecondPlayer: anotherPlayer [
+	| die game collection board deck |
+	collection := {4 . 2 . 3 . 4 . 5}.
+	deck := CircularIterator over: {OverloadCard new}.
+	die := Die withSides: 4 andGenerator: (CircularIterator over: collection).
 	board := UtilitiesForTests collectionOf20NoEffect.
-	self assert: aPlayer quantityOfCardsInHand equals: 0.
-	self assert: anotherPlayer quantityOfCardsInHand equals: 0.
 	game := Game
 		playedBy:
 			{aPlayer.
 			anotherPlayer}
-		throwing:
-			{die}
+		throwing: {die}
+		using: deck
+		in: board
+		andAmountOfLaps: 1.
+	^ game
+]
+
+{ #category : #'cards tests' }
+GameTest >> gameUsingCardsWithFirstPlayer: aPlayer andSecondPlayer: anotherPlayer WithDeck: aDeck [
+	| collection board die game |
+	collection := {1 . 2 . 3 . 4 . 5 . 20}.
+	die := Die withSides: 4 andGenerator: (CircularIterator over: collection).
+	board := UtilitiesForTests collectionOf20NoEffect.
+	game := Game
+		playedBy:
+			{aPlayer.
+			anotherPlayer}
+		throwing: {die}
 		using: aDeck
 		in: board
 		andAmountOfLaps: 1.
-		^game
+	^ game
 ]
 
 { #category : #'cards tests' }
@@ -386,6 +392,33 @@ GameTest >> gameWithPlayer: aPlayer and: anotherPlayer usingEffect: effect [
 		in: board
 		andAmountOfLaps: lapsAmount.
 	^ game
+]
+
+{ #category : #'cards tests' }
+GameTest >> testAbleToUseCancellationCardInOtherPlayersTurn [
+	| overloadCard cancellationCard game playerNamedLeo playerNamedGlenn |
+	playerNamedLeo := Player named: 'Leo'.
+	playerNamedGlenn := Player named: 'Glenn'.
+	game := self gameUsingCardsWithFirstPlayer: playerNamedLeo andSecondPlayer: playerNamedGlenn.
+	cancellationCard := CancellationCard new.
+	overloadCard := OverloadCard new.
+	playerNamedLeo addCard: overloadCard.
+	playerNamedLeo uses: overloadCard in: game against: playerNamedGlenn.
+	playerNamedGlenn addCard: cancellationCard.
+	playerNamedGlenn uses: cancellationCard in: game against: overloadCard.
+	self assert: (playerNamedGlenn hasCard: cancellationCard) equals: false
+]
+
+{ #category : #'cards tests' }
+GameTest >> testAbleToUseRepeatCardInOtherPlayersTurn [
+	| repeatCard game playerNamedLeo playerNamedGlenn |
+	playerNamedLeo := Player named: 'Leo'.
+	playerNamedGlenn := Player named: 'Glenn'.
+	game := self gameUsingCardsWithFirstPlayer: playerNamedLeo andSecondPlayer: playerNamedGlenn.
+	repeatCard := RepeatCard new.
+	playerNamedGlenn addCard: repeatCard.
+	playerNamedGlenn uses: repeatCard in: game against: playerNamedGlenn.
+	self assert: (playerNamedGlenn hasCard: repeatCard) equals: false
 ]
 
 { #category : #'create tests' }
@@ -862,6 +895,20 @@ GameTest >> testSimulateTurnWithWrongOrderOfPlayersRaisesException [
 ]
 
 { #category : #'cards tests' }
+GameTest >> testUsingAccelerationCardRaisesExceptionWhenNotInPlayerTurn [
+	| accelerationCard game playerNamedLeo playerNamedGlenn |
+	playerNamedLeo := Player named: 'Leo'.
+	playerNamedGlenn := Player named: 'Glenn'.
+	game := self gameUsingCardsWithFirstPlayer: playerNamedLeo andSecondPlayer: playerNamedGlenn.
+	accelerationCard := AccelerationCard new.
+	playerNamedGlenn addCard: accelerationCard.
+	self
+		should: [ playerNamedGlenn uses: accelerationCard in: game against: playerNamedGlenn ]
+		raise: AssertionFailure
+		withExceptionDo: [ :signal | self assert: signal messageText equals: 'This isn''t the turn of Glenn' ]
+]
+
+{ #category : #'cards tests' }
 GameTest >> testUsingCardsGivesTwoCardsAtStartToEachPlayer [
 	| playerNamedLeo playerNamedGlenn game |
 	playerNamedLeo := Player named: 'Leo'.
@@ -871,6 +918,51 @@ GameTest >> testUsingCardsGivesTwoCardsAtStartToEachPlayer [
 		andSecondPlayer: playerNamedGlenn.
 	self assert: playerNamedLeo quantityOfCardsInHand equals: 2.
 	self assert: playerNamedGlenn quantityOfCardsInHand equals: 2
+]
+
+{ #category : #'cards tests' }
+GameTest >> testUsingOverloadCardRaisesExceptionWhenNotInPlayerTurn [
+	| overloadCard game playerNamedLeo playerNamedGlenn |
+	playerNamedLeo := Player named: 'Leo'.
+	playerNamedGlenn := Player named: 'Glenn'.
+	game := self gameUsingCardsWithFirstPlayer: playerNamedLeo andSecondPlayer: playerNamedGlenn.
+	overloadCard := OverloadCard new.
+	playerNamedGlenn addCard: overloadCard.
+	self
+		should: [ playerNamedGlenn uses: overloadCard in: game against: playerNamedGlenn ]
+		raise: AssertionFailure
+		withExceptionDo: [ :signal | self assert: signal messageText equals: 'This isn''t the turn of Glenn' ]
+]
+
+{ #category : #'cards tests' }
+GameTest >> testUsingRedoCardRaisesExceptionWhenNotInPlayerTurn [
+	| redoCard overloadCard game playerNamedLeo playerNamedGlenn |
+	playerNamedLeo := Player named: 'Leo'.
+	playerNamedGlenn := Player named: 'Glenn'.
+	game := self gameUsingCardsWithFirstPlayer: playerNamedLeo andSecondPlayer: playerNamedGlenn.
+	overloadCard := OverloadCard new.
+	redoCard := RedoCard new.
+	playerNamedLeo addCard: overloadCard.
+	playerNamedGlenn addCard: redoCard.
+	playerNamedLeo uses: overloadCard in: game against: playerNamedGlenn.
+	self
+		should: [ playerNamedGlenn uses: redoCard in: game against: playerNamedGlenn ]
+		raise: AssertionFailure
+		withExceptionDo: [ :signal | self assert: signal messageText equals: 'This isn''t the turn of Glenn' ]
+]
+
+{ #category : #'cards tests' }
+GameTest >> testUsingSpeedCardRaisesExceptionWhenNotInPlayerTurn [
+	| speedCard game playerNamedLeo playerNamedGlenn |
+	playerNamedLeo := Player named: 'Leo'.
+	playerNamedGlenn := Player named: 'Glenn'.
+	game := self gameUsingCardsWithFirstPlayer: playerNamedLeo andSecondPlayer: playerNamedGlenn.
+	speedCard := SpeedCard new.
+	playerNamedGlenn addCard: speedCard.
+	self
+		should: [ playerNamedGlenn uses: speedCard in: game against: playerNamedGlenn ]
+		raise: AssertionFailure
+		withExceptionDo: [ :signal | self assert: signal messageText equals: 'This isn''t the turn of Glenn' ]
 ]
 
 { #category : #'cards tests' }
