@@ -13,7 +13,7 @@ Class {
 
 { #category : #'test utilities' }
 GameTest >> assert: a hasTheSameOrderThan: b [
-	self assert: a equals: b asOrderedCollection
+	self assert: a asOrderedCollection equals: b asOrderedCollection
 ]
 
 { #category : #'test utilities' }
@@ -888,10 +888,7 @@ GameTest >> testWithCardAndGiveRanking [
 			speed.
 			acceleration.
 			cancellation}.
-	game := self
-		gameUsingCardsWithFirstPlayer: playerNamedLeo
-		andSecondPlayer: playerNamedGlenn
-		WithDeck: deck.
+	game := self gameUsingCardsWithFirstPlayer: playerNamedLeo andSecondPlayer: playerNamedGlenn WithDeck: deck.
 	self assert: playerNamedLeo quantityOfCardsInHand equals: 2.
 	self assert: playerNamedGlenn quantityOfCardsInHand equals: 2.
 	"First round"
@@ -917,5 +914,9 @@ GameTest >> testWithCardAndGiveRanking [
 	self assert: (game positionFor: playerNamedLeo) equals: 14.
 	playerNamedGlenn takesATurnIn: game.
 	self assert: (game positionFor: playerNamedGlenn) equals: 8.
-	self assert: (game ranking ) equals: { playerNamedGlenn . playerNamedLeo} asOrderedCollection 
+	self
+		assert: game ranking
+		hasTheSameOrderThan:
+			{playerNamedGlenn.
+			playerNamedLeo}
 ]
