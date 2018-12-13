@@ -81,12 +81,6 @@ Game >> ends [
 	state := FinishedState new.
 ]
 
-{ #category : #updating }
-Game >> endsIfBoardLengthHasBeenReachedBy: aPlayer [
-	(self lapFor: aPlayer) >=( laps)
-		ifTrue: [ self ends ]
-]
-
 { #category : #initialization }
 Game >> fillPlayersPositionUsing: aPlayerCollection [
 	playersPosition := Dictionary new.
@@ -228,5 +222,11 @@ Game >> updateLastPlayedCard: aCard [
 { #category : #updating }
 Game >> updatePositionBy: aNumberOfCells ofThePlayer: aPlayer [
 	playersPosition at: aPlayer put: (playersPosition at: aPlayer) + aNumberOfCells.
-	self endsIfBoardLengthHasBeenReachedBy: aPlayer
+	self validateFinalLapHasBeenReachedBy: aPlayer
+]
+
+{ #category : #updating }
+Game >> validateFinalLapHasBeenReachedBy: aPlayer [
+	(self lapFor: aPlayer) >=( laps)
+		ifTrue: [ self ends ]
 ]
