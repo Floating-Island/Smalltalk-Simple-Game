@@ -11,6 +11,8 @@ AccelerationCard >> affect: aPlayerCollection in: aGame [
 
 { #category : #validation }
 AccelerationCard >> assertCanBePlayedIn: aGame by: aPlayer [
+	aGame hasFinished
+		ifTrue: [ AssertionFailure new signal: 'Can''t use card when game has finished' ].
 	aGame turnOf: aPlayer
 ]
 

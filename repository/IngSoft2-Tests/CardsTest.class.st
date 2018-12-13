@@ -49,6 +49,24 @@ CardsTest >> gameForRepeatTestWithPlayer: playerNamedLeo and: playerNamedGlenn [
 	^ game
 ]
 
+{ #category : #cancellation }
+CardsTest >> shortGameWithFirstPlayer: aPlayer andSecondPlayer: anotherPlayer [
+	| die game collection board deck |
+	collection := {22}.
+	deck := CircularIterator over: {OverloadCard new}.
+	die := Die withSides: 4 andGenerator: (CircularIterator over: collection).
+	board := UtilitiesForTests collectionOf20NoEffect.
+	game := Game
+		playedBy:
+			{aPlayer.
+			anotherPlayer}
+		throwing: {die}
+		using: deck
+		in: board
+		andAmountOfLaps: 1.
+	^ game
+]
+
 { #category : #overload }
 CardsTest >> testAddCardToGameMakesGameToStoreIt [
 	| overloadCard game playerNamedLeo playerNamedGlenn |
@@ -224,4 +242,116 @@ CardsTest >> testRaiseExceptionIfGameHasNoCards [
 		should: [ cancellationCard playIn: game against: cancellationCard ]
 		raise: AssertionFailure
 		withExceptionDo: [ :signal | self assert: signal messageText equals: 'There are no permanent cards in the game' ]
+]
+
+{ #category : #acceleration }
+CardsTest >> testUsingAccelerationCardAfterTheGameHasFinishedRaisesException [
+	| playerNamedLeo playerNamedGlenn game acceleration |
+	playerNamedLeo := Player named: 'Leo'.
+	playerNamedGlenn := Player named: 'Glenn'.
+	acceleration := AccelerationCard new.
+	game := self shortGameWithFirstPlayer: playerNamedLeo andSecondPlayer: playerNamedGlenn.
+	playerNamedLeo takesATurnIn: game.
+	self assert: game hasFinished equals: true.
+	playerNamedGlenn addCard: acceleration.
+	self
+		should: [ playerNamedGlenn uses: acceleration in: game against: playerNamedGlenn ]
+		raise: AssertionFailure
+		withExceptionDo: [ :signal | self assert: signal messageText equals: 'Can''t use card when game has finished' ]
+]
+
+{ #category : #blank }
+CardsTest >> testUsingBlankCardAfterTheGameHasFinishedRaisesException [
+	| playerNamedLeo playerNamedGlenn game blank |
+	playerNamedLeo := Player named: 'Leo'.
+	playerNamedGlenn := Player named: 'Glenn'.
+	blank := BlankCard new.
+	game := self shortGameWithFirstPlayer: playerNamedLeo andSecondPlayer: playerNamedGlenn.
+	playerNamedLeo takesATurnIn: game.
+	self assert: game hasFinished equals: true.
+	playerNamedGlenn addCard: blank.
+	self
+		should: [ playerNamedGlenn uses: blank in: game against: playerNamedGlenn ]
+		raise: AssertionFailure
+		withExceptionDo: [ :signal | self assert: signal messageText equals: 'Can''t use card when game has finished' ]
+]
+
+{ #category : #cancellation }
+CardsTest >> testUsingCancellationCardAfterTheGameHasFinishedRaisesException [
+	| playerNamedLeo playerNamedGlenn game cancellation |
+	playerNamedLeo := Player named: 'Leo'.
+	playerNamedGlenn := Player named: 'Glenn'.
+	cancellation := CancellationCard new.
+	game := self shortGameWithFirstPlayer: playerNamedLeo andSecondPlayer: playerNamedGlenn.
+	playerNamedLeo takesATurnIn: game.
+	self assert: game hasFinished equals: true.
+	playerNamedGlenn addCard: cancellation.
+	self
+		should: [ playerNamedGlenn uses: cancellation in: game against: playerNamedGlenn ]
+		raise: AssertionFailure
+		withExceptionDo: [ :signal | self assert: signal messageText equals: 'Can''t use card when game has finished' ]
+]
+
+{ #category : #overload }
+CardsTest >> testUsingOverloadCardAfterTheGameHasFinishedRaisesException [
+	| playerNamedLeo playerNamedGlenn game overload |
+	playerNamedLeo := Player named: 'Leo'.
+	playerNamedGlenn := Player named: 'Glenn'.
+	overload := OverloadCard new.
+	game := self shortGameWithFirstPlayer: playerNamedLeo andSecondPlayer: playerNamedGlenn.
+	playerNamedLeo takesATurnIn: game.
+	self assert: game hasFinished equals: true.
+	playerNamedGlenn addCard: overload.
+	self
+		should: [ playerNamedGlenn uses: overload in: game against: playerNamedGlenn ]
+		raise: AssertionFailure
+		withExceptionDo: [ :signal | self assert: signal messageText equals: 'Can''t use card when game has finished' ]
+]
+
+{ #category : #redo }
+CardsTest >> testUsingRedoCardAfterTheGameHasFinishedRaisesException [
+	| playerNamedLeo playerNamedGlenn game redo |
+	playerNamedLeo := Player named: 'Leo'.
+	playerNamedGlenn := Player named: 'Glenn'.
+	redo := RedoCard new.
+	game := self shortGameWithFirstPlayer: playerNamedLeo andSecondPlayer: playerNamedGlenn.
+	playerNamedLeo takesATurnIn: game.
+	self assert: game hasFinished equals: true.
+	playerNamedGlenn addCard: redo.
+	self
+		should: [ playerNamedGlenn uses: redo in: game against: playerNamedGlenn ]
+		raise: AssertionFailure
+		withExceptionDo: [ :signal | self assert: signal messageText equals: 'Can''t use card when game has finished' ]
+]
+
+{ #category : #repeat }
+CardsTest >> testUsingRepeatCardAfterTheGameHasFinishedRaisesException [
+	| playerNamedLeo playerNamedGlenn game repeat |
+	playerNamedLeo := Player named: 'Leo'.
+	playerNamedGlenn := Player named: 'Glenn'.
+	repeat := RepeatCard new.
+	game := self shortGameWithFirstPlayer: playerNamedLeo andSecondPlayer: playerNamedGlenn.
+	playerNamedLeo takesATurnIn: game.
+	self assert: game hasFinished equals: true.
+	playerNamedGlenn addCard: repeat.
+	self
+		should: [ playerNamedGlenn uses: repeat in: game against: playerNamedGlenn ]
+		raise: AssertionFailure
+		withExceptionDo: [ :signal | self assert: signal messageText equals: 'Can''t use card when game has finished' ]
+]
+
+{ #category : #speed }
+CardsTest >> testUsingSpeedCardAfterTheGameHasFinishedRaisesException [
+	| playerNamedLeo playerNamedGlenn game speed |
+	playerNamedLeo := Player named: 'Leo'.
+	playerNamedGlenn := Player named: 'Glenn'.
+	speed := SpeedCard new.
+	game := self shortGameWithFirstPlayer: playerNamedLeo andSecondPlayer: playerNamedGlenn.
+	playerNamedLeo takesATurnIn: game.
+	self assert: game hasFinished equals: true.
+	playerNamedGlenn addCard: speed.
+	self
+		should: [ playerNamedGlenn uses: speed in: game against: playerNamedGlenn ]
+		raise: AssertionFailure
+		withExceptionDo: [ :signal | self assert: signal messageText equals: 'Can''t use card when game has finished' ]
 ]

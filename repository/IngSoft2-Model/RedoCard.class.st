@@ -13,7 +13,9 @@ RedoCard >> affect: aPlayerOrCard in: aGame [
 
 { #category : #validation }
 RedoCard >> assertCanBePlayedIn: aGame by: aPlayer [
-	^ aGame lastPlayedCard assertCanBePlayedIn: aGame by: aPlayer
+	aGame hasFinished
+		ifTrue: [ AssertionFailure new signal: 'Can''t use card when game has finished' ].
+	aGame lastPlayedCard assertCanBePlayedIn: aGame by: aPlayer
 ]
 
 { #category : #interaction }

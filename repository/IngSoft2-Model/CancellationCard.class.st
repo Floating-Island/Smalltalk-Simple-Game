@@ -11,7 +11,8 @@ CancellationCard >> affect: aCard in: aGame [
 
 { #category : #validation }
 CancellationCard >> assertCanBePlayedIn: aGame by: aPlayer [
-	^ true
+	aGame hasFinished
+		ifTrue: [ AssertionFailure new signal: 'Can''t use card when game has finished' ]
 ]
 
 { #category : #interaction }
