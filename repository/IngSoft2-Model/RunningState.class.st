@@ -13,3 +13,8 @@ RunningState >> hasFinished [
 RunningState >> playNextTurnIn: aGame playedBy: aPlayer [ 
 	aGame playedBy: aPlayer.
 ]
+
+{ #category : #interaction }
+RunningState >> winner [
+	^ AssertionFailure new signal: 'There hasn''t been a winner yet...'
+]

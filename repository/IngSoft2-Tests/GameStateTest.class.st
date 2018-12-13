@@ -26,30 +26,24 @@ GameStateTest >> gameForGameStateTestsWithPlayer: playerNamedLeo and: playerName
 
 { #category : #'finished state tests' }
 GameStateTest >> testHasFinishedWhenFinished [
-	| finishedState game playerNamedLeo playerNamedGlenn |
-	finishedState := FinishedState new.
-	playerNamedLeo := Player named: 'Leo'.
-	playerNamedGlenn := Player named: 'Glenn'.
-	game := self gameForGameStateTestsWithPlayer: playerNamedLeo and: playerNamedGlenn.
+	| finishedState |
+	finishedState := FinishedState winner: (Player named: 'Albert').
 	self assert: finishedState hasFinished equals: true
 ]
 
 { #category : #'finished state tests' }
 GameStateTest >> testHasFinishedWhenRunning [
-	| runningState game playerNamedLeo playerNamedGlenn |
+	| runningState |
 	runningState := RunningState new.
-	playerNamedLeo := Player named: 'Leo'.
-	playerNamedGlenn := Player named: 'Glenn'.
-	game := self gameForGameStateTestsWithPlayer: playerNamedLeo and: playerNamedGlenn.
 	self assert: runningState hasFinished equals: false
 ]
 
 { #category : #'finished state tests' }
 GameStateTest >> testPlayersPositionWhenFinished [
 	| finishedState game playerNamedLeo playerNamedGlenn |
-	finishedState := FinishedState new.
 	playerNamedLeo := Player named: 'Leo'.
 	playerNamedGlenn := Player named: 'Glenn'.
+	finishedState := FinishedState winner: playerNamedLeo.
 	game := self gameForGameStateTestsWithPlayer: playerNamedLeo and: playerNamedGlenn.
 	self
 		should: [ finishedState playNextTurnIn: game playedBy: playerNamedLeo ]
@@ -68,4 +62,22 @@ GameStateTest >> testPlayersPositionWhenRunning [
 	runningState playNextTurnIn: game playedBy: playerNamedGlenn.
 	self assert: (game positionFor: playerNamedLeo) equals: 3.
 	self assert: (game positionFor: playerNamedGlenn) equals: 5
+]
+
+{ #category : #'finished state tests' }
+GameStateTest >> testRunningStateRaisesExceptionWhenWinnerIsInquired [
+	| runningState |
+	runningState := RunningState new.
+	self
+		should: [ runningState winner ]
+		raise: AssertionFailure
+		withExceptionDo: [ :signal | self assert: signal messageText equals: 'There hasn''t been a winner yet...' ]
+]
+
+{ #category : #'finished state tests' }
+GameStateTest >> testfinishedStateGivesWinnerWhenWinnerIsInquired [
+	| finishedState playerNamedAlbert |
+	playerNamedAlbert := Player named: 'Albert'.
+	finishedState := FinishedState winner: playerNamedAlbert.
+	self assert: finishedState winner equals: playerNamedAlbert
 ]
