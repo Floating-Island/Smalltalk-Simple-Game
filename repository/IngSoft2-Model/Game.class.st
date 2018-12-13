@@ -220,11 +220,11 @@ Game >> updateLastPlayedCard: aCard [
 { #category : #updating }
 Game >> updatePositionOf: aPlayer by: aNumberOfCells [
 	playersPosition at: aPlayer put: (playersPosition at: aPlayer) + aNumberOfCells.
-	self validateFinalLapHasBeenReachedBy: aPlayer
+	self updateStateIfFinalLapHasBeenReachedBy: aPlayer
 ]
 
 { #category : #updating }
-Game >> validateFinalLapHasBeenReachedBy: aPlayer [
+Game >> updateStateIfFinalLapHasBeenReachedBy: aPlayer [
 	(self lapFor: aPlayer) >=( laps)
 		ifTrue: [ self ends ]
 ]
