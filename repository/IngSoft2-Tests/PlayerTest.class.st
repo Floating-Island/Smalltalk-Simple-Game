@@ -5,7 +5,7 @@ Class {
 }
 
 { #category : #'utilities for tests' }
-PlayerTest >> gameForPlayerTestsWithPlayer: playerNamedLeo and: playerNamedGlenn [
+PlayerTest >> gameForPlayerTestsWithPlayer: aPlayer and: anotherPlayer [
 	| die game collection board deck |
 	collection := {4 . 2 . 3 . 4 . 5}.
 	deck := CircularIterator over: {OverloadCard new}.
@@ -13,8 +13,8 @@ PlayerTest >> gameForPlayerTestsWithPlayer: playerNamedLeo and: playerNamedGlenn
 	board := UtilitiesForTests collectionOf20NoEffect.
 	game := Game
 		playedBy:
-			{playerNamedLeo.
-			playerNamedGlenn}
+			{aPlayer.
+			anotherPlayer}
 		throwing: {die}
 		using: deck
 		in: board
