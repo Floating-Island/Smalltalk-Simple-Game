@@ -97,6 +97,11 @@ Game >> hasPermanentCards [
 	^(permanentCardsAssociations isNotEmpty)
 ]
 
+{ #category : #updating }
+Game >> hasWon: aPlayer [
+	^ (self lapFor: aPlayer) >= laps
+]
+
 { #category : #initialization }
 Game >> initializePlayedBy: aPlayerCollection throwing: aDice using: aDeck in: aBoard andAmountOfLaps: aLapAmount [
 	board := aBoard.
@@ -220,11 +225,6 @@ Game >> updateLastPlayedCard: aCard [
 { #category : #updating }
 Game >> updatePositionOf: aPlayer by: aNumberOfCells [
 	playersPosition at: aPlayer put: (playersPosition at: aPlayer) + aNumberOfCells.
-	self updateStateIfFinalLapHasBeenReachedBy: aPlayer
-]
-
-{ #category : #updating }
-Game >> updateStateIfFinalLapHasBeenReachedBy: aPlayer [
-	(self lapFor: aPlayer) >=( laps)
+	(self hasWon: aPlayer)
 		ifTrue: [ self ends ]
 ]
