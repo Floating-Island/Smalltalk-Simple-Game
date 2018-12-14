@@ -27,12 +27,6 @@ DeckManager class >> containing: aCardCollection [
 	^ self new initializeContaining: aCardCollection
 ]
 
-{ #category : #updating }
-DeckManager >> addToDiscardPile: aCard [
-	self class assertCollectionOfCards: aCard asOrderedCollection.
-	discardPile add: aCard
-]
-
 { #category : #validation }
 DeckManager >> assertDiscardPileNotEmpty [
 	self cardsInDiscardPile = 0
@@ -55,7 +49,7 @@ DeckManager >> dealTopCard [
 	self assertDiscardPileNotEmpty.
 	topCard := deck removeFirst.
 	self cardsLeftInDeck = 0
-		ifTrue: [ self reShuffleDiscardPileInDeck ].
+		ifTrue: [ self shuffleDiscardPileIntoDeck ].
 	^ topCard
 ]
 
@@ -66,9 +60,15 @@ DeckManager >> initializeContaining: aCardCollection [
 ]
 
 { #category : #updating }
-DeckManager >> reShuffleDiscardPileInDeck [
+DeckManager >> shuffleDiscardPileIntoDeck [
 	| emptyDeck |
 	emptyDeck := deck.
 	deck := discardPile shuffled.
 	discardPile := emptyDeck
+]
+
+{ #category : #updating }
+DeckManager >> toDiscardPile: aCard [
+	self class assertCollectionOfCards: aCard asOrderedCollection.
+	discardPile add: aCard
 ]

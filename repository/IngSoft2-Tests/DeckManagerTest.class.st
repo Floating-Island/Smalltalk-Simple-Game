@@ -13,7 +13,7 @@ DeckManagerTest >> testAddToDiscardPileAddsItToDiscardPile [
 	accelleration} asOrderedCollection.
 	deckManager := DeckManager containing: cardCollection.
 	self assert: deckManager cardsInDiscardPile equals: 0.
-	deckManager addToDiscardPile: accelleration.
+	deckManager toDiscardPile: accelleration.
 	self assert: deckManager cardsInDiscardPile equals: 1.
 ]
 
@@ -28,7 +28,7 @@ DeckManagerTest >> testAddToDiscardPileRaisesExceptionWhenNotACard [
 	self assert: deckManager cardsLeftInDeck equals: 2.
 	discarded := 1.
 	self
-		should: [ deckManager addToDiscardPile: discarded ]
+		should: [ deckManager toDiscardPile: discarded ]
 		raise: AssertionFailure
 		withExceptionDo: [ :signal | self assert: signal messageText equals: 'Only cards are accepted in a DeckManager...' ].
 	self assert: deckManager cardsInDiscardPile equals: 0
@@ -72,7 +72,7 @@ DeckManagerTest >> testDealTopCardRemovesTopCardFromDeck [
 	accelleration} asOrderedCollection.
 	deckManager := DeckManager containing: cardCollection.
 	self assert: deckManager cardsLeftInDeck equals: 2.
-	deckManager addToDiscardPile: accelleration.
+	deckManager toDiscardPile: accelleration.
 	self assert: deckManager dealTopCard equals: overload.
 	self assert: deckManager cardsLeftInDeck equals: 1.
 	self assert: deckManager dealTopCard equals: accelleration
@@ -92,7 +92,7 @@ DeckManagerTest >> testDealTopCardWhileDiscarPileEmptyRaisesException [
 		should: [ deckManager dealTopCard ]
 		raise: AssertionFailure
 		withExceptionDo: [ :signal | self assert: signal messageText equals: 'Discard pile is empty...' ].
-	deckManager addToDiscardPile: overload.
+	deckManager toDiscardPile: overload.
 	deckManager dealTopCard.
 	self assert: deckManager cardsLeftInDeck equals: 1
 ]
@@ -105,17 +105,17 @@ DeckManagerTest >> testRemovingAllCardsFromDeckMakesAllInDiscardPileTransferedTo
 	cardCollection := {overload.
 	accelleration} asOrderedCollection.
 	deckManager := DeckManager containing: cardCollection.
-	deckManager addToDiscardPile: CancellationCard new.
+	deckManager toDiscardPile: CancellationCard new.
 	self assert: deckManager cardsInDiscardPile equals: 1.
 	self assert: deckManager cardsLeftInDeck equals: 2.
 	discardedOverload := deckManager dealTopCard.
 	self assert: discardedOverload equals: overload.
-	deckManager addToDiscardPile: discardedOverload.
+	deckManager toDiscardPile: discardedOverload.
 	self assert: deckManager cardsLeftInDeck equals: 1.
 	discardedAcceleration := deckManager dealTopCard.
 	self assert: discardedAcceleration equals: accelleration.
 	self assert: deckManager cardsLeftInDeck equals: 2.
 	self assert: deckManager cardsInDiscardPile equals: 0.
-	deckManager addToDiscardPile: discardedAcceleration.
+	deckManager toDiscardPile: discardedAcceleration.
 	self assert: deckManager cardsInDiscardPile equals: 1
 ]
