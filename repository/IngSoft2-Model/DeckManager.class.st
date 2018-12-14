@@ -9,6 +9,12 @@ Class {
 }
 
 { #category : #validation }
+DeckManager class >> assertCollectionNotEmpty: aCollection [
+	aCollection size >= 1
+		ifFalse: [ AssertionFailure new signal: 'DeckManager needs at least one card in deck...' ]
+]
+
+{ #category : #validation }
 DeckManager class >> assertCollectionOfCards: aCollection [
 	aCollection size = (aCollection select: [ :each | each isKindOf: Card ]) size
 		ifFalse: [ AssertionFailure new signal: 'Only cards are accepted in a DeckManager...' ]
@@ -16,6 +22,7 @@ DeckManager class >> assertCollectionOfCards: aCollection [
 
 { #category : #'instance creation' }
 DeckManager class >> containing: aCardCollection [
+	self assertCollectionNotEmpty: aCardCollection.
 	self assertCollectionOfCards: aCardCollection.
 	^ self new initializeContaining: aCardCollection
 ]

@@ -6,19 +6,15 @@ Class {
 
 { #category : #tests }
 DeckManagerTest >> testAddToDiscardPileAddsItToDiscardPile [
-	| deckManager cardCollection overload accelleration discarded |
+	| deckManager cardCollection overload accelleration |
 	overload := OverloadCard new.
 	accelleration := AccelerationCard new.
 	cardCollection := {overload.
 	accelleration} asOrderedCollection.
 	deckManager := DeckManager containing: cardCollection.
-	self assert: deckManager cardsLeftInDeck equals: 2.
-	discarded := deckManager dealTopCard.
-	self assert: discarded equals: overload.
-	self assert: deckManager cardsLeftInDeck equals: 1.
 	self assert: deckManager cardsInDiscardPile equals: 0.
-	deckManager addToDiscardPile: discarded.
-	self assert: deckManager cardsInDiscardPile equals: 1
+	deckManager addToDiscardPile: accelleration.
+	self assert: deckManager cardsInDiscardPile equals: 1.
 ]
 
 { #category : #tests }
@@ -48,6 +44,16 @@ DeckManagerTest >> testCardsLeftGivesCardsInDeck [
 ]
 
 { #category : #tests }
+DeckManagerTest >> testCreationWithEmptyCollectionRaisesException [
+	| deckManager cardCollection |
+	cardCollection := {} asOrderedCollection.
+	self
+		should: [ deckManager := DeckManager containing: cardCollection ]
+		raise: AssertionFailure
+		withExceptionDo: [ :signal | self assert: signal messageText equals: 'DeckManager needs at least one card in deck...' ]
+]
+
+{ #category : #tests }
 DeckManagerTest >> testCreationWithObjectsOtherThanCardsRaisesException [
 	| deckManager cardCollection |
 	cardCollection := {1} asOrderedCollection.
@@ -66,9 +72,10 @@ DeckManagerTest >> testDealTopCardRemovesTopCardFromDeck [
 	accelleration} asOrderedCollection.
 	deckManager := DeckManager containing: cardCollection.
 	self assert: deckManager cardsLeftInDeck equals: 2.
+	deckManager addToDiscardPile: accelleration.
 	self assert: deckManager dealTopCard equals: overload.
 	self assert: deckManager cardsLeftInDeck equals: 1.
-	self assert: deckManager dealTopCard equals: accelleration.
+	self assert: deckManager dealTopCard equals: accelleration
 ]
 
 { #category : #tests }
