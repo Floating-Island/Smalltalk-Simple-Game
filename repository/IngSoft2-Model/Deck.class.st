@@ -7,9 +7,22 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
+{ #category : #validation }
+Deck class >> assertCollectionOfCards: aCollection [
+	aCollection size = (aCollection select: [ :each | each isKindOf: Card ]) size
+		ifFalse: [ AssertionFailure new signal: 'This deck only accepts cards...' ]
+]
+
 { #category : #'instance creation' }
 Deck class >> containing: aCollectionOfCards [
+	self assertCollectionOfCards: aCollectionOfCards.
 	^ self new initializeContaining: aCollectionOfCards
+]
+
+{ #category : #updating }
+Deck >> add: aCard [
+	self class assertCollectionOfCards: aCard asOrderedCollection.
+	cards addLast: aCard
 ]
 
 { #category : #interaction }
