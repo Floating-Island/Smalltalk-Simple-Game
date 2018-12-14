@@ -26,6 +26,12 @@ DeckManager >> addToDiscardPile: aCard [
 	discardPile add: aCard
 ]
 
+{ #category : #validation }
+DeckManager >> assertDiscardPileNotEmpty [
+	self cardsInDiscardPile = 0
+		ifTrue: [ AssertionFailure new signal: 'Discard pile is empty...' ]
+]
+
 { #category : #interaction }
 DeckManager >> cardsInDiscardPile [
 	^ discardPile size
@@ -38,11 +44,24 @@ DeckManager >> cardsLeftInDeck [
 
 { #category : #updating }
 DeckManager >> dealTopCard [
-	^ deck removeFirst
+	| topCard |
+	self assertDiscardPileNotEmpty.
+	topCard := deck removeFirst.
+	self cardsLeftInDeck = 0
+		ifTrue: [ self reShuffleDiscardPileInDeck ].
+	^ topCard
 ]
 
 { #category : #initialization }
 DeckManager >> initializeContaining: aCardCollection [
 	deck := aCardCollection asOrderedCollection.
 	discardPile := OrderedCollection new
+]
+
+{ #category : #updating }
+DeckManager >> reShuffleDiscardPileInDeck [
+	| emptyDeck |
+	emptyDeck := deck.
+	deck := discardPile shuffled.
+	discardPile := emptyDeck
 ]

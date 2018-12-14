@@ -72,6 +72,25 @@ DeckManagerTest >> testDealTopCardRemovesTopCardFromDeck [
 ]
 
 { #category : #tests }
+DeckManagerTest >> testDealTopCardWhileDiscarPileEmptyRaisesException [
+	| deckManager cardCollection overload accelleration |
+	overload := OverloadCard new.
+	accelleration := AccelerationCard new.
+	cardCollection := {overload.
+	accelleration} asOrderedCollection.
+	deckManager := DeckManager containing: cardCollection.
+	self assert: deckManager cardsInDiscardPile equals: 0.
+	self assert: deckManager cardsLeftInDeck equals: 2.
+	self
+		should: [ deckManager dealTopCard ]
+		raise: AssertionFailure
+		withExceptionDo: [ :signal | self assert: signal messageText equals: 'Discard pile is empty...' ].
+	deckManager addToDiscardPile: overload.
+	deckManager dealTopCard.
+	self assert: deckManager cardsLeftInDeck equals: 1
+]
+
+{ #category : #tests }
 DeckManagerTest >> testRemovingAllCardsFromDeckMakesAllInDiscardPileTransferedToDeck [
 	| deckManager cardCollection overload accelleration discardedOverload discardedAcceleration |
 	overload := OverloadCard new.
