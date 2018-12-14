@@ -70,3 +70,26 @@ DeckManagerTest >> testDealTopCardRemovesTopCardFromDeck [
 	self assert: deckManager cardsLeftInDeck equals: 1.
 	self assert: deckManager dealTopCard equals: accelleration.
 ]
+
+{ #category : #tests }
+DeckManagerTest >> testRemovingAllCardsFromDeckMakesAllInDiscardPileTransferedToDeck [
+	| deckManager cardCollection overload accelleration discardedOverload discardedAcceleration |
+	overload := OverloadCard new.
+	accelleration := AccelerationCard new.
+	cardCollection := {overload.
+	accelleration} asOrderedCollection.
+	deckManager := DeckManager containing: cardCollection.
+	deckManager addToDiscardPile: CancellationCard new.
+	self assert: deckManager cardsInDiscardPile equals: 1.
+	self assert: deckManager cardsLeftInDeck equals: 2.
+	discardedOverload := deckManager dealTopCard.
+	self assert: discardedOverload equals: overload.
+	deckManager addToDiscardPile: discardedOverload.
+	self assert: deckManager cardsLeftInDeck equals: 1.
+	discardedAcceleration := deckManager dealTopCard.
+	self assert: discardedAcceleration equals: accelleration.
+	self assert: deckManager cardsLeftInDeck equals: 2.
+	self assert: deckManager cardsInDiscardPile equals: 0.
+	deckManager addToDiscardPile: discardedAcceleration.
+	self assert: deckManager cardsInDiscardPile equals: 1
+]
