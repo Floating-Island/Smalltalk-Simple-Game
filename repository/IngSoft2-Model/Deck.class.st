@@ -21,8 +21,13 @@ Deck class >> containing: aCollectionOfCards [
 
 { #category : #updating }
 Deck >> add: aCard [
-	self class assertCollectionOfCards: aCard asOrderedCollection.
-	cards addLast: aCard
+	self addAll: aCard asOrderedCollection
+]
+
+{ #category : #updating }
+Deck >> addAll: aCollectionOfCards [
+	self class assertCollectionOfCards: aCollectionOfCards.
+	cards addAll: aCollectionOfCards
 ]
 
 { #category : #interaction }
