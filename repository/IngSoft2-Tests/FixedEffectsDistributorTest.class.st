@@ -102,7 +102,7 @@ FixedEffectsDistributorTest >> testRaisesExceptionWhenWrongProbabilities [
 ]
 
 { #category : #tests }
-FixedEffectsDistributorTest >> testShouldGenerateBoardOfOnlyAcceleration [
+FixedEffectsDistributorTest >> testShouldGenerateDeckOfOnlyAcceleration [
 	| board distributor boardLength |
 	distributor := FixedEffectsDistributor
 		withProbabilityOfSpeedUp: 0

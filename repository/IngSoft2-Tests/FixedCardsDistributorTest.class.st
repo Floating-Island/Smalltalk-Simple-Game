@@ -41,7 +41,7 @@ FixedCardsDistributorTest >> testRaisesExceptionWhenWrongProbabilities [
 ]
 
 { #category : #tests }
-FixedCardsDistributorTest >> testShouldGenerateBoardOfOnlyAcceleration [
+FixedCardsDistributorTest >> testShouldGenerateDeckOfOnlyAcceleration [
 	| deck distributor deckSize |
 	distributor := FixedCardsDistributor withProbabilities: {(AccelerationCard -> 100)} asDictionary.
 	deckSize := 7.
@@ -51,7 +51,7 @@ FixedCardsDistributorTest >> testShouldGenerateBoardOfOnlyAcceleration [
 ]
 
 { #category : #tests }
-FixedCardsDistributorTest >> testShouldGenerateBoardOfOnlyBlank [
+FixedCardsDistributorTest >> testShouldGenerateDeckOfOnlyBlank [
 	| deck distributor deckSize |
 	distributor := FixedCardsDistributor withProbabilities: {(BlankCard -> 100)} asDictionary.
 	deckSize := 7.
@@ -61,7 +61,7 @@ FixedCardsDistributorTest >> testShouldGenerateBoardOfOnlyBlank [
 ]
 
 { #category : #tests }
-FixedCardsDistributorTest >> testShouldGenerateBoardOfOnlyCancellation [
+FixedCardsDistributorTest >> testShouldGenerateDeckOfOnlyCancellation [
 	| deck distributor deckSize |
 	distributor := FixedCardsDistributor withProbabilities: {(CancellationCard -> 100)} asDictionary.
 	deckSize := 7.
@@ -71,7 +71,7 @@ FixedCardsDistributorTest >> testShouldGenerateBoardOfOnlyCancellation [
 ]
 
 { #category : #tests }
-FixedCardsDistributorTest >> testShouldGenerateBoardOfOnlyOverload [
+FixedCardsDistributorTest >> testShouldGenerateDeckOfOnlyOverload [
 	| deck distributor deckSize |
 	distributor := FixedCardsDistributor withProbabilities: {(OverloadCard -> 100)} asDictionary.
 	deckSize := 7.
@@ -81,7 +81,7 @@ FixedCardsDistributorTest >> testShouldGenerateBoardOfOnlyOverload [
 ]
 
 { #category : #tests }
-FixedCardsDistributorTest >> testShouldGenerateBoardOfOnlyRedo [
+FixedCardsDistributorTest >> testShouldGenerateDeckOfOnlyRedo [
 	| deck distributor deckSize |
 	distributor := FixedCardsDistributor withProbabilities: {(RedoCard -> 100)} asDictionary.
 	deckSize := 7.
@@ -91,7 +91,7 @@ FixedCardsDistributorTest >> testShouldGenerateBoardOfOnlyRedo [
 ]
 
 { #category : #tests }
-FixedCardsDistributorTest >> testShouldGenerateBoardOfOnlyRepeat [
+FixedCardsDistributorTest >> testShouldGenerateDeckOfOnlyRepeat [
 	| deck distributor deckSize |
 	distributor := FixedCardsDistributor withProbabilities: {(RepeatCard -> 100)} asDictionary.
 	deckSize := 7.
@@ -101,7 +101,7 @@ FixedCardsDistributorTest >> testShouldGenerateBoardOfOnlyRepeat [
 ]
 
 { #category : #tests }
-FixedCardsDistributorTest >> testShouldGenerateBoardOfOnlySpeed [
+FixedCardsDistributorTest >> testShouldGenerateDeckOfOnlySpeed [
 	| deck distributor deckSize |
 	distributor := FixedCardsDistributor withProbabilities: {(SpeedCard -> 100)} asDictionary.
 	deckSize := 7.
