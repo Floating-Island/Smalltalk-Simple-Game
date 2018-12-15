@@ -10,6 +10,20 @@ FixedEffectsDistributorTest >> occurrencesOf: aClass in: aCollection [
 ]
 
 { #category : #tests }
+FixedEffectsDistributorTest >> testGenerateBoardOfExpectedLength [
+	| board distributor |
+	distributor := FixedEffectsDistributor
+		withProbabilityOfSpeedUp: 20
+		wormhole: 20
+		atomic: 2
+		noEffect: 48
+		moonwalk: 10
+		andMaximumMoonwalkSteps: 5.
+	board := distributor boardOfLength: 10.
+	self assert: board size equals: 10
+]
+
+{ #category : #tests }
 FixedEffectsDistributorTest >> testGenerateBoardOfOnlyAtomicEffectCheckClassOfContents [
 	| board distributor boardLength |
 	distributor := FixedEffectsDistributor
@@ -74,20 +88,6 @@ FixedEffectsDistributorTest >> testGenerateBoardOfOnlySpeedUpEffectCheckClassOfC
 ]
 
 { #category : #tests }
-FixedEffectsDistributorTest >> testGenerateDeckOfExpectedLength [
-	| board distributor |
-	distributor := FixedEffectsDistributor
-		withProbabilityOfSpeedUp: 20
-		wormhole: 20
-		atomic: 2
-		noEffect: 48
-		moonwalk: 10
-		andMaximumMoonwalkSteps: 5.
-	board := distributor boardOfLength: 10.
-	self assert: board size equals: 10
-]
-
-{ #category : #tests }
 FixedEffectsDistributorTest >> testRaisesExceptionWhenWrongProbabilities [
 	self
 		should: [ FixedEffectsDistributor
@@ -99,20 +99,4 @@ FixedEffectsDistributorTest >> testRaisesExceptionWhenWrongProbabilities [
 				andMaximumMoonwalkSteps: 5 ]
 		raise: AssertionFailure
 		withExceptionDo: [ :signal | self assert: signal messageText equals: 'The sum of probabilities should be 100' ]
-]
-
-{ #category : #tests }
-FixedEffectsDistributorTest >> testShouldGenerateDeckOfOnlyAcceleration [
-	| board distributor boardLength |
-	distributor := FixedEffectsDistributor
-		withProbabilityOfSpeedUp: 0
-		wormhole: 100
-		atomic: 0
-		noEffect: 0
-		moonwalk: 0
-		andMaximumMoonwalkSteps: 5.
-	boardLength := 7.
-	board := distributor boardOfLength: boardLength.
-	self assert: board size equals: boardLength.
-	1 to: boardLength do: [ :eachIndex | self assert: ((board at: eachIndex) isMemberOf: WormholeEffect) equals: true ]
 ]
