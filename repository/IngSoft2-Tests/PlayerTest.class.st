@@ -6,9 +6,16 @@ Class {
 
 { #category : #'utilities for tests' }
 PlayerTest >> gameForPlayerTestsWithPlayer: aPlayer and: anotherPlayer [
-	| die game collection board deck |
+	| die game collection board deck overload |
 	collection := {4 . 2 . 3 . 4 . 5}.
-	deck := CircularIterator over: {OverloadCard new}.
+	overload := OverloadCard new.
+	deck := DeckManager
+		containing:
+			{overload.
+			overload.
+			overload.
+			overload.
+			overload}.
 	die := Die withSides: 4 andGenerator: (CircularIterator over: collection).
 	board := UtilitiesForTests collectionOf20NoEffect.
 	game := Game
@@ -58,7 +65,7 @@ PlayerTest >> testDrawCardFromDeckHasCardInHand [
 	| player deck card |
 	player := Player named: 'Alber'.
 	card := OverloadCard new.
-	deck := CircularIterator over: {card}.
+	deck := DeckManager containing: {card} asOrderedCollection.
 	player drawCardFrom: deck.
 	self assert: (player hasCard: card) equals: true
 ]
