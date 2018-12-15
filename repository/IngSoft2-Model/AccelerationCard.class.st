@@ -21,3 +21,7 @@ AccelerationCard >> playIn: aGame against: aPlayer [
 	aGame updateLastPlayedCard: self.
 	aGame addCard: self asociatedWith: aGame playersPlaying
 ]
+
+{ #category : #interaction }
+AccelerationCard >> removedFromAHandIn: aGame [ 
+]

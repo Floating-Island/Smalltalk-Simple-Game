@@ -18,3 +18,8 @@ Card >> assertCanBePlayedIn: aGame by: aPlayer [
 Card >> playIn: aGame against: aPlayerOrCard [ 
 	 ^ self subclassResponsibility 
 ]
+
+{ #category : #interaction }
+Card >> removedFromAHandIn: aGame [ 
+	 ^ self subclassResponsibility 
+]

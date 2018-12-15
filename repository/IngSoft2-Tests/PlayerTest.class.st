@@ -126,6 +126,51 @@ PlayerTest >> testRaisesExceptionWhenTryingToUseACardThatDoesntHave [
 ]
 
 { #category : #'cards tests' }
+PlayerTest >> testUsingAccelerationCardRemovesItFromHandButNotAddedToDiscardPile [
+	| accelerationCard game playerNamedLeo playerNamedGlenn |
+	playerNamedLeo := Player named: 'Leo'.
+	playerNamedGlenn := Player named: 'Glenn'.
+	game := self gameForPlayerTestsWithPlayer: playerNamedLeo and: playerNamedGlenn.
+	accelerationCard := AccelerationCard new.
+	self assert: game cardsDiscarded equals: 0.
+	playerNamedLeo addCard: accelerationCard.
+	playerNamedLeo uses: accelerationCard in: game against: playerNamedGlenn.
+	self assert: (playerNamedLeo hasCard: accelerationCard) equals: false.
+	self assert: game cardsDiscarded equals: 0
+]
+
+{ #category : #'cards tests' }
+PlayerTest >> testUsingBlankCardRemovesItFromHandAndIsAddedToDiscardPile [
+	| blankCard game playerNamedLeo playerNamedGlenn |
+	playerNamedLeo := Player named: 'Leo'.
+	playerNamedGlenn := Player named: 'Glenn'.
+	game := self gameForPlayerTestsWithPlayer: playerNamedLeo and: playerNamedGlenn.
+	blankCard := BlankCard new.
+	self assert: game cardsDiscarded equals: 0.
+	playerNamedLeo addCard: blankCard.
+	playerNamedLeo uses: blankCard in: game against: playerNamedGlenn.
+	self assert: (playerNamedLeo hasCard: blankCard) equals: false.
+	self assert: game cardsDiscarded equals: 1
+]
+
+{ #category : #'cards tests' }
+PlayerTest >> testUsingCancellationCardRemovesItFromHandAndIsAddedToDiscardPile [
+	| cancellationCard overloadCard game playerNamedLeo playerNamedGlenn |
+	playerNamedLeo := Player named: 'Leo'.
+	playerNamedGlenn := Player named: 'Glenn'.
+	game := self gameForPlayerTestsWithPlayer: playerNamedLeo and: playerNamedGlenn.
+	cancellationCard := CancellationCard new.
+	overloadCard := OverloadCard new.
+	self assert: game cardsDiscarded equals: 0.
+	playerNamedLeo addCard: cancellationCard.
+	playerNamedLeo addCard: overloadCard.
+	playerNamedLeo uses: overloadCard in: game against: playerNamedGlenn.
+	playerNamedLeo uses: cancellationCard in: game against: overloadCard.
+	self assert: (playerNamedLeo hasCard: cancellationCard) equals: false.
+	self assert: game cardsDiscarded equals: 2
+]
+
+{ #category : #'cards tests' }
 PlayerTest >> testUsingCardRemovesItFromHand [
 	| accelerationCard game playerNamedLeo playerNamedGlenn |
 	playerNamedLeo := Player named: 'Leo'.
@@ -138,15 +183,77 @@ PlayerTest >> testUsingCardRemovesItFromHand [
 ]
 
 { #category : #'cards tests' }
-PlayerTest >> testUsingCardRemovesItFromHandAndAddsToGameDiscardPile [
-	| accelerationCard game playerNamedLeo playerNamedGlenn |
+PlayerTest >> testUsingOverloadCardRemovesItFromHandButNotAddedToDiscardPile [
+	| overload game playerNamedLeo playerNamedGlenn |
 	playerNamedLeo := Player named: 'Leo'.
 	playerNamedGlenn := Player named: 'Glenn'.
 	game := self gameForPlayerTestsWithPlayer: playerNamedLeo and: playerNamedGlenn.
-	accelerationCard := AccelerationCard new.
+	overload := OverloadCard new.
 	self assert: game cardsDiscarded equals: 0.
-	playerNamedLeo addCard: accelerationCard.
-	playerNamedLeo uses: accelerationCard in: game against: playerNamedGlenn.
-	self assert: (playerNamedLeo hasCard: accelerationCard) equals: false.
+	playerNamedLeo addCard: overload.
+	playerNamedLeo uses: overload in: game against: playerNamedGlenn.
+	self assert: (playerNamedLeo hasCard: overload) equals: false.
+	self assert: game cardsDiscarded equals: 0
+]
+
+{ #category : #'cards tests' }
+PlayerTest >> testUsingRedoCardRemovesItFromHandAndIsAddedToDiscardPile_Instantaneous [
+	| redoCard blankCard game playerNamedLeo playerNamedGlenn |
+	playerNamedLeo := Player named: 'Leo'.
+	playerNamedGlenn := Player named: 'Glenn'.
+	game := self gameForPlayerTestsWithPlayer: playerNamedLeo and: playerNamedGlenn.
+	redoCard := RedoCard new.
+	blankCard := BlankCard new.
+	self assert: game cardsDiscarded equals: 0.
+	playerNamedLeo addCard: redoCard.
+	playerNamedLeo addCard: blankCard.
+	playerNamedLeo uses: blankCard in: game against: playerNamedGlenn.
+	playerNamedLeo uses: redoCard in: game against: playerNamedGlenn.
+	self assert: (playerNamedLeo hasCard: redoCard) equals: false.
+	self assert: game cardsDiscarded equals: 2
+]
+
+{ #category : #'cards tests' }
+PlayerTest >> testUsingRedoCardRemovesItFromHandAndIsAddedToDiscardPile_Permanent [
+	| redoCard overloadCard game playerNamedLeo playerNamedGlenn |
+	playerNamedLeo := Player named: 'Leo'.
+	playerNamedGlenn := Player named: 'Glenn'.
+	game := self gameForPlayerTestsWithPlayer: playerNamedLeo and: playerNamedGlenn.
+	redoCard := RedoCard new.
+	overloadCard := OverloadCard new.
+	self assert: game cardsDiscarded equals: 0.
+	playerNamedLeo addCard: redoCard.
+	playerNamedLeo addCard: overloadCard.
+	playerNamedLeo uses: overloadCard in: game against: playerNamedGlenn.
+	playerNamedLeo uses: redoCard in: game against: playerNamedGlenn.
+	self assert: (playerNamedLeo hasCard: redoCard) equals: false.
 	self assert: game cardsDiscarded equals: 1
+]
+
+{ #category : #'cards tests' }
+PlayerTest >> testUsingRepeatCardRemovesItFromHandAndIsAddedToDiscardPile [
+	| repeatCard game playerNamedLeo playerNamedGlenn |
+	playerNamedLeo := Player named: 'Leo'.
+	playerNamedGlenn := Player named: 'Glenn'.
+	game := self gameForPlayerTestsWithPlayer: playerNamedLeo and: playerNamedGlenn.
+	repeatCard := RepeatCard new.
+	self assert: game cardsDiscarded equals: 0.
+	playerNamedLeo addCard: repeatCard.
+	playerNamedLeo uses: repeatCard in: game against: playerNamedGlenn.
+	self assert: (playerNamedLeo hasCard: repeatCard) equals: false.
+	self assert: game cardsDiscarded equals: 1
+]
+
+{ #category : #'cards tests' }
+PlayerTest >> testUsingSpeedCardRemovesItFromHandButNotAddedToDiscardPile [
+	| speedCard game playerNamedLeo playerNamedGlenn |
+	playerNamedLeo := Player named: 'Leo'.
+	playerNamedGlenn := Player named: 'Glenn'.
+	game := self gameForPlayerTestsWithPlayer: playerNamedLeo and: playerNamedGlenn.
+	speedCard := SpeedCard new.
+	self assert: game cardsDiscarded equals: 0.
+	playerNamedLeo addCard: speedCard.
+	playerNamedLeo uses: speedCard in: game against: playerNamedGlenn.
+	self assert: (playerNamedLeo hasCard: speedCard) equals: false.
+	self assert: game cardsDiscarded equals: 0
 ]

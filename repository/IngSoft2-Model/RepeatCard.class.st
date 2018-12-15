@@ -23,3 +23,8 @@ RepeatCard >> playIn: aGame against: aPlayerOrCard [
 	aGame updateLastPlayedCard: self.
 	self affect: aPlayerOrCard in: aGame
 ]
+
+{ #category : #interaction }
+RepeatCard >> removedFromAHandIn: aGame [ 
+	aGame toDiscardPile: self
+]

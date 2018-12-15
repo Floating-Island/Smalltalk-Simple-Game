@@ -22,3 +22,8 @@ RedoCard >> assertCanBePlayedIn: aGame by: aPlayer [
 RedoCard >> playIn: aGame against: aPlayerOrCard [
 	self affect: aPlayerOrCard in: aGame
 ]
+
+{ #category : #interaction }
+RedoCard >> removedFromAHandIn: aGame [ 
+	aGame toDiscardPile: self
+]

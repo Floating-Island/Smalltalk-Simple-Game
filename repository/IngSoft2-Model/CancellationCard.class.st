@@ -6,7 +6,7 @@ Class {
 
 { #category : #interaction }
 CancellationCard >> affect: aCard in: aGame [
-	aGame toDiscardPile: (aGame removeCard: aCard)
+	aGame toDiscardPile: (aGame removeCard: aCard).
 ]
 
 { #category : #validation }
@@ -21,6 +21,11 @@ CancellationCard >> playIn: aGame against: aCard [
 	self validateGameHasCards: aGame.
 	aGame updateLastPlayedCard: self.
 	self affect: aCard in: aGame
+]
+
+{ #category : #interaction }
+CancellationCard >> removedFromAHandIn: aGame [ 
+	aGame toDiscardPile: self
 ]
 
 { #category : #interaction }

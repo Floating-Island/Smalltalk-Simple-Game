@@ -24,6 +24,11 @@ OverloadCard >> playIn: aGame against: aPlayer [
 	aGame addCard: self asociatedWith: aPlayer
 ]
 
+{ #category : #interaction }
+OverloadCard >> removedFromAHandIn: aGame [
+	
+]
+
 { #category : #validation }
 OverloadCard >> validateIsPlayer: aPlayer [
 	^ (aPlayer isMemberOf: Player)

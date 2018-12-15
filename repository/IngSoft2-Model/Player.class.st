@@ -69,6 +69,6 @@ Player >> uses: aCard in: aGame against: aPlayerOrCard [
 	(self hasCard: aCard)
 		ifTrue: [ aCard assertCanBePlayedIn: aGame by: self.
 			aCard playIn: aGame against: aPlayerOrCard.
-			aGame toDiscardPile: (self removeCard: aCard) ]
+			(self removeCard: aCard) removedFromAHandIn: aGame ]
 		ifFalse: [ AssertionFailure new signal: ('{1} doesn''t have that card in hand.' format: {self name}) ]
 ]
