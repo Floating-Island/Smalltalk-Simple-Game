@@ -24,8 +24,8 @@ Player >> cardsInHand [
 ]
 
 { #category : #interaction }
-Player >> drawCardFrom: aDeck [
-	self addCard: (aDeck next: aDeck)
+Player >> drawCardFrom: aDeckManager [
+	self addCard: aDeckManager dealTopCard
 ]
 
 { #category : #testing }

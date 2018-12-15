@@ -74,8 +74,12 @@ DeckManagerTest >> testDealCardsToPlayersRemovesThemFromDeck [
 	deckManager := DeckManager containing: cardCollection.
 	self assert: deckManager cardsLeftInDeck equals: 2.
 	deckManager deal: 2 to: player.
-	self assert: player cardsInHand equals: cardCollection.
-	self assert: deckManager cardsLeftInDeck equals: 2
+	self
+		assert: player cardsInHand
+		equals:
+			{overload.
+			accelleration} asOrderedCollection.
+	self assert: deckManager cardsLeftInDeck equals: 0
 ]
 
 { #category : #tests }

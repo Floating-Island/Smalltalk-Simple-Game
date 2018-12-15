@@ -52,6 +52,11 @@ DeckManager >> cardsLeftInDeck [
 	^ deck size
 ]
 
+{ #category : #interaction }
+DeckManager >> deal: aNumberOfCards to: aPlayer [ 
+	aNumberOfCards timesRepeat: [ aPlayer drawCardFrom: self ]
+]
+
 { #category : #updating }
 DeckManager >> dealTopCard [
 	| topCard |
