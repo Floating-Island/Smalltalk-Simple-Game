@@ -6,7 +6,7 @@ Class {
 
 { #category : #interaction }
 CancellationCard >> affect: aCard in: aGame [
-	aGame removeCard: aCard
+	aGame toDiscardPile: (aGame removeCard: aCard)
 ]
 
 { #category : #validation }

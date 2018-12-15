@@ -206,8 +206,9 @@ Game >> ranking [
 
 { #category : #updating }
 Game >> removeCard: aCard [
-	(self hasCard: aCard)
-		ifTrue: [ permanentCardsAssociations removeKey: aCard ]
+	^ (self hasCard: aCard)
+		ifTrue: [ permanentCardsAssociations removeKey: aCard.
+			aCard ]
 ]
 
 { #category : #updating }

@@ -118,6 +118,22 @@ CardsTest >> testApplyAccelerationAddsOneToEveryRoll [
 ]
 
 { #category : #cancellation }
+CardsTest >> testApplyCancellationGameAddsItToDiscardPile [
+	| cancellationCard overloadCard game playerNamedLeo playerNamedGlenn |
+	playerNamedLeo := Player named: 'Leo'.
+	playerNamedGlenn := Player named: 'Glenn'.
+	game := self gameForCardTestsWithPlayer: playerNamedLeo and: playerNamedGlenn.
+	overloadCard := OverloadCard new.
+	self assert: (game hasCard: overloadCard) equals: false.
+	overloadCard playIn: game against: playerNamedLeo.
+	self assert: (game hasCard: overloadCard) equals: true.
+	cancellationCard := CancellationCard new.
+	cancellationCard playIn: game against: overloadCard.
+	self assert: (game hasCard: overloadCard) equals: false.
+	self assert: game cardsDiscarded equals: 1
+]
+
+{ #category : #cancellation }
 CardsTest >> testApplyCancellationRemoveChosenCard [
 	| cancellationCard overloadCard game playerNamedLeo playerNamedGlenn |
 	playerNamedLeo := Player named: 'Leo'.
