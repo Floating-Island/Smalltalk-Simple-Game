@@ -27,6 +27,15 @@ DeckManager class >> containing: aCardCollection [
 	^ self new initializeContaining: aCardCollection
 ]
 
+{ #category : #updating }
+DeckManager >> assertCardsAvailableInDeck [
+	self cardsLeftInDeck = 0
+		ifTrue: [ [self assertDiscardPileNotEmpty]
+				on: AssertionFailure
+				do: [ AssertionFailure new signal: 'Deck and discard pile emptied...' ].
+			self shuffleDiscardPileIntoDeck ]
+]
+
 { #category : #validation }
 DeckManager >> assertDiscardPileNotEmpty [
 	self cardsInDiscardPile = 0
@@ -46,11 +55,8 @@ DeckManager >> cardsLeftInDeck [
 { #category : #updating }
 DeckManager >> dealTopCard [
 	| topCard |
-	self assertDiscardPileNotEmpty.
-	topCard := deck removeFirst.
-	self cardsLeftInDeck = 0
-		ifTrue: [ self shuffleDiscardPileIntoDeck ].
-	^ topCard
+	self assertCardsAvailableInDeck.
+	^ deck removeFirst
 ]
 
 { #category : #initialization }
