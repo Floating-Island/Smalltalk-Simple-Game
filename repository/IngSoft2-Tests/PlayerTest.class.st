@@ -136,3 +136,17 @@ PlayerTest >> testUsingCardRemovesItFromHand [
 	playerNamedLeo uses: accelerationCard in: game against: playerNamedGlenn.
 	self assert: (playerNamedLeo hasCard: accelerationCard) equals: false
 ]
+
+{ #category : #'cards tests' }
+PlayerTest >> testUsingCardRemovesItFromHandAndAddsToGameDiscardPile [
+	| accelerationCard game playerNamedLeo playerNamedGlenn |
+	playerNamedLeo := Player named: 'Leo'.
+	playerNamedGlenn := Player named: 'Glenn'.
+	game := self gameForPlayerTestsWithPlayer: playerNamedLeo and: playerNamedGlenn.
+	accelerationCard := AccelerationCard new.
+	self assert: game cardsDiscarded equals: 0.
+	playerNamedLeo addCard: accelerationCard.
+	playerNamedLeo uses: accelerationCard in: game against: playerNamedGlenn.
+	self assert: (playerNamedLeo hasCard: accelerationCard) equals: false.
+	self assert: game cardsDiscarded equals: 1
+]

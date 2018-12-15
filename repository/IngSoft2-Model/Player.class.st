@@ -51,7 +51,7 @@ Player >> quantityOfCardsInHand [
 
 { #category : #updating }
 Player >> removeCard: aCard [ 
-	cards remove: aCard
+	^ cards remove: aCard
 ]
 
 { #category : #interaction }
@@ -69,7 +69,6 @@ Player >> uses: aCard in: aGame against: aPlayerOrCard [
 	(self hasCard: aCard)
 		ifTrue: [ aCard assertCanBePlayedIn: aGame by: self.
 			aCard playIn: aGame against: aPlayerOrCard.
-			self removeCard: aCard ]
-		ifFalse: [ AssertionFailure new
-				signal: ('{1} doesn''t have that card in hand.' format: {self name}) ]
+			aGame toDiscardPile: (self removeCard: aCard) ]
+		ifFalse: [ AssertionFailure new signal: ('{1} doesn''t have that card in hand.' format: {self name}) ]
 ]

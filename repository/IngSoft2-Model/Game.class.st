@@ -10,7 +10,8 @@ Class {
 		'board',
 		'lastEffectPlayer',
 		'lastPlayedCard',
-		'permanentCardsAssociations'
+		'permanentCardsAssociations',
+		'deckManager'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -54,6 +55,11 @@ Game >> boardLength [
 { #category : #accessing }
 Game >> cards [
 	^ permanentCardsAssociations keys asOrderedCollection
+]
+
+{ #category : #interaction }
+Game >> cardsDiscarded [
+	^ deckManager cardsInDiscardPile
 ]
 
 { #category : #accessing }
@@ -108,16 +114,17 @@ Game >> hasWon: aPlayer [
 ]
 
 { #category : #initialization }
-Game >> initializePlayedBy: aPlayerCollection throwing: aDice using: aDeck in: aBoard andAmountOfLaps: aLapAmount [
+Game >> initializePlayedBy: aPlayerCollection throwing: aDice using: aDeckManager in: aBoard andAmountOfLaps: aLapAmount [
 	board := aBoard.
 	laps := aLapAmount.
 	dice := aDice.
+	deckManager := aDeckManager.
 	self fillPlayersPositionUsing: aPlayerCollection.
 	playersOrder := CircularIterator over: aPlayerCollection.
 	permanentCardsAssociations := Dictionary new.
 	lastEffectPlayer := NoEffect new -> self currentPlayerTurn.
 	lastPlayedCard := BlankCard new.
-	self deal: 2 toAllPlayersUsing: aDeck.
+	self deal: 2 toAllPlayersUsing: aDeckManager.
 	state := GameInCourse new
 ]
 
@@ -201,6 +208,11 @@ Game >> ranking [
 Game >> removeCard: aCard [
 	(self hasCard: aCard)
 		ifTrue: [ permanentCardsAssociations removeKey: aCard ]
+]
+
+{ #category : #updating }
+Game >> toDiscardPile: aCard [
+	deckManager toDiscardPile: aCard
 ]
 
 { #category : #assertion }
