@@ -5,18 +5,27 @@ Class {
 }
 
 { #category : #'utilities for tests' }
-EffectTest >> gameForEffectsTestsWithPlayer: playerNamedLeo and: playerNamedAlbert and: playerNamedGlenn [
-	| oneMoreDie anotherDie board die game deck |
+EffectTest >> gameForEffectsTestsWithPlayer: aPlayer and: anotherPlayer and: anotherMorePlayer [
+	| oneMoreDie anotherDie board die game deck overload |
 	board := UtilitiesForTests collectionOf20NoEffect.
-	deck := CircularIterator over: {OverloadCard new}.
+	overload := OverloadCard new.
+	deck := DeckManager
+		containing:
+			{overload.
+			overload.
+			overload.
+			overload.
+			overload.
+			overload.
+			overload}.
 	die := Die withSides: 4 andGenerator: (CircularIterator over: {1 . 2 . 3 . 4}).
 	anotherDie := Die withSides: 6 andGenerator: (CircularIterator over: {1 . 2 . 3 . 4 . 5 . 6}).
 	oneMoreDie := Die withSides: 5 andGenerator: (CircularIterator over: {1 . 2 . 3 . 4 . 5}).
 	game := Game
 		playedBy:
-			{playerNamedLeo.
-			playerNamedAlbert.
-			playerNamedGlenn}
+			{aPlayer.
+			anotherPlayer.
+			anotherMorePlayer}
 		throwing:
 			{die.
 			anotherDie.
@@ -115,45 +124,24 @@ EffectTest >> testNoEffectAppliedNoChangeToPlayerPosition [
 
 { #category : #'random card tests' }
 EffectTest >> testRandomEffectAppliedPlayerGetsCardFromCollection [
-	| effect game playerNamedLeo playerNamedAlbert playerNamedGlenn overload speed |
+	| effect game playerNamedLeo playerNamedAlbert playerNamedGlenn overload speed deck |
 	playerNamedLeo := Player named: 'Leo'.
 	playerNamedAlbert := Player named: 'Albert'.
 	playerNamedGlenn := Player named: 'Glenn'.
 	game := self gameForEffectsTestsWithPlayer: playerNamedLeo and: playerNamedAlbert and: playerNamedGlenn.
 	overload := OverloadCard new.
 	speed := SpeedCard new.
-	effect := CardFromDeckEffect
-		withDeck:
-			(CircularIterator
-				over:
-					{overload.
-					speed}).
+	deck := DeckManager
+		containing:
+			{overload.
+			speed}.
+	effect := CardFromDeckEffect withDeck: deck.
 	self assert: (playerNamedAlbert hasCard: overload) equals: false.
 	self assert: (playerNamedLeo hasCard: speed) equals: false.
 	effect triggerOn: game afterMovementOf: playerNamedAlbert.
 	effect triggerOn: game afterMovementOf: playerNamedLeo.
 	self assert: (playerNamedAlbert hasCard: overload) equals: true.
 	self assert: (playerNamedLeo hasCard: speed) equals: true
-]
-
-{ #category : #tests }
-EffectTest >> testRandomEffectAppliedPlayerGetsRandomCardFromCollection [
-	| effect game playerNamedLeo playerNamedAlbert playerNamedGlenn overload speed accelerate collection |
-	playerNamedLeo := Player named: 'Leo'.
-	playerNamedAlbert := Player named: 'Albert'.
-	playerNamedGlenn := Player named: 'Glenn'.
-	game := self gameForEffectsTestsWithPlayer: playerNamedLeo and: playerNamedAlbert and: playerNamedGlenn.
-	overload := OverloadCard new.
-	speed := SpeedCard new.
-	accelerate := AccelerationCard new.
-	collection := {overload.
-	speed.
-	accelerate}.
-	effect := CardFromDeckEffect withDeck: (RandomElementSelector over: collection).
-	effect triggerOn: game afterMovementOf: playerNamedAlbert.
-	effect triggerOn: game afterMovementOf: playerNamedLeo.
-	self assert: (collection includes: playerNamedAlbert cardsInHand last) equals: true.
-	self assert: (collection includes: playerNamedLeo cardsInHand last) equals: true
 ]
 
 { #category : #'speed up tests' }

@@ -5,16 +5,22 @@ Class {
 }
 
 { #category : #'utilities for tests' }
-CardsTest >> gameForCardTestsWithPlayer: playerNamedLeo and: playerNamedGlenn [
-	| die game collection board deck |
+CardsTest >> gameForCardTestsWithPlayer: aPlayer and: anotherPlayer [
+	| die game collection board deck overload |
 	collection := {4 . 2 . 3 . 4 . 5}.
-	deck := CircularIterator over: {OverloadCard new}.
+	overload := OverloadCard new.
+	deck := DeckManager
+		containing:
+			{overload.
+			overload.
+			overload.
+			overload}.
 	die := Die withSides: 4 andGenerator: (CircularIterator over: collection).
 	board := UtilitiesForTests collectionOf20NoEffect.
 	game := Game
 		playedBy:
-			{playerNamedLeo.
-			playerNamedGlenn}
+			{aPlayer.
+			anotherPlayer}
 		throwing: {die}
 		using: deck
 		in: board
@@ -23,10 +29,16 @@ CardsTest >> gameForCardTestsWithPlayer: playerNamedLeo and: playerNamedGlenn [
 ]
 
 { #category : #'utilities for tests' }
-CardsTest >> gameForRepeatTestWithPlayer: playerNamedLeo and: playerNamedGlenn [
-	| die game collection board deck |
+CardsTest >> gameForRepeatTestWithPlayer: aPlayer and: anotherPlayer [
+	| die game collection board deck overload |
 	collection := {4 . 2 . 3 . 4 . 5}.
-	deck := CircularIterator over: {OverloadCard new}.
+	overload := OverloadCard new.
+	deck := DeckManager
+		containing:
+			{overload.
+			overload.
+			overload.
+			overload}.
 	die := Die withSides: 4 andGenerator: (CircularIterator over: collection).
 	board := {NoEffect new.
 	NoEffect new.
@@ -40,8 +52,8 @@ CardsTest >> gameForRepeatTestWithPlayer: playerNamedLeo and: playerNamedGlenn [
 	NoEffect new}.
 	game := Game
 		playedBy:
-			{playerNamedLeo.
-			playerNamedGlenn}
+			{aPlayer.
+			anotherPlayer}
 		throwing: {die}
 		using: deck
 		in: board
@@ -51,9 +63,15 @@ CardsTest >> gameForRepeatTestWithPlayer: playerNamedLeo and: playerNamedGlenn [
 
 { #category : #cancellation }
 CardsTest >> shortGameWithFirstPlayer: aPlayer andSecondPlayer: anotherPlayer [
-	| die game collection board deck |
+	| die game collection board deck overload |
 	collection := {22}.
-	deck := CircularIterator over: {OverloadCard new}.
+	overload := OverloadCard new.
+	deck := DeckManager
+		containing:
+			{overload.
+			overload.
+			overload.
+			overload}.
 	die := Die withSides: 4 andGenerator: (CircularIterator over: collection).
 	board := UtilitiesForTests collectionOf20NoEffect.
 	game := Game
