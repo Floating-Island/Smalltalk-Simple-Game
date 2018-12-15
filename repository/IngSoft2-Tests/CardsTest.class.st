@@ -6,15 +6,9 @@ Class {
 
 { #category : #'utilities for tests' }
 CardsTest >> gameForCardTestsWithPlayer: aPlayer and: anotherPlayer [
-	| die game collection board deck overload |
+	| die game collection board deck |
 	collection := {4 . 2 . 3 . 4 . 5}.
-	overload := OverloadCard new.
-	deck := DeckManager
-		containing:
-			{overload.
-			overload.
-			overload.
-			overload}.
+	deck := DeckManager containing: ((FixedCardsDistributor withProbabilities: {(OverloadCard -> 100)} asDictionary) deckOfSize: 10).
 	die := Die withSides: 4 andGenerator: (CircularIterator over: collection).
 	board := UtilitiesForTests collectionOf20NoEffect.
 	game := Game
@@ -30,15 +24,9 @@ CardsTest >> gameForCardTestsWithPlayer: aPlayer and: anotherPlayer [
 
 { #category : #'utilities for tests' }
 CardsTest >> gameForRepeatTestWithPlayer: aPlayer and: anotherPlayer [
-	| die game collection board deck overload |
+	| die game collection board deck |
 	collection := {4 . 2 . 3 . 4 . 5}.
-	overload := OverloadCard new.
-	deck := DeckManager
-		containing:
-			{overload.
-			overload.
-			overload.
-			overload}.
+	deck := DeckManager containing: ((FixedCardsDistributor withProbabilities: {(OverloadCard -> 100)} asDictionary) deckOfSize: 10).
 	die := Die withSides: 4 andGenerator: (CircularIterator over: collection).
 	board := {NoEffect new.
 	NoEffect new.
@@ -63,15 +51,9 @@ CardsTest >> gameForRepeatTestWithPlayer: aPlayer and: anotherPlayer [
 
 { #category : #cancellation }
 CardsTest >> shortGameWithFirstPlayer: aPlayer andSecondPlayer: anotherPlayer [
-	| die game collection board deck overload |
+	| die game collection board deck |
 	collection := {22}.
-	overload := OverloadCard new.
-	deck := DeckManager
-		containing:
-			{overload.
-			overload.
-			overload.
-			overload}.
+	deck := DeckManager containing: ((FixedCardsDistributor withProbabilities: {(OverloadCard -> 100)} asDictionary) deckOfSize: 10).
 	die := Die withSides: 4 andGenerator: (CircularIterator over: collection).
 	board := UtilitiesForTests collectionOf20NoEffect.
 	game := Game

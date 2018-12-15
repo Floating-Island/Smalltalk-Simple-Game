@@ -6,15 +6,8 @@ Class {
 
 { #category : #'utilities for tests' }
 GameStateTest >> gameForGameStateTestsWithPlayer: aPlayer and: anotherPlayer [
-	| die anotherDie game board deck overload |
-	overload := OverloadCard new.
-	deck := DeckManager
-		containing:
-			{overload.
-			overload.
-			overload.
-			overload.
-			overload}.
+	| die anotherDie game board deck |
+	deck := DeckManager containing: ((FixedCardsDistributor withProbabilities: {(OverloadCard -> 100)} asDictionary) deckOfSize: 10).
 	die := Die withSides: 5 andGenerator: (CircularIterator over: {1 . 2 . 3 . 4 . 5}).
 	anotherDie := Die withSides: 5 andGenerator: (CircularIterator over: {1 . 2 . 3 . 4 . 5}).
 	board := UtilitiesForTests collectionOf20NoEffect.
