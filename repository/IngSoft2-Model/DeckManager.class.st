@@ -27,6 +27,12 @@ DeckManager class >> containing: aCardCollection [
 	^ self new initializeContaining: aCardCollection
 ]
 
+{ #category : #validation }
+DeckManager >> assertAvailableQuantityToDeal: aNumberOfCards [
+	aNumberOfCards > self cardsLeftInDeck
+		ifTrue: [ AssertionFailure new signal: 'Can''t deal more cards than available...' ]
+]
+
 { #category : #updating }
 DeckManager >> assertCardsAvailableInDeck [
 	self cardsLeftInDeck = 0
@@ -53,8 +59,14 @@ DeckManager >> cardsLeftInDeck [
 ]
 
 { #category : #interaction }
-DeckManager >> deal: aNumberOfCards to: aPlayer [ 
-	aNumberOfCards timesRepeat: [ aPlayer drawCardFrom: self ]
+DeckManager >> deal: aNumberOfCards to: aPlayer [
+	self deal: aNumberOfCards toAllIn: aPlayer asOrderedCollection
+]
+
+{ #category : #interaction }
+DeckManager >> deal: aNumberOfCards toAllIn: players [
+	self assertAvailableQuantityToDeal: aNumberOfCards * players size.
+	players do: [ :each | aNumberOfCards timesRepeat: [ each drawCardFrom: self ] ]
 ]
 
 { #category : #updating }

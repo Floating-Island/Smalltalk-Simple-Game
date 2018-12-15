@@ -64,6 +64,29 @@ DeckManagerTest >> testCreationWithObjectsOtherThanCardsRaisesException [
 ]
 
 { #category : #tests }
+DeckManagerTest >> testDealCardsToManyPlayersRemovesThemFromDeck [
+	| deckManager cardCollection overload accelleration player |
+	player := Player named: 'Albert'.
+	overload := OverloadCard new.
+	accelleration := AccelerationCard new.
+	cardCollection := {overload.
+	accelleration} asOrderedCollection.
+	deckManager := DeckManager containing: cardCollection.
+	self assert: deckManager cardsLeftInDeck equals: 2.
+	deckManager
+		deal: 1
+		toAllIn:
+			{player.
+			player}.
+	self
+		assert: player cardsInHand
+		equals:
+			{overload.
+			accelleration} asOrderedCollection.
+	self assert: deckManager cardsLeftInDeck equals: 0
+]
+
+{ #category : #tests }
 DeckManagerTest >> testDealCardsToPlayerRemovesThemFromDeck [
 	| deckManager cardCollection overload accelleration player |
 	player := Player named: 'Albert'.
@@ -80,6 +103,42 @@ DeckManagerTest >> testDealCardsToPlayerRemovesThemFromDeck [
 			{overload.
 			accelleration} asOrderedCollection.
 	self assert: deckManager cardsLeftInDeck equals: 0
+]
+
+{ #category : #tests }
+DeckManagerTest >> testDealMoreCardsThanAvailableRaisesException [
+	| deckManager cardCollection overload accelleration player |
+	player := Player named: 'Albert'.
+	overload := OverloadCard new.
+	accelleration := AccelerationCard new.
+	cardCollection := {overload.
+	accelleration} asOrderedCollection.
+	deckManager := DeckManager containing: cardCollection.
+	self assert: deckManager cardsLeftInDeck equals: 2.
+	self
+		should: [ deckManager deal: 3 to: player ]
+		raise: AssertionFailure
+		withExceptionDo: [ :signal | self assert: signal messageText equals: 'Can''t deal more cards than available...' ]
+]
+
+{ #category : #tests }
+DeckManagerTest >> testDealMoreCardsThanAvailableToManyPlayersRaisesException [
+	| deckManager cardCollection overload accelleration player |
+	player := Player named: 'Albert'.
+	overload := OverloadCard new.
+	accelleration := AccelerationCard new.
+	cardCollection := {overload.
+	accelleration} asOrderedCollection.
+	deckManager := DeckManager containing: cardCollection.
+	self assert: deckManager cardsLeftInDeck equals: 2.
+	self
+		should: [ deckManager
+				deal: 3
+				toAllIn:
+					{player.
+					player} ]
+		raise: AssertionFailure
+		withExceptionDo: [ :signal | self assert: signal messageText equals: 'Can''t deal more cards than available...' ]
 ]
 
 { #category : #tests }
