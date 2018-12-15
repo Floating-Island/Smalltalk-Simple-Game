@@ -208,6 +208,7 @@ PlayerTest >> testUsingRedoCardRemovesItFromHandAndIsAddedToDiscardPile_Instanta
 	playerNamedLeo addCard: redoCard.
 	playerNamedLeo addCard: blankCard.
 	playerNamedLeo uses: blankCard in: game against: playerNamedGlenn.
+	self assert: game cardsDiscarded equals: 1.
 	playerNamedLeo uses: redoCard in: game against: playerNamedGlenn.
 	self assert: (playerNamedLeo hasCard: redoCard) equals: false.
 	self assert: game cardsDiscarded equals: 2
