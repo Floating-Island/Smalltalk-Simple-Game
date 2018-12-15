@@ -1,5 +1,5 @@
 Class {
-	#name : #FixedDistributor,
+	#name : #FixedEffectsDistributor,
 	#superclass : #Object,
 	#instVars : [
 		'fixedCollection'
@@ -8,13 +8,13 @@ Class {
 }
 
 { #category : #'instance creation' }
-FixedDistributor class >> withProbabilityOfSpeedUp: aSpeedUpProbability wormhole: aWormholeProbability atomic: aAtomicProbability noEffect: aNoEffectProbability moonwalk: aMoonWalkProbability andMaximumMoonwalkSteps: aMaximumMoonwalkSteps [ 
+FixedEffectsDistributor class >> withProbabilityOfSpeedUp: aSpeedUpProbability wormhole: aWormholeProbability atomic: aAtomicProbability noEffect: aNoEffectProbability moonwalk: aMoonWalkProbability andMaximumMoonwalkSteps: aMaximumMoonwalkSteps [ 
 	
 	^self new initializeWithProbabilityOfSpeedUp: aSpeedUpProbability wormhole: aWormholeProbability atomic: aAtomicProbability noEffect: aNoEffectProbability moonwalk: aMoonWalkProbability andMaximumMoonwalkSteps: aMaximumMoonwalkSteps 
 ]
 
 { #category : #interaction }
-FixedDistributor >> boardOfLength: aSize [
+FixedEffectsDistributor >> boardOfLength: aSize [
 	| collection |
 	collection := OrderedCollection new.
 	aSize timesRepeat: [ collection add: self randomElementFromFixedCollection ].
@@ -22,12 +22,12 @@ FixedDistributor >> boardOfLength: aSize [
 ]
 
 { #category : #interaction }
-FixedDistributor >> collectionOf: aSize containingAll: aElement [
+FixedEffectsDistributor >> collectionOf: aSize containingAll: aElement [
 	^ OrderedCollection new: aSize withAll: aElement
 ]
 
 { #category : #initialization }
-FixedDistributor >> initializeWithProbabilityOfSpeedUp: aSpeedUpProbability wormhole: aWormholeProbability atomic: aAtomicProbability noEffect: aNoEffectProbability moonwalk: aMoonWalkProbability andMaximumMoonwalkSteps: aMaximumMoonwalkSteps [
+FixedEffectsDistributor >> initializeWithProbabilityOfSpeedUp: aSpeedUpProbability wormhole: aWormholeProbability atomic: aAtomicProbability noEffect: aNoEffectProbability moonwalk: aMoonWalkProbability andMaximumMoonwalkSteps: aMaximumMoonwalkSteps [
 	self
 		verifyCorrectProbabilitiesSum:
 			{aSpeedUpProbability.
@@ -44,7 +44,7 @@ FixedDistributor >> initializeWithProbabilityOfSpeedUp: aSpeedUpProbability worm
 ]
 
 { #category : #interaction }
-FixedDistributor >> moonWalkcollectionOf: aSize andMaximumSteps: steps [
+FixedEffectsDistributor >> moonWalkcollectionOf: aSize andMaximumSteps: steps [
 	| collection |
 	collection := OrderedCollection new.
 	aSize timesRepeat: [ collection add: (MoonWalkEffect withSteps: steps atRandom) ].
@@ -52,12 +52,12 @@ FixedDistributor >> moonWalkcollectionOf: aSize andMaximumSteps: steps [
 ]
 
 { #category : #interaction }
-FixedDistributor >> randomElementFromFixedCollection [
+FixedEffectsDistributor >> randomElementFromFixedCollection [
 	^ fixedCollection atRandom
 ]
 
 { #category : #validation }
-FixedDistributor >> verifyCorrectProbabilitiesSum: aCollection [ 
+FixedEffectsDistributor >> verifyCorrectProbabilitiesSum: aCollection [ 
 	^ (aCollection sumNumbers: [ :each | each ]) = 100
 		ifFalse: [ AssertionFailure signal: 'The sum of probabilities should be 100' ]
 ]

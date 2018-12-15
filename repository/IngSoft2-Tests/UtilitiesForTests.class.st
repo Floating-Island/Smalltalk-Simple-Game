@@ -7,7 +7,7 @@ Class {
 { #category : #interaction }
 UtilitiesForTests class >> collectionOf20NoEffect [
 	| distributor |
-	distributor := FixedDistributor
+	distributor := FixedEffectsDistributor
 		withProbabilityOfSpeedUp: 0
 		wormhole: 0
 		atomic: 0

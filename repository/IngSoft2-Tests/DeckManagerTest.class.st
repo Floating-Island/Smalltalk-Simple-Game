@@ -6,24 +6,24 @@ Class {
 
 { #category : #tests }
 DeckManagerTest >> testAddToDiscardPileAddsItToDiscardPile [
-	| deckManager cardCollection overload accelleration |
+	| deckManager cardCollection overload acceleration |
 	overload := OverloadCard new.
-	accelleration := AccelerationCard new.
+	acceleration := AccelerationCard new.
 	cardCollection := {overload.
-	accelleration} asOrderedCollection.
+	acceleration} asOrderedCollection.
 	deckManager := DeckManager containing: cardCollection.
 	self assert: deckManager cardsInDiscardPile equals: 0.
-	deckManager toDiscardPile: accelleration.
+	deckManager toDiscardPile: acceleration.
 	self assert: deckManager cardsInDiscardPile equals: 1.
 ]
 
 { #category : #tests }
 DeckManagerTest >> testAddToDiscardPileRaisesExceptionWhenNotACard [
-	| deckManager cardCollection overload accelleration discarded |
+	| deckManager cardCollection overload acceleration discarded |
 	overload := OverloadCard new.
-	accelleration := AccelerationCard new.
+	acceleration := AccelerationCard new.
 	cardCollection := {overload.
-	accelleration} asOrderedCollection.
+	acceleration} asOrderedCollection.
 	deckManager := DeckManager containing: cardCollection.
 	self assert: deckManager cardsLeftInDeck equals: 2.
 	discarded := 1.
@@ -65,12 +65,12 @@ DeckManagerTest >> testCreationWithObjectsOtherThanCardsRaisesException [
 
 { #category : #tests }
 DeckManagerTest >> testDealCardsToManyPlayersRemovesThemFromDeck [
-	| deckManager cardCollection overload accelleration player |
+	| deckManager cardCollection overload acceleration player |
 	player := Player named: 'Albert'.
 	overload := OverloadCard new.
-	accelleration := AccelerationCard new.
+	acceleration := AccelerationCard new.
 	cardCollection := {overload.
-	accelleration} asOrderedCollection.
+	acceleration} asOrderedCollection.
 	deckManager := DeckManager containing: cardCollection.
 	self assert: deckManager cardsLeftInDeck equals: 2.
 	deckManager
@@ -82,18 +82,18 @@ DeckManagerTest >> testDealCardsToManyPlayersRemovesThemFromDeck [
 		assert: player cardsInHand
 		equals:
 			{overload.
-			accelleration} asOrderedCollection.
+			acceleration} asOrderedCollection.
 	self assert: deckManager cardsLeftInDeck equals: 0
 ]
 
 { #category : #tests }
 DeckManagerTest >> testDealCardsToPlayerRemovesThemFromDeck [
-	| deckManager cardCollection overload accelleration player |
+	| deckManager cardCollection overload acceleration player |
 	player := Player named: 'Albert'.
 	overload := OverloadCard new.
-	accelleration := AccelerationCard new.
+	acceleration := AccelerationCard new.
 	cardCollection := {overload.
-	accelleration} asOrderedCollection.
+	acceleration} asOrderedCollection.
 	deckManager := DeckManager containing: cardCollection.
 	self assert: deckManager cardsLeftInDeck equals: 2.
 	deckManager deal: 2 to: player.
@@ -101,18 +101,18 @@ DeckManagerTest >> testDealCardsToPlayerRemovesThemFromDeck [
 		assert: player cardsInHand
 		equals:
 			{overload.
-			accelleration} asOrderedCollection.
+			acceleration} asOrderedCollection.
 	self assert: deckManager cardsLeftInDeck equals: 0
 ]
 
 { #category : #tests }
 DeckManagerTest >> testDealMoreCardsThanAvailableRaisesException [
-	| deckManager cardCollection overload accelleration player |
+	| deckManager cardCollection overload acceleration player |
 	player := Player named: 'Albert'.
 	overload := OverloadCard new.
-	accelleration := AccelerationCard new.
+	acceleration := AccelerationCard new.
 	cardCollection := {overload.
-	accelleration} asOrderedCollection.
+	acceleration} asOrderedCollection.
 	deckManager := DeckManager containing: cardCollection.
 	self assert: deckManager cardsLeftInDeck equals: 2.
 	self
@@ -123,12 +123,12 @@ DeckManagerTest >> testDealMoreCardsThanAvailableRaisesException [
 
 { #category : #tests }
 DeckManagerTest >> testDealMoreCardsThanAvailableToManyPlayersRaisesException [
-	| deckManager cardCollection overload accelleration player |
+	| deckManager cardCollection overload acceleration player |
 	player := Player named: 'Albert'.
 	overload := OverloadCard new.
-	accelleration := AccelerationCard new.
+	acceleration := AccelerationCard new.
 	cardCollection := {overload.
-	accelleration} asOrderedCollection.
+	acceleration} asOrderedCollection.
 	deckManager := DeckManager containing: cardCollection.
 	self assert: deckManager cardsLeftInDeck equals: 2.
 	self
@@ -143,26 +143,26 @@ DeckManagerTest >> testDealMoreCardsThanAvailableToManyPlayersRaisesException [
 
 { #category : #tests }
 DeckManagerTest >> testDealTopCardRemovesTopCardFromDeck [
-	| deckManager cardCollection overload accelleration |
+	| deckManager cardCollection overload acceleration |
 	overload := OverloadCard new.
-	accelleration := AccelerationCard new.
+	acceleration := AccelerationCard new.
 	cardCollection := {overload.
-	accelleration} asOrderedCollection.
+	acceleration} asOrderedCollection.
 	deckManager := DeckManager containing: cardCollection.
 	self assert: deckManager cardsLeftInDeck equals: 2.
 	self assert: deckManager dealTopCard equals: overload.
 	self assert: deckManager cardsLeftInDeck equals: 1.
-	self assert: deckManager dealTopCard equals: accelleration.
+	self assert: deckManager dealTopCard equals: acceleration.
 	self assert: deckManager cardsLeftInDeck equals: 0
 ]
 
 { #category : #tests }
 DeckManagerTest >> testDealTopCardWhileDiscarPileEmptyRaisesException [
-	| deckManager cardCollection overload accelleration |
+	| deckManager cardCollection overload acceleration |
 	overload := OverloadCard new.
-	accelleration := AccelerationCard new.
+	acceleration := AccelerationCard new.
 	cardCollection := {overload.
-	accelleration} asOrderedCollection.
+	acceleration} asOrderedCollection.
 	deckManager := DeckManager containing: cardCollection.
 	self assert: deckManager cardsInDiscardPile equals: 0.
 	self assert: deckManager cardsLeftInDeck equals: 2.
@@ -176,7 +176,7 @@ DeckManagerTest >> testDealTopCardWhileDiscarPileEmptyRaisesException [
 		raise: AssertionFailure
 		withExceptionDo: [ :signal | self assert: signal messageText equals: 'Deck and discard pile emptied...' ].
 	deckManager toDiscardPile: overload.
-	deckManager toDiscardPile: accelleration.
+	deckManager toDiscardPile: acceleration.
 	deckManager dealTopCard.
 	self assert: deckManager cardsLeftInDeck equals: 1
 ]
