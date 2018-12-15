@@ -64,7 +64,7 @@ DeckManagerTest >> testCreationWithObjectsOtherThanCardsRaisesException [
 ]
 
 { #category : #tests }
-DeckManagerTest >> testDealCardsToPlayersRemovesThemFromDeck [
+DeckManagerTest >> testDealCardsToPlayerRemovesThemFromDeck [
 	| deckManager cardCollection overload accelleration player |
 	player := Player named: 'Albert'.
 	overload := OverloadCard new.
