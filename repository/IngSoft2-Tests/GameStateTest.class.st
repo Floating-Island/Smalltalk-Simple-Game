@@ -5,16 +5,16 @@ Class {
 }
 
 { #category : #'utilities for tests' }
-GameStateTest >> gameForGameStateTestsWithPlayer: playerNamedLeo and: playerNamedGlenn [
+GameStateTest >> gameForGameStateTestsWithPlayer: aPlayer and: anotherPlayer [
 	| die anotherDie game board deck |
-	deck := CircularIterator over: {OverloadCard new}.
+	deck := DeckManager containing: ((FixedCardsDistributor withProbabilities: {(OverloadCard -> 100)} asDictionary) deckOfSize: 10).
 	die := Die withSides: 5 andGenerator: (CircularIterator over: {1 . 2 . 3 . 4 . 5}).
 	anotherDie := Die withSides: 5 andGenerator: (CircularIterator over: {1 . 2 . 3 . 4 . 5}).
 	board := UtilitiesForTests collectionOf20NoEffect.
 	game := Game
 		playedBy:
-			{playerNamedLeo.
-			playerNamedGlenn}
+			{aPlayer.
+			anotherPlayer}
 		throwing:
 			{die.
 			anotherDie}

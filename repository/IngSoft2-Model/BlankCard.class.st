@@ -19,3 +19,8 @@ BlankCard >> assertCanBePlayedIn: aGame by: aPlayer [
 BlankCard >> playIn: aGame against: aPlayerOrCard [
 	self affect: aPlayerOrCard in: aGame
 ]
+
+{ #category : #interaction }
+BlankCard >> removedFromAHandIn: aGame [
+	aGame toDiscardPile: self
+]

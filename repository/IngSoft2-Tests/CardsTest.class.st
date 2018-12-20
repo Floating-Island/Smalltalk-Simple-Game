@@ -5,16 +5,16 @@ Class {
 }
 
 { #category : #'utilities for tests' }
-CardsTest >> gameForCardTestsWithPlayer: playerNamedLeo and: playerNamedGlenn [
+CardsTest >> gameForCardTestsWithPlayer: aPlayer and: anotherPlayer [
 	| die game collection board deck |
 	collection := {4 . 2 . 3 . 4 . 5}.
-	deck := CircularIterator over: {OverloadCard new}.
+	deck := DeckManager containing: ((FixedCardsDistributor withProbabilities: {(OverloadCard -> 100)} asDictionary) deckOfSize: 10).
 	die := Die withSides: 4 andGenerator: (CircularIterator over: collection).
 	board := UtilitiesForTests collectionOf20NoEffect.
 	game := Game
 		playedBy:
-			{playerNamedLeo.
-			playerNamedGlenn}
+			{aPlayer.
+			anotherPlayer}
 		throwing: {die}
 		using: deck
 		in: board
@@ -23,10 +23,10 @@ CardsTest >> gameForCardTestsWithPlayer: playerNamedLeo and: playerNamedGlenn [
 ]
 
 { #category : #'utilities for tests' }
-CardsTest >> gameForRepeatTestWithPlayer: playerNamedLeo and: playerNamedGlenn [
+CardsTest >> gameForRepeatTestWithPlayer: aPlayer and: anotherPlayer [
 	| die game collection board deck |
 	collection := {4 . 2 . 3 . 4 . 5}.
-	deck := CircularIterator over: {OverloadCard new}.
+	deck := DeckManager containing: ((FixedCardsDistributor withProbabilities: {(OverloadCard -> 100)} asDictionary) deckOfSize: 10).
 	die := Die withSides: 4 andGenerator: (CircularIterator over: collection).
 	board := {NoEffect new.
 	NoEffect new.
@@ -40,8 +40,8 @@ CardsTest >> gameForRepeatTestWithPlayer: playerNamedLeo and: playerNamedGlenn [
 	NoEffect new}.
 	game := Game
 		playedBy:
-			{playerNamedLeo.
-			playerNamedGlenn}
+			{aPlayer.
+			anotherPlayer}
 		throwing: {die}
 		using: deck
 		in: board
@@ -53,7 +53,7 @@ CardsTest >> gameForRepeatTestWithPlayer: playerNamedLeo and: playerNamedGlenn [
 CardsTest >> shortGameWithFirstPlayer: aPlayer andSecondPlayer: anotherPlayer [
 	| die game collection board deck |
 	collection := {22}.
-	deck := CircularIterator over: {OverloadCard new}.
+	deck := DeckManager containing: ((FixedCardsDistributor withProbabilities: {(OverloadCard -> 100)} asDictionary) deckOfSize: 10).
 	die := Die withSides: 4 andGenerator: (CircularIterator over: collection).
 	board := UtilitiesForTests collectionOf20NoEffect.
 	game := Game
@@ -97,6 +97,22 @@ CardsTest >> testApplyAccelerationAddsOneToEveryRoll [
 	self assert: (game positionFor: playerNamedGlenn) equals: 1.
 	playerNamedGlenn takesATurnIn: game.
 	self assert: (game positionFor: playerNamedGlenn) equals: 4
+]
+
+{ #category : #cancellation }
+CardsTest >> testApplyCancellationGameAddsItToDiscardPile [
+	| cancellationCard overloadCard game playerNamedLeo playerNamedGlenn |
+	playerNamedLeo := Player named: 'Leo'.
+	playerNamedGlenn := Player named: 'Glenn'.
+	game := self gameForCardTestsWithPlayer: playerNamedLeo and: playerNamedGlenn.
+	overloadCard := OverloadCard new.
+	self assert: (game hasCard: overloadCard) equals: false.
+	overloadCard playIn: game against: playerNamedLeo.
+	self assert: (game hasCard: overloadCard) equals: true.
+	cancellationCard := CancellationCard new.
+	cancellationCard playIn: game against: overloadCard.
+	self assert: (game hasCard: overloadCard) equals: false.
+	self assert: game cardsDiscarded equals: 1
 ]
 
 { #category : #cancellation }

@@ -12,7 +12,7 @@ GameTest >> assert: a hasTheSameOrderThan: b [
 { #category : #'test utilities' }
 GameTest >> collectionOf16NoEffect [
 	| distributor |
-	distributor := FixedDistributor
+	distributor := FixedEffectsDistributor
 		withProbabilityOfSpeedUp: 0
 		wormhole: 0
 		atomic: 0
@@ -25,7 +25,7 @@ GameTest >> collectionOf16NoEffect [
 { #category : #'test utilities' }
 GameTest >> collectionOf5NoEffect [
 	| distributor |
-	distributor := FixedDistributor
+	distributor := FixedEffectsDistributor
 		withProbabilityOfSpeedUp: 0
 		wormhole: 0
 		atomic: 0
@@ -38,7 +38,7 @@ GameTest >> collectionOf5NoEffect [
 { #category : #'test utilities' }
 GameTest >> collectionOf80NoEffect [
 	| distributor |
-	distributor := FixedDistributor
+	distributor := FixedEffectsDistributor
 		withProbabilityOfSpeedUp: 0
 		wormhole: 0
 		atomic: 0
@@ -50,7 +50,7 @@ GameTest >> collectionOf80NoEffect [
 
 { #category : #'create tests' }
 GameTest >> gameDistributedWithPlayer: aPlayer and: anotherPlayer [
-	| lapsAmount board die game deck |
+	| lapsAmount board die game deck noEffect speedUpEffect wormHoleEffect moonWalkEffect atomicEffect |
 	noEffect := NoEffect new.
 	speedUpEffect := SpeedUpEffect new.
 	wormHoleEffect := WormholeEffect new.
@@ -66,7 +66,7 @@ GameTest >> gameDistributedWithPlayer: aPlayer and: anotherPlayer [
 	wormHoleEffect.
 	moonWalkEffect.
 	speedUpEffect} asOrderedCollection.
-	deck := CircularIterator over: {OverloadCard new}.
+	deck := DeckManager containing: ((FixedCardsDistributor withProbabilities: {(OverloadCard -> 100)} asDictionary) deckOfSize: 10).
 	die := Die withSides: 4 andGenerator: (CircularIterator over: {1 . 7 . 3 . 8 . 1 . 6 . 10 . 1 . 5 . 6 . 3}).
 	lapsAmount := 3.
 	game := Game
@@ -84,7 +84,7 @@ GameTest >> gameDistributedWithPlayer: aPlayer and: anotherPlayer [
 GameTest >> gameForLapsWithPlayer: aPlayer and: anotherPlayer and: oneMorePlayer [
 	| oneMoreDie anotherDie board die game deck |
 	board := UtilitiesForTests collectionOf20NoEffect.
-	deck := CircularIterator over: {OverloadCard new}.
+	deck := DeckManager containing: ((FixedCardsDistributor withProbabilities: {(OverloadCard -> 100)} asDictionary) deckOfSize: 10).
 	die := Die withSides: 4 andGenerator: (CircularIterator over: {1 . 7 . 1}).
 	anotherDie := Die withSides: 4 andGenerator: (CircularIterator over: {1 . 7 . 1}).
 	oneMoreDie := Die withSides: 4 andGenerator: (CircularIterator over: {1 . 7 . 1}).
@@ -107,7 +107,7 @@ GameTest >> gameForLapsWithPlayer: aPlayer and: anotherPlayer and: oneMorePlayer
 GameTest >> gameForPositionForWithPlayer: aPlayer and: anotherPlayer and: oneMorePlayer [
 	| oneMoreDie anotherDie board die game deck |
 	board := UtilitiesForTests collectionOf20NoEffect.
-	deck := CircularIterator over: {OverloadCard new}.
+	deck := DeckManager containing: ((FixedCardsDistributor withProbabilities: {(OverloadCard -> 100)} asDictionary) deckOfSize: 10).
 	die := Die withSides: 4 andGenerator: (CircularIterator over: {1 . 5 . 1}).
 	anotherDie := Die withSides: 4 andGenerator: (CircularIterator over: {1 . 5 . 1}).
 	oneMoreDie := Die withSides: 4 andGenerator: (CircularIterator over: {1 . 5 . 1}).
@@ -130,7 +130,7 @@ GameTest >> gameForPositionForWithPlayer: aPlayer and: anotherPlayer and: oneMor
 GameTest >> gameForResultsAnotherIteratorWithPlayer: aPlayer and: anotherPlayer and: oneMorePlayer [
 	| oneMoreDie anotherDie board die game deck |
 	board := self collectionOf16NoEffect.
-	deck := CircularIterator over: {OverloadCard new}.
+	deck := DeckManager containing: ((FixedCardsDistributor withProbabilities: {(OverloadCard -> 100)} asDictionary) deckOfSize: 10).
 	die := Die withSides: 4 andGenerator: (CircularIterator over: {1 . 2 . 3 . 4}).
 	anotherDie := Die withSides: 6 andGenerator: (CircularIterator over: {1 . 2 . 3 . 4 . 5 . 6}).
 	oneMoreDie := Die withSides: 5 andGenerator: (CircularIterator over: {1 . 2 . 3 . 4 . 5}).
@@ -153,7 +153,7 @@ GameTest >> gameForResultsAnotherIteratorWithPlayer: aPlayer and: anotherPlayer 
 GameTest >> gameForResultsIteratorWithPlayer: aPlayer and: anotherPlayer and: oneMorePlayer [
 	| oneMoreDie anotherDie board die game deck |
 	board := self collectionOf80NoEffect.
-	deck := CircularIterator over: {OverloadCard new}.
+	deck := DeckManager containing: ((FixedCardsDistributor withProbabilities: {(OverloadCard -> 100)} asDictionary) deckOfSize: 10).
 	die := Die withSides: 6 andGenerator: (CircularIterator over: {1 . 2 . 3 . 5 . 6 . 40}).
 	anotherDie := Die withSides: 6 andGenerator: (CircularIterator over: {1 . 2 . 3 . 5 . 6 . 40}).
 	oneMoreDie := Die withSides: 6 andGenerator: (CircularIterator over: {1 . 2 . 3 . 5 . 6 . 40}).
@@ -179,7 +179,7 @@ GameTest >> gameForReturnLenghtOf: board [
 	aPlayer := Player named: 'Leo'.
 	anotherPlayer := Player named: 'Glenn'.
 	collection := {1 . 2 . 3 . 4 . 5}.
-	deck := CircularIterator over: {OverloadCard new}.
+	deck := DeckManager containing: ((FixedCardsDistributor withProbabilities: {(OverloadCard -> 100)} asDictionary) deckOfSize: 10).
 	die := Die withSides: 4 andGenerator: (CircularIterator over: collection).
 	lapsAmount := 3.
 	game := Game
@@ -199,7 +199,7 @@ GameTest >> gameForReturnLenghtOf: board [
 GameTest >> gameForTurnOrderLike: aPlayer and: anotherPlayer [
 	| die game collection board deck |
 	collection := {1 . 2 . 3 . 4 . 5}.
-	deck := CircularIterator over: {OverloadCard new}.
+	deck := DeckManager containing: ((FixedCardsDistributor withProbabilities: {(OverloadCard -> 100)} asDictionary) deckOfSize: 10).
 	die := Die withSides: 4 andGenerator: (CircularIterator over: collection).
 	board := UtilitiesForTests collectionOf20NoEffect.
 	game := Game
@@ -227,7 +227,7 @@ GameTest >> gameForTurnOrderLike: aPlayer and: anotherPlayer [
 GameTest >> gameUsingAnAtomicEffectWithPlayer: aPlayer and: anotherPlayer [
 	| collection lapsAmount board die game deck |
 	collection := {1}.
-	deck := CircularIterator over: {OverloadCard new}.
+	deck := DeckManager containing: ((FixedCardsDistributor withProbabilities: {(OverloadCard -> 100)} asDictionary) deckOfSize: 10).
 	die := Die withSides: 4 andGenerator: (CircularIterator over: collection).
 	board := {NoEffect new.
 	NoEffect new.
@@ -250,7 +250,7 @@ GameTest >> gameUsingAnAtomicEffectWithPlayer: aPlayer and: anotherPlayer [
 GameTest >> gameUsingAnotherAtomicEffectWithPlayer: aPlayer and: anotherPlayer [
 	| collection lapsAmount board die game deck |
 	collection := {6 . 6 . 1}.
-	deck := CircularIterator over: {OverloadCard new}.
+	deck := DeckManager containing: ((FixedCardsDistributor withProbabilities: {(OverloadCard -> 100)} asDictionary) deckOfSize: 10).
 	die := Die withSides: 4 andGenerator: (CircularIterator over: collection).
 	board := {NoEffect new.
 	NoEffect new.
@@ -273,7 +273,7 @@ GameTest >> gameUsingAnotherAtomicEffectWithPlayer: aPlayer and: anotherPlayer [
 GameTest >> gameUsingCardsWithFirstPlayer: aPlayer andSecondPlayer: anotherPlayer [
 	| die game collection board deck |
 	collection := {4 . 2 . 3 . 4 . 5}.
-	deck := CircularIterator over: {OverloadCard new}.
+	deck := DeckManager containing: ((FixedCardsDistributor withProbabilities: {(OverloadCard -> 100)} asDictionary) deckOfSize: 10).
 	die := Die withSides: 4 andGenerator: (CircularIterator over: collection).
 	board := UtilitiesForTests collectionOf20NoEffect.
 	game := Game
@@ -304,40 +304,11 @@ GameTest >> gameUsingCardsWithFirstPlayer: aPlayer andSecondPlayer: anotherPlaye
 	^ game
 ]
 
-{ #category : #'cards tests' }
-GameTest >> gameUsingRandomCardsWithFirstPlayer: aPlayer andSecondPlayer: anotherPlayer [
-	| collection deck board die game |
-	deck := RandomElementSelector
-		over:
-			{OverloadCard new.
-			SpeedCard new.
-			AccelerationCard new.
-			CancellationCard new.
-			RedoCard new.
-			RepeatCard new}.
-	collection := {1 . 2 . 3 . 4 . 5}.
-	die := Die
-		withSides: 4
-		andGenerator: (CircularIterator over: collection).
-	board := UtilitiesForTests collectionOf20NoEffect.
-	self assert: aPlayer quantityOfCardsInHand equals: 0.
-	self assert: anotherPlayer quantityOfCardsInHand equals: 0.
-	game := Game
-		playedBy:
-			{aPlayer.
-			anotherPlayer}
-		throwing:
-			{die}
-		using: deck
-		in: board
-		andAmountOfLaps: 1
-]
-
 { #category : #'test laps' }
 GameTest >> gameWith5NoEffectBoard3LapsAndWithPlayer: aPlayer [
 	| die game board deck |
 	board := self collectionOf5NoEffect.
-	deck := CircularIterator over: {OverloadCard new}.
+	deck := DeckManager containing: ((FixedCardsDistributor withProbabilities: {(OverloadCard -> 100)} asDictionary) deckOfSize: 10).
 	die := Die withSides: 4 andGenerator: (CircularIterator over: {5}).
 	game := Game
 		playedBy: {aPlayer}
@@ -352,7 +323,7 @@ GameTest >> gameWith5NoEffectBoard3LapsAndWithPlayer: aPlayer [
 GameTest >> gameWithPlayer: aPlayer and: anotherPlayer and: oneMorePlayer [
 	| oneMoreDie anotherDie board die game deck |
 	board := UtilitiesForTests collectionOf20NoEffect.
-	deck := CircularIterator over: {OverloadCard new}.
+	deck := DeckManager containing: ((FixedCardsDistributor withProbabilities: {(OverloadCard -> 100)} asDictionary) deckOfSize: 10).
 	die := Die withSides: 4 andGenerator: (CircularIterator over: {1 . 2 . 3 . 4}).
 	anotherDie := Die withSides: 6 andGenerator: (CircularIterator over: {1 . 2 . 3 . 4 . 5 . 6}).
 	oneMoreDie := Die withSides: 5 andGenerator: (CircularIterator over: {1 . 2 . 3 . 4 . 5}).
@@ -375,7 +346,7 @@ GameTest >> gameWithPlayer: aPlayer and: anotherPlayer and: oneMorePlayer [
 GameTest >> gameWithPlayer: aPlayer and: anotherPlayer usingEffect: effect [
 	| collection lapsAmount board die game deck |
 	collection := {1}.
-	deck := CircularIterator over: {OverloadCard new}.
+	deck := DeckManager containing: ((FixedCardsDistributor withProbabilities: {(OverloadCard -> 100)} asDictionary) deckOfSize: 10).
 	die := Die withSides: 4 andGenerator: (CircularIterator over: collection).
 	board := {NoEffect new.
 	effect.
@@ -428,12 +399,20 @@ GameTest >> testCheckGameHasFinishedWhenRunningAndFinished [
 	self assert: (game positionFor: playerNamedGlenn) equals: 10
 ]
 
-{ #category : #'create tests' }
+{ #category : #tests }
 GameTest >> testCreateGame [
-	| game playerNamedLeo playerNamedGlenn die board collection deck |
+	| game playerNamedLeo playerNamedGlenn die board collection deck overload |
 	playerNamedLeo := Player named: 'Leo'.
 	playerNamedGlenn := Player named: 'Glenn'.
-	deck := CircularIterator over: {OverloadCard new}.
+	overload := OverloadCard new.
+	deck := DeckManager
+		containing:
+			{overload.
+			overload.
+			overload.
+			overload.
+			overload.
+			overload}.
 	collection := {1 . 2 . 3 . 4 . 5}.
 	die := Die withSides: 4 andGenerator: (CircularIterator over: collection).
 	board := UtilitiesForTests collectionOf20NoEffect.
@@ -457,12 +436,20 @@ GameTest >> testCreateGame [
 			die}
 ]
 
-{ #category : #'create tests' }
+{ #category : #tests }
 GameTest >> testCreateGameWithBoard [
-	| board game playerNamedLeo playerNamedGlenn die collection lapsAmount deck |
+	| board game playerNamedLeo playerNamedGlenn die collection lapsAmount deck overload |
 	playerNamedLeo := Player named: 'Leo'.
 	playerNamedGlenn := Player named: 'Glenn'.
-	deck := CircularIterator over: {OverloadCard new}.
+	overload := OverloadCard new.
+	deck := DeckManager
+		containing:
+			{overload.
+			overload.
+			overload.
+			overload.
+			overload.
+			overload}.
 	collection := {1 . 2 . 3 . 4 . 5}.
 	die := Die withSides: 4 andGenerator: (CircularIterator over: collection).
 	board := {NoEffect new.
@@ -542,12 +529,20 @@ GameTest >> testCreateGameWithDistributedBoardGiveRanking [
 			playerNamedGlenn}
 ]
 
-{ #category : #'create tests' }
+{ #category : #tests }
 GameTest >> testCreateGameWithLaps [
-	| game playerNamedLeo playerNamedGlenn die board collection lapsAmount deck |
+	| game playerNamedLeo playerNamedGlenn die board collection lapsAmount deck overload |
 	playerNamedLeo := Player named: 'Leo'.
 	playerNamedGlenn := Player named: 'Glenn'.
-	deck := CircularIterator over: {OverloadCard new}.
+	overload := OverloadCard new.
+	deck := DeckManager
+		containing:
+			{overload.
+			overload.
+			overload.
+			overload.
+			overload.
+			overload}.
 	collection := {1 . 2 . 3 . 4 . 5}.
 	die := Die withSides: 4 andGenerator: (CircularIterator over: collection).
 	board := UtilitiesForTests collectionOf20NoEffect.
@@ -668,9 +663,7 @@ GameTest >> testGivesTwoCardsAtStartToEachPlayer [
 	| playerNamedLeo playerNamedGlenn game |
 	playerNamedLeo := Player named: 'Leo'.
 	playerNamedGlenn := Player named: 'Glenn'.
-	game := self
-		gameUsingRandomCardsWithFirstPlayer: playerNamedLeo
-		andSecondPlayer: playerNamedGlenn.
+	game := self gameUsingCardsWithFirstPlayer: playerNamedLeo andSecondPlayer: playerNamedGlenn.
 	self assert: playerNamedLeo quantityOfCardsInHand equals: 2.
 	self assert: playerNamedGlenn quantityOfCardsInHand equals: 2
 ]
@@ -1004,6 +997,51 @@ GameTest >> testUsingAccelerationCardRaisesExceptionWhenNotInPlayerTurn [
 ]
 
 { #category : #'cards tests' }
+GameTest >> testUsingAccelerationCardRemovesItFromHandButNotAddedToDiscardPile [
+	| accelerationCard game playerNamedLeo playerNamedGlenn |
+	playerNamedLeo := Player named: 'Leo'.
+	playerNamedGlenn := Player named: 'Glenn'.
+	game := self gameUsingCardsWithFirstPlayer: playerNamedLeo andSecondPlayer: playerNamedGlenn.
+	accelerationCard := AccelerationCard new.
+	self assert: game cardsDiscarded equals: 0.
+	playerNamedLeo addCard: accelerationCard.
+	playerNamedLeo uses: accelerationCard in: game against: playerNamedGlenn.
+	self assert: (playerNamedLeo hasCard: accelerationCard) equals: false.
+	self assert: game cardsDiscarded equals: 0
+]
+
+{ #category : #'cards tests' }
+GameTest >> testUsingBlankCardRemovesItFromHandAndIsAddedToDiscardPile [
+	| blankCard game playerNamedLeo playerNamedGlenn |
+	playerNamedLeo := Player named: 'Leo'.
+	playerNamedGlenn := Player named: 'Glenn'.
+	game := self gameUsingCardsWithFirstPlayer: playerNamedLeo andSecondPlayer: playerNamedGlenn.
+	blankCard := BlankCard new.
+	self assert: game cardsDiscarded equals: 0.
+	playerNamedLeo addCard: blankCard.
+	playerNamedLeo uses: blankCard in: game against: playerNamedGlenn.
+	self assert: (playerNamedLeo hasCard: blankCard) equals: false.
+	self assert: game cardsDiscarded equals: 1
+]
+
+{ #category : #'cards tests' }
+GameTest >> testUsingCancellationCardRemovesItFromHandAndIsAddedToDiscardPile [
+	| cancellationCard overloadCard game playerNamedLeo playerNamedGlenn |
+	playerNamedLeo := Player named: 'Leo'.
+	playerNamedGlenn := Player named: 'Glenn'.
+	game := self gameUsingCardsWithFirstPlayer: playerNamedLeo andSecondPlayer: playerNamedGlenn.
+	cancellationCard := CancellationCard new.
+	overloadCard := OverloadCard new.
+	self assert: game cardsDiscarded equals: 0.
+	playerNamedLeo addCard: cancellationCard.
+	playerNamedLeo addCard: overloadCard.
+	playerNamedLeo uses: overloadCard in: game against: playerNamedGlenn.
+	playerNamedLeo uses: cancellationCard in: game against: overloadCard.
+	self assert: (playerNamedLeo hasCard: cancellationCard) equals: false.
+	self assert: game cardsDiscarded equals: 2
+]
+
+{ #category : #'cards tests' }
 GameTest >> testUsingOverloadCardRaisesExceptionWhenNotInPlayerTurn [
 	| overloadCard game playerNamedLeo playerNamedGlenn |
 	playerNamedLeo := Player named: 'Leo'.
@@ -1015,6 +1053,20 @@ GameTest >> testUsingOverloadCardRaisesExceptionWhenNotInPlayerTurn [
 		should: [ playerNamedGlenn uses: overloadCard in: game against: playerNamedGlenn ]
 		raise: AssertionFailure
 		withExceptionDo: [ :signal | self assert: signal messageText equals: 'This isn''t the turn of Glenn' ]
+]
+
+{ #category : #'cards tests' }
+GameTest >> testUsingOverloadCardRemovesItFromHandButNotAddedToDiscardPile [
+	| overload game playerNamedLeo playerNamedGlenn |
+	playerNamedLeo := Player named: 'Leo'.
+	playerNamedGlenn := Player named: 'Glenn'.
+	game := self gameUsingCardsWithFirstPlayer: playerNamedLeo andSecondPlayer: playerNamedGlenn.
+	overload := OverloadCard new.
+	self assert: game cardsDiscarded equals: 0.
+	playerNamedLeo addCard: overload.
+	playerNamedLeo uses: overload in: game against: playerNamedGlenn.
+	self assert: (playerNamedLeo hasCard: overload) equals: false.
+	self assert: game cardsDiscarded equals: 0
 ]
 
 { #category : #'cards tests' }
@@ -1035,6 +1087,55 @@ GameTest >> testUsingRedoCardRaisesExceptionWhenNotInPlayerTurn [
 ]
 
 { #category : #'cards tests' }
+GameTest >> testUsingRedoCardRemovesItFromHandAndIsAddedToDiscardPile_Instantaneous [
+	| redoCard blankCard game playerNamedLeo playerNamedGlenn |
+	playerNamedLeo := Player named: 'Leo'.
+	playerNamedGlenn := Player named: 'Glenn'.
+	game := self gameUsingCardsWithFirstPlayer: playerNamedLeo andSecondPlayer: playerNamedGlenn.
+	redoCard := RedoCard new.
+	blankCard := BlankCard new.
+	self assert: game cardsDiscarded equals: 0.
+	playerNamedLeo addCard: redoCard.
+	playerNamedLeo addCard: blankCard.
+	playerNamedLeo uses: blankCard in: game against: playerNamedGlenn.
+	self assert: game cardsDiscarded equals: 1.
+	playerNamedLeo uses: redoCard in: game against: playerNamedGlenn.
+	self assert: (playerNamedLeo hasCard: redoCard) equals: false.
+	self assert: game cardsDiscarded equals: 2
+]
+
+{ #category : #'cards tests' }
+GameTest >> testUsingRedoCardRemovesItFromHandAndIsAddedToDiscardPile_Permanent [
+	| redoCard overloadCard game playerNamedLeo playerNamedGlenn |
+	playerNamedLeo := Player named: 'Leo'.
+	playerNamedGlenn := Player named: 'Glenn'.
+	game := self gameUsingCardsWithFirstPlayer: playerNamedLeo andSecondPlayer: playerNamedGlenn.
+	redoCard := RedoCard new.
+	overloadCard := OverloadCard new.
+	self assert: game cardsDiscarded equals: 0.
+	playerNamedLeo addCard: redoCard.
+	playerNamedLeo addCard: overloadCard.
+	playerNamedLeo uses: overloadCard in: game against: playerNamedGlenn.
+	playerNamedLeo uses: redoCard in: game against: playerNamedGlenn.
+	self assert: (playerNamedLeo hasCard: redoCard) equals: false.
+	self assert: game cardsDiscarded equals: 1
+]
+
+{ #category : #'cards tests' }
+GameTest >> testUsingRepeatCardRemovesItFromHandAndIsAddedToDiscardPile [
+	| repeatCard game playerNamedLeo playerNamedGlenn |
+	playerNamedLeo := Player named: 'Leo'.
+	playerNamedGlenn := Player named: 'Glenn'.
+	game := self gameUsingCardsWithFirstPlayer: playerNamedLeo andSecondPlayer: playerNamedGlenn.
+	repeatCard := RepeatCard new.
+	self assert: game cardsDiscarded equals: 0.
+	playerNamedLeo addCard: repeatCard.
+	playerNamedLeo uses: repeatCard in: game against: playerNamedGlenn.
+	self assert: (playerNamedLeo hasCard: repeatCard) equals: false.
+	self assert: game cardsDiscarded equals: 1
+]
+
+{ #category : #'cards tests' }
 GameTest >> testUsingSpeedCardRaisesExceptionWhenNotInPlayerTurn [
 	| speedCard game playerNamedLeo playerNamedGlenn |
 	playerNamedLeo := Player named: 'Leo'.
@@ -1049,6 +1150,20 @@ GameTest >> testUsingSpeedCardRaisesExceptionWhenNotInPlayerTurn [
 ]
 
 { #category : #'cards tests' }
+GameTest >> testUsingSpeedCardRemovesItFromHandButNotAddedToDiscardPile [
+	| speedCard game playerNamedLeo playerNamedGlenn |
+	playerNamedLeo := Player named: 'Leo'.
+	playerNamedGlenn := Player named: 'Glenn'.
+	game := self gameUsingCardsWithFirstPlayer: playerNamedLeo andSecondPlayer: playerNamedGlenn.
+	speedCard := SpeedCard new.
+	self assert: game cardsDiscarded equals: 0.
+	playerNamedLeo addCard: speedCard.
+	playerNamedLeo uses: speedCard in: game against: playerNamedGlenn.
+	self assert: (playerNamedLeo hasCard: speedCard) equals: false.
+	self assert: game cardsDiscarded equals: 0
+]
+
+{ #category : #'cards tests' }
 GameTest >> testWithCardAndGiveRanking [
 	| playerNamedLeo playerNamedGlenn game deck overload speed acceleration cancellation |
 	playerNamedLeo := Player named: 'Leo'.
@@ -1057,8 +1172,9 @@ GameTest >> testWithCardAndGiveRanking [
 	speed := SpeedCard new.
 	acceleration := AccelerationCard new.
 	cancellation := CancellationCard new.
-	deck := CircularIterator
-		over:
+	overload := OverloadCard new.
+	deck := DeckManager
+		containing:
 			{overload.
 			speed.
 			acceleration.

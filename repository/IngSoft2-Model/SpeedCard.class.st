@@ -24,6 +24,11 @@ SpeedCard >> playIn: aGame against: aPlayer [
 	aGame addCard: self asociatedWith: aPlayer
 ]
 
+{ #category : #interaction }
+SpeedCard >> removedFromAHandIn: aGame [
+	
+]
+
 { #category : #validation }
 SpeedCard >> validateIsPlayer: aPlayer [
 	^ (aPlayer isMemberOf: Player)
