@@ -10,9 +10,9 @@ CollectionBuilderTest >> occurrencesOf: aClass in: aCollection [
 ]
 
 { #category : #'effects tests' }
-CollectionBuilderTest >> testGenerateCollectionAtomicEffectCheckClassOfContents [
+CollectionBuilderTest >> testGenerateCollectionSpeedUpEffectCheckClassOfContents [
 	| collection builder collectionLength |
-	builder := CollectionBuilder new.
+	builder := CollectionBuilder fixedDistribution.
 	builder withSpeedupProbability: 100.
 	collectionLength := 7.
 	collection := builder collectionOfLength: collectionLength.
