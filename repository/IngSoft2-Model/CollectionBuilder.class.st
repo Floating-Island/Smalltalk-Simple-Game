@@ -2,7 +2,8 @@ Class {
 	#name : #CollectionBuilder,
 	#superclass : #Object,
 	#instVars : [
-		'fixedDistributor'
+		'fixedDistributor',
+		'probabilitiesTotal'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -12,14 +13,21 @@ CollectionBuilder class >> fixedDistribution [
 	^ self new initializeFixedDistribution
 ]
 
+{ #category : #assertion }
+CollectionBuilder >> assertCorrectProbabilitiesTotal [
+	^ probabilitiesTotal = 100
+		ifFalse: [ AssertionFailure signal: 'The sum of probabilities should be 100' ]
+]
+
 { #category : #updating }
-CollectionBuilder >> collectionOf: aSize containingAll: aClass [
-	^ OrderedCollection new: aSize withAll: aClass new
+CollectionBuilder >> collectionOf: aSize containingAll: anElement [
+	^ OrderedCollection new: aSize withAll: anElement
 ]
 
 { #category : #interaction }
 CollectionBuilder >> collectionOfLength: aSize [
 	| collection |
+	self assertCorrectProbabilitiesTotal.
 	collection := OrderedCollection new.
 	aSize timesRepeat: [ collection add: self randomElementFromFixedDistributor ].
 	^ collection
@@ -27,7 +35,16 @@ CollectionBuilder >> collectionOfLength: aSize [
 
 { #category : #initialization }
 CollectionBuilder >> initializeFixedDistribution [
-	fixedDistributor := OrderedCollection new
+	fixedDistributor := OrderedCollection new.
+	probabilitiesTotal := 0
+]
+
+{ #category : #interaction }
+CollectionBuilder >> moonWalkcollectionOf: aQuantity andMaximumSteps: maximumQuantity [
+	| collection |
+	collection := OrderedCollection new.
+	aQuantity timesRepeat: [ collection add: (MoonWalkEffect withSteps: maximumQuantity atRandom) ].
+	^ collection
 ]
 
 { #category : #interaction }
@@ -36,6 +53,42 @@ CollectionBuilder >> randomElementFromFixedDistributor [
 ]
 
 { #category : #updating }
-CollectionBuilder >> withSpeedupProbability: aQuantity [
-	fixedDistributor addAll: (self collectionOf: aQuantity containingAll: SpeedUpEffect)
+CollectionBuilder >> sumProbability: aQuantity [
+	probabilitiesTotal := probabilitiesTotal + aQuantity
+]
+
+{ #category : #updating }
+CollectionBuilder >> withAtomicProbability: aQuantity [
+	fixedDistributor addAll: (self collectionOf: aQuantity containingAll: AtomicEffect new).
+	self sumProbability: aQuantity
+]
+
+{ #category : #updating }
+CollectionBuilder >> withCardFromDeckProbability: aQuantity usingDeck: aDeckManager [
+	fixedDistributor addAll: (self collectionOf: aQuantity containingAll: (CardFromDeckEffect withDeck: aDeckManager)).
+	self sumProbability: aQuantity
+]
+
+{ #category : #updating }
+CollectionBuilder >> withMoonWalkProbability: aQuantity withSteps: maximumQuantity [
+	fixedDistributor addAll: (self moonWalkcollectionOf: aQuantity andMaximumSteps: maximumQuantity).
+	self sumProbability: aQuantity
+]
+
+{ #category : #updating }
+CollectionBuilder >> withNoEffectProbability: aQuantity [
+	fixedDistributor addAll: (self collectionOf: aQuantity containingAll: NoEffect new).
+	self sumProbability: aQuantity
+]
+
+{ #category : #updating }
+CollectionBuilder >> withSpeedUpProbability: aQuantity [
+	fixedDistributor addAll: (self collectionOf: aQuantity containingAll: SpeedUpEffect new).
+	self sumProbability: aQuantity
+]
+
+{ #category : #updating }
+CollectionBuilder >> withWormholeProbability: aQuantity [
+	fixedDistributor addAll: (self collectionOf: aQuantity containingAll: WormholeEffect new).
+	self sumProbability: aQuantity
 ]
