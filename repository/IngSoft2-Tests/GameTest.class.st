@@ -12,21 +12,27 @@ GameTest >> assert: a hasTheSameOrderThan: b [
 { #category : #'test utilities' }
 GameTest >> collectionOf16NoEffect [
 	| distributor |
-	distributor := CollectionBuilder fixedDistribution withNoEffectProbability: 100.
+	distributor := CollectionBuilder fixedDistribution
+		with: NoEffect
+		Probability: 100.
 	^ distributor collectionOfLength: 16
 ]
 
 { #category : #'test utilities' }
 GameTest >> collectionOf5NoEffect [
 	| distributor |
-	distributor := CollectionBuilder fixedDistribution withNoEffectProbability: 100.
+	distributor := CollectionBuilder fixedDistribution
+		with: NoEffect
+		Probability: 100.
 	^ distributor collectionOfLength: 5
 ]
 
 { #category : #'test utilities' }
 GameTest >> collectionOf80NoEffect [
 	| distributor |
-	distributor := CollectionBuilder fixedDistribution withNoEffectProbability: 100.
+	distributor := CollectionBuilder fixedDistribution
+		with: NoEffect
+		Probability: 100.
 	^ distributor collectionOfLength: 80
 ]
 

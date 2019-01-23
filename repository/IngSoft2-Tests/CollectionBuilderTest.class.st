@@ -13,7 +13,7 @@ CollectionBuilderTest >> occurrencesOf: aClass in: aCollection [
 CollectionBuilderTest >> testGenerateCollectionOfAccelerationCardCheckClassOfContents [
 	| collection builder collectionLength |
 	builder := CollectionBuilder fixedDistribution.
-	builder withAccelerationProbability: 100.
+	builder with: AccelerationCard Probability: 100.
 	collectionLength := 7.
 	collection := builder collectionOfLength: collectionLength.
 	self assert: collection size equals: collectionLength.
@@ -24,7 +24,7 @@ CollectionBuilderTest >> testGenerateCollectionOfAccelerationCardCheckClassOfCon
 CollectionBuilderTest >> testGenerateCollectionOfAtomicEffectCheckClassOfContents [
 	| collection builder collectionLength |
 	builder := CollectionBuilder fixedDistribution.
-	builder withAtomicProbability: 100.
+	builder with: AtomicEffect Probability: 100.
 	collectionLength := 7.
 	collection := builder collectionOfLength: collectionLength.
 	self assert: collection size equals: collectionLength.
@@ -35,7 +35,7 @@ CollectionBuilderTest >> testGenerateCollectionOfAtomicEffectCheckClassOfContent
 CollectionBuilderTest >> testGenerateCollectionOfBlankCardCheckClassOfContents [
 	| collection builder collectionLength |
 	builder := CollectionBuilder fixedDistribution.
-	builder withBlankProbability: 100.
+	builder with: BlankCard Probability: 100.
 	collectionLength := 7.
 	collection := builder collectionOfLength: collectionLength.
 	self assert: collection size equals: collectionLength.
@@ -46,7 +46,7 @@ CollectionBuilderTest >> testGenerateCollectionOfBlankCardCheckClassOfContents [
 CollectionBuilderTest >> testGenerateCollectionOfCancellationCardCheckClassOfContents [
 	| collection builder collectionLength |
 	builder := CollectionBuilder fixedDistribution.
-	builder withCancellationProbability: 100.
+	builder with: CancellationCard Probability: 100.
 	collectionLength := 7.
 	collection := builder collectionOfLength: collectionLength.
 	self assert: collection size equals: collectionLength.
@@ -68,8 +68,8 @@ CollectionBuilderTest >> testGenerateCollectionOfCardFromDeckEffectCheckClassOfC
 CollectionBuilderTest >> testGenerateCollectionOfExpectedLength [
 	| builder |
 	builder := CollectionBuilder fixedDistribution.
-	builder withAtomicProbability: 49.
-	builder withSpeedUpProbability: 51.
+	builder with: AtomicEffect Probability: 49.
+	builder with: SpeedUpEffect Probability: 51.
 	self assert: (builder collectionOfLength: 10) size equals: 10
 ]
 
@@ -88,7 +88,7 @@ CollectionBuilderTest >> testGenerateCollectionOfMoonWalkEffectCheckClassOfConte
 CollectionBuilderTest >> testGenerateCollectionOfNoEffectCheckClassOfContents [
 	| collection builder collectionLength |
 	builder := CollectionBuilder fixedDistribution.
-	builder withNoEffectProbability: 100.
+	builder with: NoEffect Probability: 100.
 	collectionLength := 7.
 	collection := builder collectionOfLength: collectionLength.
 	self assert: collection size equals: collectionLength.
@@ -99,7 +99,7 @@ CollectionBuilderTest >> testGenerateCollectionOfNoEffectCheckClassOfContents [
 CollectionBuilderTest >> testGenerateCollectionOfOverloadCardCheckClassOfContents [
 	| collection builder collectionLength |
 	builder := CollectionBuilder fixedDistribution.
-	builder withOverloadProbability: 100.
+	builder with: OverloadCard Probability: 100.
 	collectionLength := 7.
 	collection := builder collectionOfLength: collectionLength.
 	self assert: collection size equals: collectionLength.
@@ -110,7 +110,7 @@ CollectionBuilderTest >> testGenerateCollectionOfOverloadCardCheckClassOfContent
 CollectionBuilderTest >> testGenerateCollectionOfRedoCardCheckClassOfContents [
 	| collection builder collectionLength |
 	builder := CollectionBuilder fixedDistribution.
-	builder withRedoProbability: 100.
+	builder with: RedoCard Probability: 100.
 	collectionLength := 7.
 	collection := builder collectionOfLength: collectionLength.
 	self assert: collection size equals: collectionLength.
@@ -121,7 +121,7 @@ CollectionBuilderTest >> testGenerateCollectionOfRedoCardCheckClassOfContents [
 CollectionBuilderTest >> testGenerateCollectionOfRepeatCardCheckClassOfContents [
 	| collection builder collectionLength |
 	builder := CollectionBuilder fixedDistribution.
-	builder withRepeatProbability: 100.
+	builder with: RepeatCard Probability: 100.
 	collectionLength := 7.
 	collection := builder collectionOfLength: collectionLength.
 	self assert: collection size equals: collectionLength.
@@ -132,7 +132,7 @@ CollectionBuilderTest >> testGenerateCollectionOfRepeatCardCheckClassOfContents 
 CollectionBuilderTest >> testGenerateCollectionOfSpeedCardCheckClassOfContents [
 	| collection builder collectionLength |
 	builder := CollectionBuilder fixedDistribution.
-	builder withSpeedProbability: 100.
+	builder with: SpeedCard Probability: 100.
 	collectionLength := 7.
 	collection := builder collectionOfLength: collectionLength.
 	self assert: collection size equals: collectionLength.
@@ -143,7 +143,7 @@ CollectionBuilderTest >> testGenerateCollectionOfSpeedCardCheckClassOfContents [
 CollectionBuilderTest >> testGenerateCollectionOfSpeedUpEffectCheckClassOfContents [
 	| collection builder collectionLength |
 	builder := CollectionBuilder fixedDistribution.
-	builder withSpeedUpProbability: 100.
+	builder with: SpeedUpEffect Probability: 100.
 	collectionLength := 7.
 	collection := builder collectionOfLength: collectionLength.
 	self assert: collection size equals: collectionLength.
@@ -154,7 +154,7 @@ CollectionBuilderTest >> testGenerateCollectionOfSpeedUpEffectCheckClassOfConten
 CollectionBuilderTest >> testGenerateCollectionOfWormholeEffectCheckClassOfContents [
 	| collection builder collectionLength |
 	builder := CollectionBuilder fixedDistribution.
-	builder withWormholeProbability: 100.
+	builder with: WormholeEffect Probability: 100.
 	collectionLength := 7.
 	collection := builder collectionOfLength: collectionLength.
 	self assert: collection size equals: collectionLength.
@@ -165,10 +165,13 @@ CollectionBuilderTest >> testGenerateCollectionOfWormholeEffectCheckClassOfConte
 CollectionBuilderTest >> testRaisesExceptionWhenIncorrectTotalOfProbabilites [
 	| builder |
 	builder := CollectionBuilder fixedDistribution.
-	builder withAtomicProbability: 50.
-	builder withSpeedUpProbability: 51.
+	builder with: AtomicEffect Probability: 50.
+	builder with: SpeedUpEffect Probability: 51.
 	self
 		should: [ builder collectionOfLength: 7 ]
 		raise: AssertionFailure
-		withExceptionDo: [ :signal | self assert: signal messageText equals: 'The sum of probabilities should be 100' ]
+		withExceptionDo: [ :signal | 
+			self
+				assert: signal messageText
+				equals: 'The sum of probabilities should be 100' ]
 ]
