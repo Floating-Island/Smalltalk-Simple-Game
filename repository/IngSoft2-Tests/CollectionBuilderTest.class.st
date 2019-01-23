@@ -9,6 +9,17 @@ CollectionBuilderTest >> occurrencesOf: aClass in: aCollection [
 	^ (aCollection select: [ :each | each isMemberOf: aClass ]) size
 ]
 
+{ #category : #'cards tests' }
+CollectionBuilderTest >> testGenerateCollectionOfAccelerationCardCheckClassOfContents [
+	| collection builder collectionLength |
+	builder := CollectionBuilder fixedDistribution.
+	builder withAccelerationProbability: 100.
+	collectionLength := 7.
+	collection := builder collectionOfLength: collectionLength.
+	self assert: collection size equals: collectionLength.
+	self assert: (self occurrencesOf: AccelerationCard in: collection) equals: collectionLength
+]
+
 { #category : #'effects tests' }
 CollectionBuilderTest >> testGenerateCollectionOfAtomicEffectCheckClassOfContents [
 	| collection builder collectionLength |
