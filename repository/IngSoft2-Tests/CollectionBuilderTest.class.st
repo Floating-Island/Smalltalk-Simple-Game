@@ -31,6 +31,15 @@ CollectionBuilderTest >> testGenerateCollectionOfCardFromDeckEffectCheckClassOfC
 	self assert: (self occurrencesOf: CardFromDeckEffect in: collection) equals: collectionLength
 ]
 
+{ #category : #'general tests' }
+CollectionBuilderTest >> testGenerateCollectionOfExpectedLength [
+	| builder |
+	builder := CollectionBuilder fixedDistribution.
+	builder withAtomicProbability: 49.
+	builder withSpeedUpProbability: 51.
+	self assert: (builder collectionOfLength: 10) size equals: 10
+]
+
 { #category : #'effects tests' }
 CollectionBuilderTest >> testGenerateCollectionOfMoonWalkEffectCheckClassOfContents [
 	| collection builder collectionLength |
