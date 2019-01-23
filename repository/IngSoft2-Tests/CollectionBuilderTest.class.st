@@ -31,6 +31,28 @@ CollectionBuilderTest >> testGenerateCollectionOfAtomicEffectCheckClassOfContent
 	self assert: (self occurrencesOf: AtomicEffect in: collection) equals: collectionLength
 ]
 
+{ #category : #'cards tests' }
+CollectionBuilderTest >> testGenerateCollectionOfBlankCardCheckClassOfContents [
+	| collection builder collectionLength |
+	builder := CollectionBuilder fixedDistribution.
+	builder withBlankProbability: 100.
+	collectionLength := 7.
+	collection := builder collectionOfLength: collectionLength.
+	self assert: collection size equals: collectionLength.
+	self assert: (self occurrencesOf: BlankCard in: collection) equals: collectionLength
+]
+
+{ #category : #'cards tests' }
+CollectionBuilderTest >> testGenerateCollectionOfCancellationCardCheckClassOfContents [
+	| collection builder collectionLength |
+	builder := CollectionBuilder fixedDistribution.
+	builder withCancellationProbability: 100.
+	collectionLength := 7.
+	collection := builder collectionOfLength: collectionLength.
+	self assert: collection size equals: collectionLength.
+	self assert: (self occurrencesOf: CancellationCard in: collection) equals: collectionLength
+]
+
 { #category : #'effects tests' }
 CollectionBuilderTest >> testGenerateCollectionOfCardFromDeckEffectCheckClassOfContents [
 	| collection builder collectionLength |
@@ -71,6 +93,50 @@ CollectionBuilderTest >> testGenerateCollectionOfNoEffectCheckClassOfContents [
 	collection := builder collectionOfLength: collectionLength.
 	self assert: collection size equals: collectionLength.
 	self assert: (self occurrencesOf: NoEffect in: collection) equals: collectionLength
+]
+
+{ #category : #'cards tests' }
+CollectionBuilderTest >> testGenerateCollectionOfOverloadCardCheckClassOfContents [
+	| collection builder collectionLength |
+	builder := CollectionBuilder fixedDistribution.
+	builder withOverloadProbability: 100.
+	collectionLength := 7.
+	collection := builder collectionOfLength: collectionLength.
+	self assert: collection size equals: collectionLength.
+	self assert: (self occurrencesOf: OverloadCard in: collection) equals: collectionLength
+]
+
+{ #category : #'cards tests' }
+CollectionBuilderTest >> testGenerateCollectionOfRedoCardCheckClassOfContents [
+	| collection builder collectionLength |
+	builder := CollectionBuilder fixedDistribution.
+	builder withRedoProbability: 100.
+	collectionLength := 7.
+	collection := builder collectionOfLength: collectionLength.
+	self assert: collection size equals: collectionLength.
+	self assert: (self occurrencesOf: RedoCard in: collection) equals: collectionLength
+]
+
+{ #category : #'cards tests' }
+CollectionBuilderTest >> testGenerateCollectionOfRepeatCardCheckClassOfContents [
+	| collection builder collectionLength |
+	builder := CollectionBuilder fixedDistribution.
+	builder withRepeatProbability: 100.
+	collectionLength := 7.
+	collection := builder collectionOfLength: collectionLength.
+	self assert: collection size equals: collectionLength.
+	self assert: (self occurrencesOf: RepeatCard in: collection) equals: collectionLength
+]
+
+{ #category : #'cards tests' }
+CollectionBuilderTest >> testGenerateCollectionOfSpeedCardCheckClassOfContents [
+	| collection builder collectionLength |
+	builder := CollectionBuilder fixedDistribution.
+	builder withSpeedProbability: 100.
+	collectionLength := 7.
+	collection := builder collectionOfLength: collectionLength.
+	self assert: collection size equals: collectionLength.
+	self assert: (self occurrencesOf: SpeedCard in: collection) equals: collectionLength
 ]
 
 { #category : #'effects tests' }
