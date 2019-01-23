@@ -12,40 +12,22 @@ GameTest >> assert: a hasTheSameOrderThan: b [
 { #category : #'test utilities' }
 GameTest >> collectionOf16NoEffect [
 	| distributor |
-	distributor := FixedEffectsDistributor
-		withProbabilityOfSpeedUp: 0
-		wormhole: 0
-		atomic: 0
-		noEffect: 100
-		moonwalk: 0
-		andMaximumMoonwalkSteps: 5.
-	^ distributor boardOfLength: 16
+	distributor := CollectionBuilder fixedDistribution withNoEffectProbability: 100.
+	^ distributor collectionOfLength: 16
 ]
 
 { #category : #'test utilities' }
 GameTest >> collectionOf5NoEffect [
 	| distributor |
-	distributor := FixedEffectsDistributor
-		withProbabilityOfSpeedUp: 0
-		wormhole: 0
-		atomic: 0
-		noEffect: 100
-		moonwalk: 0
-		andMaximumMoonwalkSteps: 5.
-	^ distributor boardOfLength: 5
+	distributor := CollectionBuilder fixedDistribution withNoEffectProbability: 100.
+	^ distributor collectionOfLength: 5
 ]
 
 { #category : #'test utilities' }
 GameTest >> collectionOf80NoEffect [
 	| distributor |
-	distributor := FixedEffectsDistributor
-		withProbabilityOfSpeedUp: 0
-		wormhole: 0
-		atomic: 0
-		noEffect: 100
-		moonwalk: 0
-		andMaximumMoonwalkSteps: 5.
-	^ distributor boardOfLength: 80
+	distributor := CollectionBuilder fixedDistribution withNoEffectProbability: 100.
+	^ distributor collectionOfLength: 80
 ]
 
 { #category : #'create tests' }
