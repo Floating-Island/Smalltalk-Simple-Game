@@ -8,7 +8,7 @@ Class {
 CardsTest >> gameForCardTestsWithPlayer: aPlayer and: anotherPlayer [
 	| die game collection board deck |
 	collection := {4 . 2 . 3 . 4 . 5}.
-	deck := DeckManager containing: ((FixedCardsDistributor withProbabilities: {(OverloadCard -> 100)} asDictionary) deckOfSize: 10).
+	deck := DeckManager containing: ((CollectionBuilder fixedDistribution with: OverloadCard probability: 100) collectionOfLength: 10).
 	die := Die withSides: 4 andGenerator: (CircularIterator over: collection).
 	board := UtilitiesForTests collectionOf20NoEffect.
 	game := Game
@@ -26,7 +26,7 @@ CardsTest >> gameForCardTestsWithPlayer: aPlayer and: anotherPlayer [
 CardsTest >> gameForRepeatTestWithPlayer: aPlayer and: anotherPlayer [
 	| die game collection board deck |
 	collection := {4 . 2 . 3 . 4 . 5}.
-	deck := DeckManager containing: ((FixedCardsDistributor withProbabilities: {(OverloadCard -> 100)} asDictionary) deckOfSize: 10).
+	deck := DeckManager containing: ((CollectionBuilder fixedDistribution with: OverloadCard probability: 100) collectionOfLength: 10).
 	die := Die withSides: 4 andGenerator: (CircularIterator over: collection).
 	board := {NoEffect new.
 	NoEffect new.
@@ -53,8 +53,14 @@ CardsTest >> gameForRepeatTestWithPlayer: aPlayer and: anotherPlayer [
 CardsTest >> shortGameWithFirstPlayer: aPlayer andSecondPlayer: anotherPlayer [
 	| die game collection board deck |
 	collection := {22}.
-	deck := DeckManager containing: ((FixedCardsDistributor withProbabilities: {(OverloadCard -> 100)} asDictionary) deckOfSize: 10).
-	die := Die withSides: 4 andGenerator: (CircularIterator over: collection).
+	deck := DeckManager
+		containing:
+			((CollectionBuilder fixedDistribution
+				with: OverloadCard
+				probability: 100) collectionOfLength: 10).
+	die := Die
+		withSides: 4
+		andGenerator: (CircularIterator over: collection).
 	board := UtilitiesForTests collectionOf20NoEffect.
 	game := Game
 		playedBy:

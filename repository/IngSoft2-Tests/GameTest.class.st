@@ -12,40 +12,28 @@ GameTest >> assert: a hasTheSameOrderThan: b [
 { #category : #'test utilities' }
 GameTest >> collectionOf16NoEffect [
 	| distributor |
-	distributor := FixedEffectsDistributor
-		withProbabilityOfSpeedUp: 0
-		wormhole: 0
-		atomic: 0
-		noEffect: 100
-		moonwalk: 0
-		andMaximumMoonwalkSteps: 5.
-	^ distributor boardOfLength: 16
+	distributor := CollectionBuilder fixedDistribution
+		with: NoEffect
+		probability: 100.
+	^ distributor collectionOfLength: 16
 ]
 
 { #category : #'test utilities' }
 GameTest >> collectionOf5NoEffect [
 	| distributor |
-	distributor := FixedEffectsDistributor
-		withProbabilityOfSpeedUp: 0
-		wormhole: 0
-		atomic: 0
-		noEffect: 100
-		moonwalk: 0
-		andMaximumMoonwalkSteps: 5.
-	^ distributor boardOfLength: 5
+	distributor := CollectionBuilder fixedDistribution
+		with: NoEffect
+		probability: 100.
+	^ distributor collectionOfLength: 5
 ]
 
 { #category : #'test utilities' }
 GameTest >> collectionOf80NoEffect [
 	| distributor |
-	distributor := FixedEffectsDistributor
-		withProbabilityOfSpeedUp: 0
-		wormhole: 0
-		atomic: 0
-		noEffect: 100
-		moonwalk: 0
-		andMaximumMoonwalkSteps: 5.
-	^ distributor boardOfLength: 80
+	distributor := CollectionBuilder fixedDistribution
+		with: NoEffect
+		probability: 100.
+	^ distributor collectionOfLength: 80
 ]
 
 { #category : #'create tests' }
@@ -66,8 +54,14 @@ GameTest >> gameDistributedWithPlayer: aPlayer and: anotherPlayer [
 	wormHoleEffect.
 	moonWalkEffect.
 	speedUpEffect} asOrderedCollection.
-	deck := DeckManager containing: ((FixedCardsDistributor withProbabilities: {(OverloadCard -> 100)} asDictionary) deckOfSize: 10).
-	die := Die withSides: 4 andGenerator: (CircularIterator over: {1 . 7 . 3 . 8 . 1 . 6 . 10 . 1 . 5 . 6 . 3}).
+	deck := DeckManager
+		containing:
+			((CollectionBuilder fixedDistribution
+				with: OverloadCard
+				probability: 100) collectionOfLength: 10).
+	die := Die
+		withSides: 4
+		andGenerator: (CircularIterator over: {1 . 7 . 3 . 8 . 1 . 6 . 10 . 1 . 5 . 6 . 3}).
 	lapsAmount := 3.
 	game := Game
 		playedBy:
@@ -84,10 +78,20 @@ GameTest >> gameDistributedWithPlayer: aPlayer and: anotherPlayer [
 GameTest >> gameForLapsWithPlayer: aPlayer and: anotherPlayer and: oneMorePlayer [
 	| oneMoreDie anotherDie board die game deck |
 	board := UtilitiesForTests collectionOf20NoEffect.
-	deck := DeckManager containing: ((FixedCardsDistributor withProbabilities: {(OverloadCard -> 100)} asDictionary) deckOfSize: 10).
-	die := Die withSides: 4 andGenerator: (CircularIterator over: {1 . 7 . 1}).
-	anotherDie := Die withSides: 4 andGenerator: (CircularIterator over: {1 . 7 . 1}).
-	oneMoreDie := Die withSides: 4 andGenerator: (CircularIterator over: {1 . 7 . 1}).
+	deck := DeckManager
+		containing:
+			((CollectionBuilder fixedDistribution
+				with: OverloadCard
+				probability: 100) collectionOfLength: 10).
+	die := Die
+		withSides: 4
+		andGenerator: (CircularIterator over: {1 . 7 . 1}).
+	anotherDie := Die
+		withSides: 4
+		andGenerator: (CircularIterator over: {1 . 7 . 1}).
+	oneMoreDie := Die
+		withSides: 4
+		andGenerator: (CircularIterator over: {1 . 7 . 1}).
 	game := Game
 		playedBy:
 			{aPlayer.
@@ -107,10 +111,20 @@ GameTest >> gameForLapsWithPlayer: aPlayer and: anotherPlayer and: oneMorePlayer
 GameTest >> gameForPositionForWithPlayer: aPlayer and: anotherPlayer and: oneMorePlayer [
 	| oneMoreDie anotherDie board die game deck |
 	board := UtilitiesForTests collectionOf20NoEffect.
-	deck := DeckManager containing: ((FixedCardsDistributor withProbabilities: {(OverloadCard -> 100)} asDictionary) deckOfSize: 10).
-	die := Die withSides: 4 andGenerator: (CircularIterator over: {1 . 5 . 1}).
-	anotherDie := Die withSides: 4 andGenerator: (CircularIterator over: {1 . 5 . 1}).
-	oneMoreDie := Die withSides: 4 andGenerator: (CircularIterator over: {1 . 5 . 1}).
+	deck := DeckManager
+		containing:
+			((CollectionBuilder fixedDistribution
+				with: OverloadCard
+				probability: 100) collectionOfLength: 10).
+	die := Die
+		withSides: 4
+		andGenerator: (CircularIterator over: {1 . 5 . 1}).
+	anotherDie := Die
+		withSides: 4
+		andGenerator: (CircularIterator over: {1 . 5 . 1}).
+	oneMoreDie := Die
+		withSides: 4
+		andGenerator: (CircularIterator over: {1 . 5 . 1}).
 	game := Game
 		playedBy:
 			{aPlayer.
@@ -130,10 +144,20 @@ GameTest >> gameForPositionForWithPlayer: aPlayer and: anotherPlayer and: oneMor
 GameTest >> gameForResultsAnotherIteratorWithPlayer: aPlayer and: anotherPlayer and: oneMorePlayer [
 	| oneMoreDie anotherDie board die game deck |
 	board := self collectionOf16NoEffect.
-	deck := DeckManager containing: ((FixedCardsDistributor withProbabilities: {(OverloadCard -> 100)} asDictionary) deckOfSize: 10).
-	die := Die withSides: 4 andGenerator: (CircularIterator over: {1 . 2 . 3 . 4}).
-	anotherDie := Die withSides: 6 andGenerator: (CircularIterator over: {1 . 2 . 3 . 4 . 5 . 6}).
-	oneMoreDie := Die withSides: 5 andGenerator: (CircularIterator over: {1 . 2 . 3 . 4 . 5}).
+	deck := DeckManager
+		containing:
+			((CollectionBuilder fixedDistribution
+				with: OverloadCard
+				probability: 100) collectionOfLength: 10).
+	die := Die
+		withSides: 4
+		andGenerator: (CircularIterator over: {1 . 2 . 3 . 4}).
+	anotherDie := Die
+		withSides: 6
+		andGenerator: (CircularIterator over: {1 . 2 . 3 . 4 . 5 . 6}).
+	oneMoreDie := Die
+		withSides: 5
+		andGenerator: (CircularIterator over: {1 . 2 . 3 . 4 . 5}).
 	game := Game
 		playedBy:
 			{aPlayer.
@@ -153,10 +177,20 @@ GameTest >> gameForResultsAnotherIteratorWithPlayer: aPlayer and: anotherPlayer 
 GameTest >> gameForResultsIteratorWithPlayer: aPlayer and: anotherPlayer and: oneMorePlayer [
 	| oneMoreDie anotherDie board die game deck |
 	board := self collectionOf80NoEffect.
-	deck := DeckManager containing: ((FixedCardsDistributor withProbabilities: {(OverloadCard -> 100)} asDictionary) deckOfSize: 10).
-	die := Die withSides: 6 andGenerator: (CircularIterator over: {1 . 2 . 3 . 5 . 6 . 40}).
-	anotherDie := Die withSides: 6 andGenerator: (CircularIterator over: {1 . 2 . 3 . 5 . 6 . 40}).
-	oneMoreDie := Die withSides: 6 andGenerator: (CircularIterator over: {1 . 2 . 3 . 5 . 6 . 40}).
+	deck := DeckManager
+		containing:
+			((CollectionBuilder fixedDistribution
+				with: OverloadCard
+				probability: 100) collectionOfLength: 10).
+	die := Die
+		withSides: 6
+		andGenerator: (CircularIterator over: {1 . 2 . 3 . 5 . 6 . 40}).
+	anotherDie := Die
+		withSides: 6
+		andGenerator: (CircularIterator over: {1 . 2 . 3 . 5 . 6 . 40}).
+	oneMoreDie := Die
+		withSides: 6
+		andGenerator: (CircularIterator over: {1 . 2 . 3 . 5 . 6 . 40}).
 	"this way, we are assured that the third player will win"
 	game := Game
 		playedBy:
@@ -179,8 +213,14 @@ GameTest >> gameForReturnLenghtOf: board [
 	aPlayer := Player named: 'Leo'.
 	anotherPlayer := Player named: 'Glenn'.
 	collection := {1 . 2 . 3 . 4 . 5}.
-	deck := DeckManager containing: ((FixedCardsDistributor withProbabilities: {(OverloadCard -> 100)} asDictionary) deckOfSize: 10).
-	die := Die withSides: 4 andGenerator: (CircularIterator over: collection).
+	deck := DeckManager
+		containing:
+			((CollectionBuilder fixedDistribution
+				with: OverloadCard
+				probability: 100) collectionOfLength: 10).
+	die := Die
+		withSides: 4
+		andGenerator: (CircularIterator over: collection).
 	lapsAmount := 3.
 	game := Game
 		playedBy:
@@ -199,8 +239,14 @@ GameTest >> gameForReturnLenghtOf: board [
 GameTest >> gameForTurnOrderLike: aPlayer and: anotherPlayer [
 	| die game collection board deck |
 	collection := {1 . 2 . 3 . 4 . 5}.
-	deck := DeckManager containing: ((FixedCardsDistributor withProbabilities: {(OverloadCard -> 100)} asDictionary) deckOfSize: 10).
-	die := Die withSides: 4 andGenerator: (CircularIterator over: collection).
+	deck := DeckManager
+		containing:
+			((CollectionBuilder fixedDistribution
+				with: OverloadCard
+				probability: 100) collectionOfLength: 10).
+	die := Die
+		withSides: 4
+		andGenerator: (CircularIterator over: collection).
 	board := UtilitiesForTests collectionOf20NoEffect.
 	game := Game
 		playedBy:
@@ -227,8 +273,14 @@ GameTest >> gameForTurnOrderLike: aPlayer and: anotherPlayer [
 GameTest >> gameUsingAnAtomicEffectWithPlayer: aPlayer and: anotherPlayer [
 	| collection lapsAmount board die game deck |
 	collection := {1}.
-	deck := DeckManager containing: ((FixedCardsDistributor withProbabilities: {(OverloadCard -> 100)} asDictionary) deckOfSize: 10).
-	die := Die withSides: 4 andGenerator: (CircularIterator over: collection).
+	deck := DeckManager
+		containing:
+			((CollectionBuilder fixedDistribution
+				with: OverloadCard
+				probability: 100) collectionOfLength: 10).
+	die := Die
+		withSides: 4
+		andGenerator: (CircularIterator over: collection).
 	board := {NoEffect new.
 	NoEffect new.
 	AtomicEffect new.
@@ -250,8 +302,14 @@ GameTest >> gameUsingAnAtomicEffectWithPlayer: aPlayer and: anotherPlayer [
 GameTest >> gameUsingAnotherAtomicEffectWithPlayer: aPlayer and: anotherPlayer [
 	| collection lapsAmount board die game deck |
 	collection := {6 . 6 . 1}.
-	deck := DeckManager containing: ((FixedCardsDistributor withProbabilities: {(OverloadCard -> 100)} asDictionary) deckOfSize: 10).
-	die := Die withSides: 4 andGenerator: (CircularIterator over: collection).
+	deck := DeckManager
+		containing:
+			((CollectionBuilder fixedDistribution
+				with: OverloadCard
+				probability: 100) collectionOfLength: 10).
+	die := Die
+		withSides: 4
+		andGenerator: (CircularIterator over: collection).
 	board := {NoEffect new.
 	NoEffect new.
 	AtomicEffect new.
@@ -273,8 +331,14 @@ GameTest >> gameUsingAnotherAtomicEffectWithPlayer: aPlayer and: anotherPlayer [
 GameTest >> gameUsingCardsWithFirstPlayer: aPlayer andSecondPlayer: anotherPlayer [
 	| die game collection board deck |
 	collection := {4 . 2 . 3 . 4 . 5}.
-	deck := DeckManager containing: ((FixedCardsDistributor withProbabilities: {(OverloadCard -> 100)} asDictionary) deckOfSize: 10).
-	die := Die withSides: 4 andGenerator: (CircularIterator over: collection).
+	deck := DeckManager
+		containing:
+			((CollectionBuilder fixedDistribution
+				with: OverloadCard
+				probability: 100) collectionOfLength: 10).
+	die := Die
+		withSides: 4
+		andGenerator: (CircularIterator over: collection).
 	board := UtilitiesForTests collectionOf20NoEffect.
 	game := Game
 		playedBy:
@@ -308,7 +372,11 @@ GameTest >> gameUsingCardsWithFirstPlayer: aPlayer andSecondPlayer: anotherPlaye
 GameTest >> gameWith5NoEffectBoard3LapsAndWithPlayer: aPlayer [
 	| die game board deck |
 	board := self collectionOf5NoEffect.
-	deck := DeckManager containing: ((FixedCardsDistributor withProbabilities: {(OverloadCard -> 100)} asDictionary) deckOfSize: 10).
+	deck := DeckManager
+		containing:
+			((CollectionBuilder fixedDistribution
+				with: OverloadCard
+				probability: 100) collectionOfLength: 10).
 	die := Die withSides: 4 andGenerator: (CircularIterator over: {5}).
 	game := Game
 		playedBy: {aPlayer}
@@ -323,10 +391,20 @@ GameTest >> gameWith5NoEffectBoard3LapsAndWithPlayer: aPlayer [
 GameTest >> gameWithPlayer: aPlayer and: anotherPlayer and: oneMorePlayer [
 	| oneMoreDie anotherDie board die game deck |
 	board := UtilitiesForTests collectionOf20NoEffect.
-	deck := DeckManager containing: ((FixedCardsDistributor withProbabilities: {(OverloadCard -> 100)} asDictionary) deckOfSize: 10).
-	die := Die withSides: 4 andGenerator: (CircularIterator over: {1 . 2 . 3 . 4}).
-	anotherDie := Die withSides: 6 andGenerator: (CircularIterator over: {1 . 2 . 3 . 4 . 5 . 6}).
-	oneMoreDie := Die withSides: 5 andGenerator: (CircularIterator over: {1 . 2 . 3 . 4 . 5}).
+	deck := DeckManager
+		containing:
+			((CollectionBuilder fixedDistribution
+				with: OverloadCard
+				probability: 100) collectionOfLength: 10).
+	die := Die
+		withSides: 4
+		andGenerator: (CircularIterator over: {1 . 2 . 3 . 4}).
+	anotherDie := Die
+		withSides: 6
+		andGenerator: (CircularIterator over: {1 . 2 . 3 . 4 . 5 . 6}).
+	oneMoreDie := Die
+		withSides: 5
+		andGenerator: (CircularIterator over: {1 . 2 . 3 . 4 . 5}).
 	game := Game
 		playedBy:
 			{anotherPlayer.
@@ -346,8 +424,14 @@ GameTest >> gameWithPlayer: aPlayer and: anotherPlayer and: oneMorePlayer [
 GameTest >> gameWithPlayer: aPlayer and: anotherPlayer usingEffect: effect [
 	| collection lapsAmount board die game deck |
 	collection := {1}.
-	deck := DeckManager containing: ((FixedCardsDistributor withProbabilities: {(OverloadCard -> 100)} asDictionary) deckOfSize: 10).
-	die := Die withSides: 4 andGenerator: (CircularIterator over: collection).
+	deck := DeckManager
+		containing:
+			((CollectionBuilder fixedDistribution
+				with: OverloadCard
+				probability: 100) collectionOfLength: 10).
+	die := Die
+		withSides: 4
+		andGenerator: (CircularIterator over: collection).
 	board := {NoEffect new.
 	effect.
 	NoEffect new.
