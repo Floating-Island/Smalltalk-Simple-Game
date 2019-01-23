@@ -58,7 +58,7 @@ CollectionBuilder >> sumProbability: aQuantity [
 ]
 
 { #category : #updating }
-CollectionBuilder >> with: aClass Probability: aQuantity [
+CollectionBuilder >> with: aClass probability: aQuantity [
 	fixedDistributor addAll: (self collectionOf: aQuantity containingAll: aClass new).
 	self sumProbability: aQuantity
 ]
